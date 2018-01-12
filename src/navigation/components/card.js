@@ -1,7 +1,7 @@
 // Dependences
 import React, { Component } from 'react';
 
-class GoochatCard extends Component{
+class Card extends Component{
 	render(){
 		return(
 			<h1>Estas en el GoochatCard</h1>
@@ -9,4 +9,4 @@ class GoochatCard extends Component{
 	}
 }
 
-export default GoochatCard;
+export default Card;

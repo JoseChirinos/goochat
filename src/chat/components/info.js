@@ -1,7 +1,7 @@
 // Dependences
 import React, { Component } from 'react';
 
-class GoochatInfo extends Component{
+class Info extends Component{
 	render(){
 		return(
 			<h1>Estas en el GoochatInfo</h1>
@@ -9,4 +9,4 @@ class GoochatInfo extends Component{
 	}
 }
 
-export default GoochatInfo;
+export default Info;

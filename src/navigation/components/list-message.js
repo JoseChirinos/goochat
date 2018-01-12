@@ -1,7 +1,7 @@
 // Dependences
 import React, { Component } from 'react';
 
-class GoochatListMessage extends Component{
+class ListMessage extends Component{
 	render(){
 		return(
 			<h1>Estas en el GoochatListMessage</h1>
@@ -9,4 +9,4 @@ class GoochatListMessage extends Component{
 	}
 }
 
-export default GoochatListMessage;
+export default ListMessage;

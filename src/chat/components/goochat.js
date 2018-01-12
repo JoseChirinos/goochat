@@ -2,14 +2,14 @@
 import React, { Component } from 'react';
 import fire from './../../config-chat/firebase-config';
 // Modules
-import GoochatInfo from './../../chat/components/goochat-info';
-import GoochatViewMessage from './../../chat/components/goochat-view-message';
+import Info from './../../chat/components/info';
+import ViewMessage from './../../chat/components/view-message';
 
 // modules navigation
-import GoochatBussines from './../../business/components/goochat-bussines';
-import GoochatCard from './../../navigation/components/goochat-card';
-import GoochatListMessage from './../../navigation/components/goochat-list-message';
-import GoochatMenu from './../../navigation/components/goochat-menu';
+import Bussines from './../../business/components/bussines';
+import Card from './../../navigation/components/card';
+import ListMessage from './../../navigation/components/list-message';
+import Menu from './../../navigation/components/menu';
 
 
 class Goochat extends Component{
@@ -31,12 +31,12 @@ class Goochat extends Component{
 		return(
 			<div>
 				<div>
-					<GoochatInfo />
-					<GoochatViewMessage />
+					<Info />
+					<ViewMessage />
 				</div>
 				 <div>
-					<GoochatBussines />
-					<GoochatCard />
+					<Bussines />
+					<Card />
 				</div>
 			</div>
 		)

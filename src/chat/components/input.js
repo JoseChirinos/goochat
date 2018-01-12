@@ -1,7 +1,7 @@
 // Dependences
 import React, { Component } from 'react';
 
-class GoochatInput extends Component{
+class Input extends Component{
 	render(){
 		return(
 			<h1>Estas en el GoochatInput</h1>
@@ -9,4 +9,4 @@ class GoochatInput extends Component{
 	}
 }
 
-export default GoochatInput;
+export default Input;

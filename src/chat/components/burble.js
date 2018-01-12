@@ -1,7 +1,7 @@
 // Dependences
 import React, { Component } from 'react';
 
-class GoochatBurble extends Component{
+class Burble extends Component{
 	render(){
 		return(
 			<h1>Estas en el GoochatBurble</h1>
@@ -9,4 +9,4 @@ class GoochatBurble extends Component{
 	}
 }
 
-export default GoochatBurble;
+export default Burble;

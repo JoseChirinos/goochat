@@ -1,7 +1,7 @@
 // Dependences
 import React, { Component } from 'react';
 
-class GoochatMenu extends Component{
+class Menu extends Component{
 	render(){
 		return(
 			<h1>Estas en el GoochatMenu</h1>
@@ -9,4 +9,4 @@ class GoochatMenu extends Component{
 	}
 }
 
-export default GoochatMenu;
+export default Menu;
