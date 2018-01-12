@@ -4,7 +4,13 @@ import fire from './../../config-chat/firebase-config';
 // Modules
 import GoochatInfo from './../../chat/components/goochat-info';
 import GoochatViewMessage from './../../chat/components/goochat-view-message';
-import GoochatViewMessage from './../../business/components/goochat-bussines';
+
+// modules navigation
+import GoochatBussines from './../../business/components/goochat-bussines';
+import GoochatCard from './../../navigation/components/goochat-card';
+import GoochatListMessage from './../../navigation/components/goochat-list-message';
+import GoochatMenu from './../../navigation/components/goochat-menu';
+
 
 class Goochat extends Component{
 	state = {
@@ -26,10 +32,11 @@ class Goochat extends Component{
 			<div>
 				<div>
 					<GoochatInfo />
-					<GoochatViewMessage/>
+					<GoochatViewMessage />
 				</div>
 				 <div>
-					
+					<GoochatBussines />
+					<GoochatCard />
 				</div>
 			</div>
 		)
