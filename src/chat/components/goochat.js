@@ -1,6 +1,10 @@
 // Dependences
 import React, { Component } from 'react';
 import fire from './../../config-chat/firebase-config';
+// Modules
+import GoochatInfo from './../../chat/components/goochat-info';
+import GoochatViewMessage from './../../chat/components/goochat-view-message';
+import GoochatViewMessage from './../../business/components/goochat-bussines';
 
 class Goochat extends Component{
 	state = {
@@ -19,7 +23,15 @@ class Goochat extends Component{
 	}
 	render(){
 		return(
-			<h1>Goochat Empieza</h1>
+			<div>
+				<div>
+					<GoochatInfo />
+					<GoochatViewMessage/>
+				</div>
+				 <div>
+					
+				</div>
+			</div>
 		)
 	}
 }
