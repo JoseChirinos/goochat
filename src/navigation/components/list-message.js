@@ -9,13 +9,14 @@ class ListMessage extends Component{
 		ban:true
 	}
 
-	componentWillReceiveProps(){
+	componentWillReceiveProps(nextProps){
 		console.log("viendo desde componentWillReceiveProps"+this.props.idBussines);
-		this.setState({idB:this.props.idBussines});
+		this.setState({idB:nextProps.idBussines});
+		console.log('Props',nextProps);
 	}
 
 	componentDidMount(){
-		console.log("id => "+this.state.idB);
+		console.log("id => ",this.state.idB);
 		if(this.state.idB != ""){
 			console.log("id => "+this.state.idB);
 			let circleRef = fire.database().ref(this.state.idB).child('bussines_circle');
@@ -36,7 +37,7 @@ class ListMessage extends Component{
 		//this.setState({ban:false});	
 
 		return(
-			<h1>Estas en el GoochatListMessage { this.state.idB} asdas {this.props.idBussines} </h1>
+			<h1>Estas en el GoochatListMessage { this.state.idB } asdas {this.props.idBussines} </h1>
 		)
 	}
 }

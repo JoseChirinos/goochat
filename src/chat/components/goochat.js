@@ -23,6 +23,7 @@ class Goochat extends Component{
 		var id = document.getElementById('id_user').value;
 		/* Create reference to messages in Firebase Database */
 		//console.log("entro correctamente1");
+		let datos = { };
 	    let messagesRef = fire.database().ref(id).child('name_bussines');
 	    console.log("entro correctamente2");
 	    console.log(messagesRef);
@@ -32,10 +33,15 @@ class Goochat extends Component{
 	      let name = { myName: snapshot.val(), id: id };
 	     // this.setState({ messages: [message].concat(this.state.messages) });
 	    // console.log('id :'+name.id);
+	      console.log('name :'+name.myName);
 	    
-	     this.setState({ name_bussines:name.myName,id_bussines:name.id});
+	     this.actualizarDatos({ name_bussines:name.myName,id_bussines:name.id});
+	     //console.log(this.setState);
 	     	
 	    });
+	}
+	actualizarDatos = (d) => {
+		this.setState(d);
 	}
 
 	render(){
@@ -57,7 +63,7 @@ class Goochat extends Component{
 							<Bussines nameBussines={this.state.name_bussines}/>				 		
 					 	</div>					 	
 					 	<div id="goochat-contact" style={{"border":"1px solid black","width":"100%","position":"absolute"}}>
-							<ListMessage idBussines = {this.state.id_bussines} />	
+							<ListMessage idBussines = { this.state.id_bussines } />	
 					 	</div>
 					
 				</div>
