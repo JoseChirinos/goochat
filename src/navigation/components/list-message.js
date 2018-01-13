@@ -5,39 +5,33 @@ import Card from './../../navigation/components/card';
 class ListMessage extends Component{
 	state = {
 		contactUser:[],
-		idB:this.props.idBussines,
+		idB:'',
 		ban:true
 	}
-
-	componentWillReceiveProps(nextProps){
-		console.log("viendo desde componentWillReceiveProps"+this.props.idBussines);
+	componentWillReceiveProps(nextProps){		
 		this.setState({idB:nextProps.idBussines});
-		console.log('Props',nextProps);
-	}
-
-	componentDidMount(){
-		console.log("id => ",this.state.idB);
-		if(this.state.idB != ""){
-			console.log("id => "+this.state.idB);
-			let circleRef = fire.database().ref(this.state.idB).child('bussines_circle');
-		    circleRef.on('child_added', snapshot => {
-		     console.log("entro correctamente");
-		     console.log(snapshot.val());
-
-		     //Update React state when message is added at Firebase Database 
-		     let circle = { circleObj: snapshot.val(), key:snapshot.key };
-		     this.setState({contactUser: [circle].concat(this.state.messages) });
-
-		     console.log(this.state.contactUser);
+		if(nextProps.idBussines != ""){
+			let circleRef = fire.database().ref(nextProps.idBussines).child('bussines_circle');
+		    circleRef.on('value', snapshot => { 
+		     this.setState({contactUser: snapshot.val() });
 		    });
 		}
 	}
 
 	render(){
-		//this.setState({ban:false});	
-
+		//this.setState({ban:false});
 		return(
-			<h1>Estas en el GoochatListMessage { this.state.idB } asdas {this.props.idBussines} </h1>
+			<div className="">
+				{
+					Object.keys(this.state.contactUser).map( id =>{
+						return (
+							<div key={id}>
+								<Card {...this.state.contactUser[id]}/>
+							</div>
+						)
+					})
+				}
+			</div>
 		)
 	}
 }
