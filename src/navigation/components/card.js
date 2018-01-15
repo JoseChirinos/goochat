@@ -1,6 +1,6 @@
 // Dependences
 import React, { Component } from 'react';
-
+import './card.css';
 class Card extends Component{
 	
 
@@ -10,20 +10,28 @@ class Card extends Component{
 
 
 		return(
-			<div style={{"border":"1px solid black"}}>
+			<div className="card-container">
 				<div className="row">
-					<div className="col-md-3">
-						<img style={{"height":"70px","border-radius":"50% 50%"}} src={img_url}></img>
+					<div className="col-md-3" style={{"paddingTop":"10px","paddingBootom":"10px"}}>
+						<img style={{"height":"70px","borderRadius":"50% 50%"}} src={img_url}></img>
 					</div>
-					<div className="col-md-9">
+					<div className="col-md-5">
 						<div className="row">
 							<div className="col-md-12">
-								<h5>{name_bussines}</h5>
+								<h3>{name_bussines}</h3>
 							</div>
 							<div className="col-md-12">
-								<h6>{description}</h6>
+								<p className="card-p">{description}</p>
 							</div>
 						</div>
+					</div>
+					<div className="col-md-2">
+						<span>
+							<i className=""></i>
+						</span>
+					</div>
+					<div className="col-md-2">
+
 					</div>
 				</div>
 			</div>

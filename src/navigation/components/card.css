@@ -1,0 +1,13 @@
+.card-container{
+	background: white;
+	color:#4e4e4e;
+	width: 90%;
+	margin: 0 auto;
+	font-family: Roboto;
+	border-radius: 5px 5px;
+	padding-bottom: 10px;
+	height: 100px;
+}
+.card-p{
+	margin-top: -10px;
+}

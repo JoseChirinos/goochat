@@ -1,7 +1,50 @@
 .Bussines-image{
-	height: 100px;
+	height: 200px;
 	margin: 0 auto;
 }
 .Bussines-container{
-	text-align: center;
+	background: #011329;
+    position: relative;
+    color: white;
+    height: 130px;
+    padding-left: 10%;
+    z-index: 10000;
+    font-family: Roboto;
+}
+
+.Bussines-container img{
+	height: 70px;
+	border-radius: 50% 50%;
+	vertical-align: middle;
+	margin-left: 10%;
+	    /*border: 2px solid #575b61;*/
+}
+.information{
+	margin-top: 20px;
+}
+.img-container{
+	padding-top: 30px;
+	padding-bottom: 30px;
+}
+
+.circle-active{
+	width: 15px;
+	height: 15px;
+	border-radius: 50% 50%;
+	background: #01d300;
+	border:2px solid #0f9613;
+	position: absolute;
+}
+.circle{
+	width: 15px;
+	height: 15px;
+	border-radius: 50% 50%;
+	background: #8a8c8a;
+    border: 2px solid #545454;
+	position: absolute;
+}
+.conection-state{
+	margin-left: 18px;
+	margin-top: 2px;
+	font-size: 10px;
 }

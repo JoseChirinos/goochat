@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import fire from '../../config-chat/firebase-config.js';
 import Card from './../../navigation/components/card';
+import './list-message.css';
 class ListMessage extends Component{
 	state = {
 		contactUser:[],
@@ -26,12 +27,13 @@ class ListMessage extends Component{
 	render(){
 		//this.setState({ban:false});
 		return(
-			<div className="">
+			<div className="contet-contactuser">
 				{
 					Object.keys(this.state.contactUser).map( id =>{
 						return (
 							<div key={id}>
 								<Card {...this.state.contactUser[id]}/>
+								<br/>
 							</div>
 						)
 					})
