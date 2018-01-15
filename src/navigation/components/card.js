@@ -18,7 +18,7 @@ class Card extends Component{
 					<div className="col-md-5">
 						<div className="row">
 							<div className="col-md-12">
-								<h3>{name_bussines}</h3>
+								<h3 className="truncado">{name_bussines}</h3>
 							</div>
 							<div className="col-md-12">
 								<p className="card-p">{description}</p>
