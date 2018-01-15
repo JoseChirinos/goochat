@@ -12,10 +12,10 @@ class Card extends Component{
 		return(
 			<div className="card-container">
 				<div className="row">
-					<div className="col-md-3" style={{"paddingTop":"10px","paddingBootom":"10px"}}>
-						<img style={{"height":"70px","borderRadius":"50% 50%"}} src={img_url}></img>
+					<div className="col-md-3 card-containerImg">
+						<img className="card-img" src={img_url}></img>
 					</div>
-					<div className="col-md-5">
+					<div className="col-md-4">
 						<div className="row">
 							<div className="col-md-12">
 								<h3 className="truncado">{name_bussines}</h3>
@@ -26,13 +26,11 @@ class Card extends Component{
 							</div>
 						</div>
 					</div>
-					<div className="col-md-2">
-						<span>
-							<i className=""></i>
-						</span>
+					<div className="col-md-3 card-delete">
+						<span className="icon-user-minus"/>
 					</div>
-					<div className="col-md-2">
-
+					<div className="col-md-2 card-navigation">
+						<span className="icon-navigation"/>
 					</div>
 				</div>
 			</div>

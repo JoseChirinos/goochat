@@ -7,7 +7,7 @@ import ViewMessage from './../../chat/components/view-message';
 
 // modules navigation
 import Bussines from './../../business/components/bussines';
-import ListMessage from './../../navigation/components/list-message';
+import ListContact from './../../navigation/components/list-contact';
 import Menu from './../../navigation/components/menu';
 
 //style css
@@ -48,8 +48,8 @@ class Goochat extends Component{
 	render(){
 		const idTest = 'sergio_id';
 		return(
-			<div className="row" style={{"border":"1px solid black","height":"100%","margin":"0","width":"100%"}}>
-				<div className="col-md-9" style={ {"border":"1px solid black"}}>
+			<div className="row Goochat" style={{"border":"1px solid black","height":"100%","margin":"0","width":"100%"}}>
+				<div className="col-md-8" style={ {"border":"1px solid black"}}>
 					<div style={{"border":"1px solid black","width":"100%"}}>
 						<Info />
 					</div>
@@ -63,14 +63,22 @@ class Goochat extends Component{
 					<button onClick={this.eventosFire}>entrar</button>
 				</div>
 
-				 <div className="col-md-3 goochat-contentdat">
+				 <div className="col-md-4 goochat-contentdat">
 				 	<div className="row">
 					 	<div className="col-md-12" style={{"paddingRight":"0px","paddingLeft": "0px"}}>
 							<Bussines {...this.state}/>				 		
+					 	</div>	
+					 	<div className="col-md-12" style={{"paddingRight":"0px","paddingLeft": "0px","position":"absolute","color":"#707e8a","zIndex":"1000","marginTop":"130px","background":"#ededed","height":"30px"}}>
+							<h3 style={{"marginTop":"0px","textAlign":"center"}}>Mis circulos empresariales.</h3>				 		
 					 	</div>					 	
 					 	<div className="col-md-12" id="goochat-contact" style={{"width":"100%"}}>
-							<ListMessage idBussines = {this.state.id_bussines} />
+							<ListContact idBussines = {this.state.id_bussines} />
+
+							
 					 	</div>
+					 	<div className="col-md-12" style={{"position":"absolute","bottom":"0px","width":"100%","paddingRight":"0px","paddingLeft": "0px"}}>
+							<Menu/>
+						</div>
 					</div>
 					
 				</div>
