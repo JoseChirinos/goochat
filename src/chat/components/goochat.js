@@ -19,7 +19,31 @@ class Goochat extends Component{
 		name_bussines:'',
 		id_bussines:'',
 		img_url:'',
-		online:''
+		online:'',
+		menu:{
+			listContact:true,
+			chatList:false,
+			search:false,
+			request:false
+		}
+	}
+
+	eventoFromMenu = (select) =>{
+		var menu = {};
+		var nameKeys = Object.keys(this.state.menu);
+		nameKeys.forEach( (i,index)=>{
+			if(index == select){
+				menu[i] = true
+			}else{
+				menu[i] = false
+			}
+			
+		})
+		this.setState({
+			menu:menu
+		})
+
+		console.log('este es un evento desde el menu');
 	}
 	
 	eventosFire = () =>{
@@ -48,21 +72,44 @@ class Goochat extends Component{
 	render(){
 		const idTest = 'sergio_id';
 		return(
-			<div className="row Goochat" style={{"border":"1px solid black","height":"100%","margin":"0","width":"100%"}}>
-				<div className="col-md-8" style={ {"border":"1px solid black"}}>
-					<div style={{"border":"1px solid black","width":"100%"}}>
-						<Info />
+			<div className="container-fluid Goochat" style={{"border":"1px solid black","height":"100%","margin":"0","width":"100%"}}>
+				<div className="row">
+					<div className="col-md-8" style={ {"border":"1px solid black"}}>
+						<div style={{"border":"1px solid black","width":"100%"}}>
+							<Info />
+						</div>
+						<div style={{"border":"1px solid black","width":"100%"}}>
+							<ViewMessage />
+						</div>
 					</div>
-					<div style={{"border":"1px solid black","width":"100%"}}>
-						<ViewMessage />
+
+					<div style={{"position":"fixed","top":"0px"}}>
+						<input type="text" id="id_user" value={ idTest } readOnly></input>
+						<button onClick={this.eventosFire}>entrar</button>
 					</div>
-				</div>
 
-				<div style={{"position":"fixed","top":"0px"}}>
-					<input type="text" id="id_user" value={ idTest } readOnly></input>
-					<button onClick={this.eventosFire}>entrar</button>
-				</div>
+					 <div className="col-md-4 goochat-content-list">
+					 	<div className="row">
+						 	<div className="col-md-12" style={{"paddingRight":"0px","paddingLeft": "0px"}}>
+								<Bussines {...this.state}/>				 		
+						 	</div>	
+						 	<div className="col-md-12 Info-menu">
+								<h3>Mis circulos empresariales.</h3>				 		
+						 	</div>					 	
+						 	<div className="col-md-12" id="goochat-contact" style={{"width":"100%"}}>
+								<ListContact estado={ this.state.menu.listContact ? 'show':'hidden' } idBussines = {this.state.id_bussines} />
 
+								<div className={ this.state.menu.chatList ? 'show':'hidden' } id="goochat-chatlist">
+									ChatList
+								</div>
+								<div className={ this.state.menu.search ? 'show':'hidden' } id="goochat-search">
+									Search
+								</div>
+								<div className={ this.state.menu.request ? 'show':'hidden' } id="goochat-request">
+									Request - Circle
+								</div>
+
+<<<<<<< HEAD
 				 <div className="col-md-4 goochat-contentdat">
 				 	<div className="row">
 					 	<div className="col-md-12" style={{"paddingRight":"0px","paddingLeft": "0px"}}>
@@ -78,9 +125,14 @@ class Goochat extends Component{
 					 	</div>
 					 	<div className="col-md-12" style={{"position":"absolute","bottom":"0px","width":"100%","paddingRight":"0px","paddingLeft": "0px"}}>
 							<Menu/>
+=======
+						 	</div>
+						 	<div className="col-md-12" style={{"position":"absolute","bottom":"0px","width":"100%","paddingRight":"0px","paddingLeft": "0px"}}>
+								<Menu eventoPrueba={ this.eventoFromMenu }/>
+							</div>
+>>>>>>> ab95c8f56634af8b28acfcee68993f746259758d
 						</div>
 					</div>
-					
 				</div>
 			</div>
 		)

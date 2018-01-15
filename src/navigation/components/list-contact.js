@@ -22,7 +22,7 @@ class ListMessage extends Component{
 	render(){
 		//this.setState({ban:false});
 		return(
-			<div className="contet-contactuser">
+			<div className={ this.props.estado }>
 				{
 					Object.keys(this.state.contactUser).map( id =>{
 						return (
