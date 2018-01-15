@@ -1,0 +1,12 @@
+.goochat-contentdat{
+	height: 100%;
+}
+
+#goochat-contact{
+	position: absolute;	
+	overflow-y: auto;
+	overflow-x: hidden;
+	height: 100%;
+	padding-right: 0px;
+	background: #d9e1e4;
+}
