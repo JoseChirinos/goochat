@@ -19,7 +19,6 @@ class Card extends Component{
 						<div className="row">
 							<div className="col-md-12">
 								<h3 className="truncado">{name_bussines}</h3>
-								<span className="icon-arrow-up-right"></span>
 							</div>
 							<div className="col-md-12">
 								<p className="card-p truncado-p">{description}</p>

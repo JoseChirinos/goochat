@@ -1,15 +1,33 @@
-.goochat-contentdat{
-	height: 100%;
-}
-
-#goochat-contact{
-	position: absolute;	
-	overflow-y: auto;
-	overflow-x: hidden;
-	height: 100%;
-	padding-right: 0px;
-	background: #d9e1e4;
+.goochat-content-list{
+    height: 100vh;
+    overflow: hidden;
 }
 .Goochat{
 	font-family: 'Roboto';
+}
+
+.Info-menu{
+	padding: 3px 0px;
+	position: relative;
+	color: #707e8a;
+	z-index: 5;
+	background: #ededed;
+}
+.Info-menu h3{
+	margin: 0;
+	padding: 0;
+	text-align: center;
+}
+/*
+ * 	Bloques
+ */
+
+#goochat-contact{
+    position: relative;
+    padding: 25px 0 0 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100vh;
+    padding-right: 0px;
+    background: #d9e1e4;
 }
