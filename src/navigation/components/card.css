@@ -27,3 +27,39 @@
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+.card-navigation{
+	padding-top: 30px;
+	padding-bottom: 30px;
+	font-size: 30px;
+	color: #2b5cd1;
+	background: #011329;
+	padding-left: 0px !important;
+	padding-right: 0px !important;
+	cursor: pointer;
+	text-align: center;
+	width: 13%;
+	height: 100px;
+	border-radius:0px 5px 5px 0px;
+}
+
+.card-delete{
+	cursor: pointer;
+	padding-top: 30px;
+	padding-bottom: 30px;
+	text-align: center;
+	font-size: 30px;
+	color:#feaecd;
+}
+
+
+
+.card-img{
+	height:70px;
+	border-radius:50% 50%;
+	background: #f5f5f5;
+}
+
+.card-containerImg{
+	padding-top:10px;
+	padding-bottom:10px;
+}

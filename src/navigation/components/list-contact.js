@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import fire from '../../config-chat/firebase-config.js';
 import Card from './../../navigation/components/card';
-import './list-message.css';
+import './list-contact.css';
 class ListMessage extends Component{
 	state = {
 		contactUser:[],
