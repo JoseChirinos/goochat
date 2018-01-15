@@ -21,7 +21,7 @@ class Goochat extends Component{
 		img_url:'',
 		online:''
 	}
-
+	
 	eventosFire = () =>{
 		var id = document.getElementById('id_user').value;
 	    let nameBussines = fire.database().ref(id).child('name_bussines');
@@ -74,7 +74,7 @@ class Goochat extends Component{
 					 	<div className="col-md-12" id="goochat-contact" style={{"width":"100%"}}>
 							<ListContact idBussines = {this.state.id_bussines} />
 
-							
+
 					 	</div>
 					 	<div className="col-md-12" style={{"position":"absolute","bottom":"0px","width":"100%","paddingRight":"0px","paddingLeft": "0px"}}>
 							<Menu/>
