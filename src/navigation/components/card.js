@@ -21,7 +21,7 @@ class Card extends Component{
 								<h3 className="truncado">{name_bussines}</h3>
 							</div>
 							<div className="col-md-12">
-								<p className="card-p">{description}</p>
+								<p className="card-p truncado-p">{description}</p>
 							</div>
 						</div>
 					</div>
