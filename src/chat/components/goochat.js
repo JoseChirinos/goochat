@@ -8,8 +8,10 @@ import ViewMessage from './../../chat/components/view-message';
 // modules navigation
 import Bussines from './../../business/components/bussines';
 import ListContact from './../../navigation/components/list-contact';
+import listChat from './../../navigation/components/list-chat';
+import listSearch from './../../navigation/components/list-search';
+import ListRequest from './../../navigation/components/list-request';	
 import Menu from './../../navigation/components/menu';
-
 //style css
 
 import './goochat.css'
@@ -25,7 +27,16 @@ class Goochat extends Component{
 			chatList:false,
 			search:false,
 			request:false
-		}
+		},
+		chatListUser:{}
+	}
+
+	loadListChat=(e)=>{
+		let chatRef = fire.database().ref(this.state.id_bussines).child('chat');
+		chatRef.on('value', snapshot => { 
+			this.setState({chatListUser: snapshot.val()});
+		});
+		console.log(chatListUser);
 	}
 
 	eventoFromMenu = (select) =>{
@@ -64,10 +75,24 @@ class Goochat extends Component{
 	    	onLine.on('value', snapshot => {
 	    	this.setState({ online:snapshot.val()});
 	    });
+
+
+
+
+	   	//probando codigo
+	   	//para mostrar el chat
+
+	   	let chatRef = fire.database().ref(id).child('chat').child('jose_id').child('info');
+		chatRef.on('value', snapshot => { 
+			this.setState({chatListUser:snapshot.val()});
+			console.log(this.state.chatListUser);
+		});
 	}
+	
 	actualizarDatos = (d) => {
 		this.setState(d);
 	}
+
 
 	render(){
 		const idTest = 'sergio_id';
@@ -97,40 +122,23 @@ class Goochat extends Component{
 								<h3>Mis circulos empresariales.</h3>				 		
 						 	</div>					 	
 						 	<div className="col-md-12" id="goochat-contact" style={{"width":"100%"}}>
-								<ListContact estado={ this.state.menu.listContact ? 'show':'hidden' } idBussines = {this.state.id_bussines} />
 
-								<div className={ this.state.menu.chatList ? 'show':'hidden' } id="goochat-chatlist">
-									ChatList
+								<ListContact estado={ this.state.menu.listContact ? 'show':'hidden' } idBussines={this.state.id_bussines}/>
+
+								<div className={ this.state.menu.chatList ? 'show':'hidden' } id="goochat-chatlist" >
+									chat
 								</div>
-								<div className={ this.state.menu.search ? 'show':'hidden' } id="goochat-search">
+								<div className={ this.state.menu.search ? 'show':'hidden' } id="goochat-search" >
 									Search
 								</div>
-								<div className={ this.state.menu.request ? 'show':'hidden' } id="goochat-request">
-									Request - Circle
+								<div className={ this.state.menu.request ? 'show':'hidden' } id="goochat-request" >
+									<ListRequest/>
 								</div>
 
-<<<<<<< HEAD
-				 <div className="col-md-4 goochat-contentdat">
-				 	<div className="row">
-					 	<div className="col-md-12" style={{"paddingRight":"0px","paddingLeft": "0px"}}>
-							<Bussines {...this.state}/>				 		
-					 	</div>	
-					 	<div className="col-md-12" style={{"paddingRight":"0px","paddingLeft": "0px","position":"absolute","color":"#707e8a","zIndex":"1000","marginTop":"130px","background":"#ededed","height":"30px"}}>
-							<h3 style={{"marginTop":"0px","textAlign":"center"}}>Mis circulos empresariales.</h3>				 		
-					 	</div>					 	
-					 	<div className="col-md-12" id="goochat-contact" style={{"width":"100%"}}>
-							<ListContact idBussines = {this.state.id_bussines} />
-
-
-					 	</div>
-					 	<div className="col-md-12" style={{"position":"absolute","bottom":"0px","width":"100%","paddingRight":"0px","paddingLeft": "0px"}}>
-							<Menu/>
-=======
 						 	</div>
 						 	<div className="col-md-12" style={{"position":"absolute","bottom":"0px","width":"100%","paddingRight":"0px","paddingLeft": "0px"}}>
 								<Menu eventoPrueba={ this.eventoFromMenu }/>
 							</div>
->>>>>>> ab95c8f56634af8b28acfcee68993f746259758d
 						</div>
 					</div>
 				</div>

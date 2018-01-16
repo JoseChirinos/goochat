@@ -6,7 +6,7 @@ class Card extends Component{
 
 
 	render(){
-		const {name_bussines,img_url,description}=this.props;
+		const {name_bussines,img_url,description,listNavigation}=this.props;
 
 
 		return(
@@ -26,10 +26,10 @@ class Card extends Component{
 						</div>
 					</div>
 					<div className="col-md-3 card-delete">
-						<span className="icon-user-minus"/>
+						<span className={listNavigation==0 ? "icon-user-minus" :listNavigation==1 ? "icon-plus":"icon-plus"}/>
 					</div>
 					<div className="col-md-2 card-navigation">
-						<span className="icon-navigation"/>
+						<span className={listNavigation==0 ? "icon-navigation" :listNavigation==1 ? "icon-navigation":"icon-minus"}/>
 					</div>
 				</div>
 			</div>

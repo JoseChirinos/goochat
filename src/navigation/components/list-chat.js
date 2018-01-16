@@ -7,6 +7,7 @@ class ListMessage extends Component{
 	state = {
 		contactUser:[],
 		idB:'',
+		ban:true
 	}
 	componentWillReceiveProps(nextProps){		
 		this.setState({idB:nextProps.idBussines});
@@ -26,7 +27,7 @@ class ListMessage extends Component{
 					Object.keys(this.state.contactUser).map( id =>{
 						return (
 							<div key={id}>
-								<Card {...this.state.contactUser[id]} listNavigation="0"/>
+								<Card {...this.state.contactUser[id]}/>
 								<br/>
 							</div>
 						)
