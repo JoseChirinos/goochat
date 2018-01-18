@@ -18,10 +18,12 @@ import './goochat.css'
 
 class Goochat extends Component{
 	state = {
+		description:'',
 		name_bussines:'',
 		id_bussines:'',
 		img_url:'',
 		online:'',
+		awaitingRequests:{},
 		contactCircle:[],
 		contactRequest:[],
 		contactSearch:[],
@@ -54,8 +56,6 @@ class Goochat extends Component{
 		document.getElementById('square').className="icon-message-square evento";
 		document.getElementById('search').className="icon-search evento";
 		document.getElementById('plus').className="icon-user-plus evento";
-
-
 		document.getElementById('plus').style.color="#2b2b2b";
 
 		var nameKeys = Object.keys(this.state.menu);
@@ -94,7 +94,7 @@ class Goochat extends Component{
 	    let nameBussines = fire.database().ref('bussines/'+id).child('info_bussines');
 	    nameBussines.on('value', snapshot => {
 	    let obj = { myInfo: snapshot.val(), id: id };
-	    	this.setState({ name_bussines:obj.myInfo.name_bussines,id_bussines:obj.id,img_url:obj.myInfo.img_url,online:obj.myInfo.online});
+	    	this.setState({ name_bussines:obj.myInfo.name_bussines,id_bussines:obj.id,img_url:obj.myInfo.img_url,online:obj.myInfo.online,description:obj.myInfo.description});
 	    });
 	    this.viewState();
 	}
@@ -125,32 +125,22 @@ class Goochat extends Component{
 	}
 
 	componentDidMount(){	
-	 	this.loadLastChat();
-	 	this.dateFire();
+	 	//this.loadLastChat();
+	 	//this.dateFire();
 	 	//console.log("fecha ",h.getDay());
+	 	this.loadAwaitingRequests();
+
 	}
 
 //extraigo la fecha y hora del servidor de firebase
 	dateFire=()=>{
 		let dateRef = fire.database().ref("/.info/serverTimeOffset");
-		//probando 
-		let decryptDate = this.decryptDate;
-	 	
+	 	var serverTime;
 	 	dateRef.on('value', function(offset) {
    			 var offsetVal = offset.val() || 0;
-   			 var serverTime = Date.now()+offsetVal;
-   			 console.log(serverTime);
-   			 var h= decryptDate(serverTime);
-   			 //probando codigo
-   			 console.log("anio=> ",h.getFullYear());
-   			 console.log("mes => ",(h.getMonth()+1));
-			 console.log("dia=> ",h.getDate());
-			 console.log("hora=> ",h.getHours());
-			 console.log("minutos=> ",h.getMinutes());
-			 console.log("segundos=> ",h.getSeconds());
-			 //probando codigo
-			  
-  		});
+   			 serverTime = Date.now()+offsetVal;
+   		});
+  		return serverTime;
 	}
 //covierto la fecha y hora del servidor de firebase de ms a fecha y hora formato Date
 	decryptDate=(ms)=>{
@@ -170,6 +160,15 @@ class Goochat extends Component{
 
 
 	//consultas firebase
+	loadAwaitingRequests=()=>{
+		var id = document.getElementById('id_user').value;
+		let awaitingRequestsRef = fire.database().ref('bussines/'+id).child('awaitingRequests');
+		awaitingRequestsRef.on('value', snapshot => { 
+		    this.setState({awaitingRequests: snapshot.val() });
+		    console.log(this.state.awaitingRequests);
+		});
+	}
+
 	loadCircle=()=>{
 		var id = document.getElementById('id_user').value;
 		let circleRef = fire.database().ref('bussines/'+id).child('bussines_circle');
@@ -237,8 +236,76 @@ class Goochat extends Component{
 		 		jsonTemp.push(objInfo);
 		     });
 		  	this.setState({contactChat:jsonTemp});
-		    console.log("datos insertados en el state",jsonTemp);
+		    //console.log("datos insertados en el state",jsonTemp);
 		});	
+	}
+
+	//card actions
+
+	deleteItemCircle=(id)=>{
+		var idu = document.getElementById('id_user').value;
+		let deleteCircleRef= fire.database().ref('bussines').child(idu).child("bussines_circle").child(id);
+		deleteCircleRef.remove();
+	}
+
+
+	sendRequest=(id)=>{
+		var idu = document.getElementById('id_user').value;
+		let sendRequestRef= fire.database().ref('bussines').child(id).child("bussines_circle").child(idu);
+		sendRequestRef.update({
+ 		"date": this.dateFire(),
+ 		"description":this.state.description,
+ 		"img_url":this.state.img_url,
+ 		"lagree":false,
+ 		"name_bussines":this.state.name_bussines
+		});
+
+		let awaitingRequestsRef= fire.database().ref('bussines').child(idu).child("awaitingRequests").child(id);
+		awaitingRequestsRef.update({
+ 		  "state": true
+		});
+		
+	}
+	removeRequest=(id)=>{
+		var idu = document.getElementById('id_user').value;
+		let removeRequestRef= fire.database().ref('bussines').child(""+id).child("bussines_circle").child(idu);
+		removeRequestRef.remove();
+		let awaitingRequestsRef= fire.database().ref('bussines').child(""+idu).child("awaitingRequests").child(id);
+		awaitingRequestsRef.remove();
+		//console.log("funciona xD "+id);
+	}
+	//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	acceptRequest=(id)=>{
+		var idu = document.getElementById('id_user').value;
+		let acceptRef= fire.database().ref('bussines').child(idu).child("bussines_circle").child(id);
+		acceptRef.update({
+ 		  lagree:true,
+		});
+		//guardo mis datos en los circulos del usuario
+		let saveMyDateRef= fire.database().ref('bussines').child(id).child("bussines_circle").child(idu);
+		saveMyDateRef.update({
+ 		 	date:this.dateFire(),
+ 		 	description:this.state.description,
+ 		 	img_url:this.state.img_url,
+ 		 	lagree:true,
+ 		 	name_bussines:this.state.name_bussines
+		});		
+		console.log("aceptar");
 	}
 
 
@@ -250,7 +317,49 @@ class Goochat extends Component{
 
 
 
-	//fin de las consultas firebase
+
+
+
+
+
+
+
+
+
+
+	 rejectRequest=(id)=>{
+		var idu = document.getElementById('id_user').value;
+		let rejectRef= fire.database().ref('bussines').child(idu).child("bussines_circle").child(id);
+		rejectRef.remove();
+		//elimino su solicitud los circulos del usuario
+		let updateAwaitingRequestsRef= fire.database().ref('bussines').child(id).child("awaitingRequests").child(idu);
+		updateAwaitingRequestsRef.remove();
+		console.log("rechazar");
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 	actualizarDatos = (d) => {
@@ -280,23 +389,24 @@ class Goochat extends Component{
 					 <div className="col-md-4 goochat-content-list">
 					 	<div className="row">
 						 	<div className="col-md-12" style={{"paddingRight":"0px","paddingLeft": "0px"}}>
-								<Bussines {...this.state}/>				 		
+								<Bussines {...this.state}/>	
+								{"probando codigo para recuperar mis datos ",console.log(this.state)}			 		
 						 	</div>	
 						 	<div className="col-md-12 Info-menu">
 								<h3 id="goochat-menu-info">Mis circulos empresariales.</h3>				 		
 						 	</div>					 	
 						 	<div className="col-md-12" id="goochat-contact" style={{"width":"100%"}}>
 
-								<ListContact estado={ this.state.menu.listContact ? 'show':'hidden' } contactCircle={this.state.contactCircle}/>
+								<ListContact estado={ this.state.menu.listContact ? 'show':'hidden' } contactCircle={this.state.contactCircle} contactDelete={this.deleteItemCircle}/>
 
 								<div className={ this.state.menu.chatList ? 'show':'hidden' } id="goochat-chatlist" >
 									<ListChat contactChat={this.state.contactChat}/>
 								</div>
 								<div className={ this.state.menu.search ? 'show':'hidden' } id="goochat-search" >
-									<ListSearch contactSearch={this.state.contactSearch} search={this.loadSearch}/>
+									<ListSearch contactSearch={this.state.contactSearch} contactSendRequest={this.sendRequest} search={this.loadSearch} contactRemoveRequest={this.removeRequest} awaitingRequests={this.state.awaitingRequests}/>
 								</div>
 								<div className={ this.state.menu.request ? 'show':'hidden' } id="goochat-request" >
-									<ListRequest contactRequest={this.state.contactRequest}/>
+									<ListRequest contactRequest={this.state.contactRequest} acceptRequest={this.acceptRequest} rejectRequest={this.rejectRequest}/>
 								</div>
 
 						 	</div>

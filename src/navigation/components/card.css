@@ -43,12 +43,15 @@
 }
 
 .card-delete{
-	cursor: pointer;
+	cursor:auto!important;
 	padding-top: 30px;
 	padding-bottom: 30px;
 	text-align: center;
 	font-size: 30px;
 	color:#feaecd;
+}
+.card-delete span{
+	cursor: pointer;
 }
 
 
@@ -62,4 +65,9 @@
 .card-containerImg{
 	padding-top:10px;
 	padding-bottom:10px;
+}
+
+
+.sendRequest{
+	color:#17cad3;
 }

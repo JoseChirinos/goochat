@@ -25,7 +25,7 @@ class ListMessage extends Component{
 					Object.keys(this.state.contactUser).map( id =>{
 						return (
 							<div key={id}>
-								<Card {...this.state.contactUser[id]} listNavigation="3"/>
+								<Card {...this.state.contactUser[id]} idBussines={id} listNavigation="3"  rejectRequest={this.props.rejectRequest} acceptRequest={this.props.acceptRequest}/>
 								<br/>
 							</div>
 						)

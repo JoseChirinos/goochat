@@ -16,6 +16,13 @@ class ListMessage extends Component{
 
 
 	render(){
+		// console.log("mostrando las solicitudes echas en el list search =>",this.props.awaitingRequests);
+		// Object.keys(this.props.awaitingRequests).map(id=>{
+		// 	console.log("id de los que ya envie solicitud =>",id);
+		// })
+		console.log("remove list: ",this.props.contactRemoveRequest);
+		console.log("contactSendRequest list: ",this.props.contactSendRequest);
+						
 
 		return(
 			<div className="contentSearch">
@@ -28,9 +35,19 @@ class ListMessage extends Component{
 				<br></br>
 				{
 					Object.keys(this.state.contactUser).map( id =>{
+						var stateCardSearch=false;
+						Object.keys(this.props.awaitingRequests||{}).map((idu,index)=>{
+							if(this.state.contactUser[id].id == idu){
+								stateCardSearch=true;
+							}
+						})
 						return (
-							<div key={id}>
-								<Card {...this.state.contactUser[id].info} listNavigation="1"/>
+							<div key={this.state.contactUser[id].id}>	
+									{
+										stateCardSearch?
+										(<Card {...this.state.contactUser[id].info} listNavigation="1" idBussines={this.state.contactUser[id].id} send="1" sendRequest={this.props.contactSendRequest} removeRequest={this.props.contactRemoveRequest}/>):
+										(<Card {...this.state.contactUser[id].info} listNavigation="1" idBussines={this.state.contactUser[id].id} send="0" removeRequest={this.props.contactRemoveRequest} sendRequest={this.props.contactSendRequest}/>)
+									}
 								<br/>
 							</div>
 						 )

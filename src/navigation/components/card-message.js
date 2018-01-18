@@ -11,9 +11,12 @@ class Card extends Component{
 		var date=new Date(userInfo.latest_message.date);
 		var mes=(date.getMonth()+1)<10?"0"+(date.getMonth()+1):(date.getMonth()+1);
 		var dia=date.getDate()<10?"0"+date.getDate():date.getDate();
-		var fecha=date.getFullYear()+""+mes+""+dia;
+		//var fecha=date.getFullYear()+""+mes+""+dia;
 
-		console.log("superfecha",fecha);
+		//console.log("superfecha",fecha);
+		var fecha=moment().format(mes+' Do '+date.getFullYear()+' - '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds());
+
+		// console.log("fechassss : ",moment().format(mes+' Do '+date.getFullYear()+', '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()));
 
 
 		return(
@@ -31,7 +34,8 @@ class Card extends Component{
 									<p className="card-p truncado-p">{userInfo.latest_message.message}</p>
 								</div>
 								<div className="col-md-12">
-									<p className="card-fecha">{moment(fecha, "YYYYMMDD").fromNow()}</p>
+								<p className="card-fecha">{fecha}</p>
+									
 								</div>
 							</div>
 						</div>
