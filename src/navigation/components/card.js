@@ -13,7 +13,7 @@ class Card extends Component{
 			name_bussines:name_bussines,
 			img_url:img_url
 		}
-		console.log("props del card ",this.props);
+		//console.log("props del card ",this.props);
 
 		return(
 				<div className="card-container">
@@ -27,8 +27,8 @@ class Card extends Component{
 									<h3 className="truncado">{name_bussines}</h3>
 								</div>
 								<div className="col-md-12">
-									<p className={send!=""? send==1?"card-p truncado-p sendRequest":"card-p truncado-p":"card-p truncado-p"}>
-									{send!=""? send==1?"Solicitud enviada":description:""}</p>
+									<p className={ send==1?"card-p truncado-p sendRequest":"card-p truncado-p"}>
+									{ send==1?"Solicitud enviada":description}</p>
 								</div>
 							</div>
 						</div>
@@ -51,7 +51,7 @@ class Card extends Component{
 									()=>this.props.rejectRequest(this.props.idBussines)}/>
 						</div>
 						<div className="col-md-2 card-navigation">
-							<span className={listNavigation==0 ? "icon-navigation" :listNavigation==1 ? "icon-navigation":"icon-check"} onClick={listNavigation==3?()=>this.props.acceptRequest(this.props.idBussines):0}/>
+							<span className={listNavigation==0 ? "icon-navigation" :listNavigation==1 ? "icon-navigation":"icon-check"} onClick={listNavigation==3?()=>this.props.acceptRequest(this.props.idBussines):function(){return 0}}/>
 						</div>
 					</div>
 				</div>
