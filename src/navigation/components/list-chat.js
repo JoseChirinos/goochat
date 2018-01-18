@@ -18,7 +18,7 @@ class ListMessage extends Component{
 		return(
 			<div className="content-chat">
 				{
-					Object.keys(this.state.contactMessages).map( index =>{
+					Object.keys(this.state.contactMessages||{}).map( index =>{
 						return (
 								<div key={index}>
 									<CardMessage userInfo={this.state.contactMessages[index]}/>

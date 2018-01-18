@@ -220,8 +220,8 @@ class Goochat extends Component{
 		var jsonTemp;
 		chatRef.on('value', snapshot => {	
 			jsonTemp=[];
-		  	Object.keys(snapshot.val()).map(id=>{
-		  		var unreadMessages=0;
+		  	Object.keys(snapshot.val()||{}).map(id=>{
+	  			var unreadMessages=0;
 		  		Object.keys(snapshot.val()[id].messages).map(idMessages=>{
 		  			if(!snapshot.val()[id].messages[idMessages].viewed){
 		  				unreadMessages++;
@@ -236,7 +236,6 @@ class Goochat extends Component{
 		 		jsonTemp.push(objInfo);
 		     });
 		  	this.setState({contactChat:jsonTemp});
-		    //console.log("datos insertados en el state",jsonTemp);
 		});	
 	}
 
@@ -368,7 +367,7 @@ class Goochat extends Component{
 
 
 	render(){
-		const idTest = 'sergio_id';
+		const idTest = 'jose_id';
 		return(
 			<div className="container-fluid Goochat" style={{"border":"1px solid black","height":"100%","margin":"0","width":"100%"}}>
 				<div className="row">
