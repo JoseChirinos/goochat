@@ -43,7 +43,7 @@ class Card extends Component{
 							<div className={userInfo.unread_messages==0?"unreadMessages hidden":"unreadMessages"}>
 								{userInfo.unread_messages}
 							</div>
-							<span className="icon-navigation"/>
+							<span className="icon-navigation"></span>
 				
 						</div>
 					</div>

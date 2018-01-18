@@ -48,10 +48,11 @@ class Card extends Component{
 									()=>this.props.sendRequest(this.props.idBussines):
 									listNavigation==1 && send==1 ?
 									()=>this.props.removeRequest(this.props.idBussines):
-									()=>this.props.rejectRequest(this.props.idBussines)}/>
+									()=>this.props.rejectRequest(this.props.idBussines)}>
+							</span>
 						</div>
 						<div className="col-md-2 card-navigation">
-							<span className={listNavigation==0 ? "icon-navigation" :listNavigation==1 ? "icon-navigation":"icon-check"} onClick={listNavigation==3?()=>this.props.acceptRequest(this.props.idBussines):0}/>
+							<span className={listNavigation==0 ? "icon-navigation" :listNavigation==1 ? "icon-navigation":"icon-check"} onClick={listNavigation==3?()=>this.props.acceptRequest(this.props.idBussines):0}></span>
 						</div>
 					</div>
 				</div>
