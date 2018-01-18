@@ -1,36 +1,40 @@
 // Dependences
 import React, { Component } from 'react';
-import fire from '../../config-chat/firebase-config.js';
 import Card from './../../navigation/components/card';
-import './list-contact.css';
+import './list-search.css';
 class ListMessage extends Component{
 	state = {
-		contactUser:[],
-		idB:'',
-		ban:true
+		contactUser:[]
 	}
-	componentWillReceiveProps(nextProps){		
-		this.setState({idB:nextProps.idBussines});
-		if(nextProps.idBussines != ""){
-			let circleRef = fire.database().ref(nextProps.idBussines).child('bussines_circle');
-		    circleRef.on('value', snapshot => { 
-		     this.setState({contactUser: snapshot.val() });
-		    });
-		}
+	componentWillReceiveProps(nextProps){	
+		//console.log("desde el listSearch : ",nextProps.contactSearch);
+		 if(nextProps.contactSearch != null){
+		    this.setState({contactUser: nextProps.contactSearch});
+		} 
 	}
 
+
+
 	render(){
-		//this.setState({ban:false});
+
 		return(
-			<div className={ this.props.estado }>
+			<div className="contentSearch">
+
+				<div className="imput-search">
+					<span className="icon-search"/>
+					<input className="search-input" placeholder="Buscar" type="text" onInput={ (e)=>{ this.props.search(e.target.value) } }/>
+				</div>
+				<br></br>
+				<br></br>
 				{
 					Object.keys(this.state.contactUser).map( id =>{
 						return (
 							<div key={id}>
-								<Card {...this.state.contactUser[id]}/>
+								<Card {...this.state.contactUser[id].info} listNavigation="1"/>
 								<br/>
 							</div>
-						)
+						 )
+			
 					})
 				}
 			</div>

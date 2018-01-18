@@ -1,37 +1,32 @@
 // Dependences
 import React, { Component } from 'react';
-import fire from '../../config-chat/firebase-config.js';
-import Card from './../../navigation/components/card';
-import './list-contact.css';
+import CardMessage from './../../navigation/components/card-message';
+import './list-chat.css';
 class ListMessage extends Component{
-	state = {
-		contactUser:[],
-		idB:'',
-		ban:true
+	state={
+		contactMessages:[]
 	}
 	componentWillReceiveProps(nextProps){		
-		this.setState({idB:nextProps.idBussines});
-		if(nextProps.idBussines != ""){
-			let circleRef = fire.database().ref(nextProps.idBussines).child('bussines_circle');
-		    circleRef.on('value', snapshot => { 
-		     this.setState({contactUser: snapshot.val() });
-		    });
-		}
+		if(nextProps.contactChat != null){
+		     this.setState({contactMessages: nextProps.contactChat});
+		} 
 	}
-
 	render(){
-		//this.setState({ban:false});
+		console.log("mostrando los datos desde el lisMessage",this.state.contactMessages);
+
+		
 		return(
-			<div className={ this.props.estado }>
+			<div className="content-chat">
 				{
-					Object.keys(this.state.contactUser).map( id =>{
+					Object.keys(this.state.contactMessages).map( index =>{
 						return (
-							<div key={id}>
-								<Card {...this.state.contactUser[id]}/>
+								<div key={index}>
+									<CardMessage userInfo={this.state.contactMessages[index]}/>
 								<br/>
 							</div>
 						)
 					})
+					
 				}
 			</div>
 		)

@@ -1,7 +1,30 @@
-.content-contact-user{
-	background: #d9e1e4;
-	height: 100%;
-	margin-top:180px;
-	
-	width: 100%;
+.imput-search{
+    position: fixed;
+    z-index: 10;
+    margin-top: -25px;
+    padding: 5px;
+    background: #0113291f;
+    width: calc(100%*0.3333);
+    color: #4d6179;
+    font-size: 25px;
+    text-align: center;
+}
+/*
+.imput-search:hover{
+	background: #01132957;
+}*/
+
+.search-input{
+        border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 2px solid #0113291f;
+    outline: 0px;
+    width: 86%;
+    margin-right: 4%;
+    font-size: 23px;
+    background: #01132900;
+    padding: 5px 5px;
+    float: right;
+    color: #495a6f;
 }
