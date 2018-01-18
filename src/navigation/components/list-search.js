@@ -36,7 +36,7 @@ class ListMessage extends Component{
 				{
 					Object.keys(this.state.contactUser).map( id =>{
 						var stateCardSearch=false;
-						Object.keys(this.props.awaitingRequests||{}).map((idu,index)=>{
+						Object.keys(this.props.awaitingRequests||{}).map(idu=>{
 							if(this.state.contactUser[id].id == idu){
 								stateCardSearch=true;
 							}
