@@ -5,8 +5,8 @@ import moment from 'moment';
 class Card extends Component{
 	render(){
 		const {userInfo}=this.props;
-		console.log(userInfo);
-		console.log(moment("20111031", "YYYYMMDD").fromNow());
+		//console.log(userInfo);
+		//console.log(moment("20111031", "YYYYMMDD").fromNow());
 
 		var date=new Date(userInfo.latest_message.date);
 		var mes=(date.getMonth()+1)<10?"0"+(date.getMonth()+1):(date.getMonth()+1);

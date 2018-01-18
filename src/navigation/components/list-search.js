@@ -16,14 +16,7 @@ class ListMessage extends Component{
 
 
 	render(){
-		// console.log("mostrando las solicitudes echas en el list search =>",this.props.awaitingRequests);
-		// Object.keys(this.props.awaitingRequests).map(id=>{
-		// 	console.log("id de los que ya envie solicitud =>",id);
-		// })
-		console.log("remove list: ",this.props.contactRemoveRequest);
-		console.log("contactSendRequest list: ",this.props.contactSendRequest);
-						
-
+	
 		return(
 			<div className="contentSearch">
 
