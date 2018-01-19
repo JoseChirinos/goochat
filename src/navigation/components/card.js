@@ -13,8 +13,10 @@ class Card extends Component{
 			name_bussines:name_bussines,
 			img_url:img_url
 		}
-		//console.log("props del card ",this.props);
+		console.log("props del card ",listNavigation);
 
+		console.log("props del send ",send);
+		console.log("ver ",this.props.stateCircle);
 		return(
 				<div className="card-container">
 					<div className="row">
@@ -29,6 +31,7 @@ class Card extends Component{
 								<div className="col-md-12">
 									<p className={ send==1?"card-p truncado-p sendRequest":"card-p truncado-p"}>
 									{ send==1?"Solicitud enviada":description}</p>
+
 								</div>
 							</div>
 						</div>
@@ -37,15 +40,15 @@ class Card extends Component{
 								listNavigation==0 ?
 								 "icon-user-minus" :
 								 listNavigation==1 && send==0 ?
-								  "icon-user-plus":
+							      !this.props.stateCircle?
+								  "icon-user-plus":"":
 								  listNavigation==1 && send==1?
-								  "icon-x":
-								  "icon-x"
+								  "icon-x":"icon-x"
 								} onClick={
 									listNavigation==0?
 									()=>this.props.contactDelete(this.props.idBussines):
-									listNavigation==1 && send==0?
-									()=>this.props.sendRequest(this.props.idBussines):
+									listNavigation==1 && send==0?!this.props.stateCircle?
+									()=>this.props.sendRequest(this.props.idBussines):function(){return 0}:
 									listNavigation==1 && send==1 ?
 									()=>this.props.removeRequest(this.props.idBussines):
 									()=>this.props.rejectRequest(this.props.idBussines)}>

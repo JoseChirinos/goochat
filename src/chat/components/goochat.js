@@ -112,6 +112,7 @@ class Goochat extends Component{
 		} 
 		if(menu.search && !this.state.runFire.search){
 	    	this.loadSearch("");
+	    	this.loadAwaitingRequests();
 	    	runFire['search']=true;
 		} 
 		if(menu.request && !this.state.runFire.request){
@@ -125,14 +126,8 @@ class Goochat extends Component{
 	}
 
 	componentDidMount(){	
-	 	//this.loadLastChat();
-	 	//this.dateFire();
-	 	//console.log("fecha ",h.getDay());
-	 	this.loadAwaitingRequests();
-
+	 	//this.loadAwaitingRequests();
 	}
-
-//extraigo la fecha y hora del servidor de firebase
 	dateFire=()=>{
 		let dateRef = fire.database().ref("/.info/serverTimeOffset");
 	 	var serverTime;
@@ -165,15 +160,15 @@ class Goochat extends Component{
 		let awaitingRequestsRef = fire.database().ref('bussines/'+id).child('awaitingRequests');
 		awaitingRequestsRef.on('value', snapshot => { 
 		    this.setState({awaitingRequests: snapshot.val() });
-		    console.log(this.state.awaitingRequests);
+		    //console.log(this.state.awaitingRequests);
 		});
 	}
 
 	loadCircle=()=>{
 		var id = document.getElementById('id_user').value;
 		let circleRef = fire.database().ref('bussines/'+id).child('bussines_circle');
-		    circleRef.orderByChild('lagree').equalTo(true).on('value', snapshot => { 
-		    this.setState({contactCircle: snapshot.val() });
+		circleRef.orderByChild('lagree').equalTo(true).on('value', snapshot => { 
+		    this.setState({contactCircle:snapshot.val()});
 		});
 	}
 
@@ -186,7 +181,7 @@ class Goochat extends Component{
 	}
 
 	loadSearch=(e)=>{
-		var id = document.getElementById('id_user').value;
+		var idu = document.getElementById('id_user').value;
 		let searchRef = fire.database().ref('bussines');
 		var jsonTemp;
 		searchRef.on('value', snapshot => {
@@ -195,19 +190,23 @@ class Goochat extends Component{
 		 		var name=snapshot.val()[id].info_bussines['name_bussines'];
 		 		if(e!=""){
 			 		if(name.toLowerCase().indexOf(e.toLowerCase())!=-1){
-			 			jsonTemp.push({
-			 					id:id,
-			 					info:snapshot.val()[id].info_bussines
-			 				}
-			 			);
+			 			if(idu!=id){
+				 			jsonTemp.push({
+				 					id:id,
+				 					info:snapshot.val()[id].info_bussines
+				 				}
+				 			);
+			 			}
 
 					}
 				}else{
-					jsonTemp.push({
-			 				id:id,
-			 				info:snapshot.val()[id].info_bussines
-			 			}
-			 		);
+					if(idu!=id){
+						jsonTemp.push({
+				 				id:id,
+				 				info:snapshot.val()[id].info_bussines
+				 			}
+				 		);
+					}
 				}
 		     });
 			this.setState({contactSearch:jsonTemp});
@@ -245,6 +244,13 @@ class Goochat extends Component{
 		var idu = document.getElementById('id_user').value;
 		let deleteCircleRef= fire.database().ref('bussines').child(idu).child("bussines_circle").child(id);
 		deleteCircleRef.remove();
+
+
+		let deleteCircleUsuRef= fire.database().ref('bussines').child(id).child("bussines_circle").child(idu);
+		deleteCircleUsuRef.remove();
+
+
+
 	}
 
 
@@ -271,9 +277,7 @@ class Goochat extends Component{
 		removeRequestRef.remove();
 		let awaitingRequestsRef= fire.database().ref('bussines').child(""+idu).child("awaitingRequests").child(id);
 		awaitingRequestsRef.remove();
-		//console.log("funciona xD "+id);
 	}
-	//
 
 
 
@@ -291,10 +295,14 @@ class Goochat extends Component{
 
 	acceptRequest=(id)=>{
 		var idu = document.getElementById('id_user').value;
+		
 		let acceptRef= fire.database().ref('bussines').child(idu).child("bussines_circle").child(id);
+		
 		acceptRef.update({
- 		  lagree:true,
+ 		  lagree:true
 		});
+
+
 		//guardo mis datos en los circulos del usuario
 		let saveMyDateRef= fire.database().ref('bussines').child(id).child("bussines_circle").child(idu);
 		saveMyDateRef.update({
@@ -304,7 +312,17 @@ class Goochat extends Component{
  		 	lagree:true,
  		 	name_bussines:this.state.name_bussines
 		});		
-		console.log("aceptar");
+		//console.log("aceptar");
+
+
+
+
+		let updateRef= fire.database().ref('bussines').child(id).child("awaitingRequests").child(idu);
+		updateRef.remove();	
+		//console.log("aceptar");
+
+
+
 	}
 
 
@@ -333,7 +351,7 @@ class Goochat extends Component{
 		//elimino su solicitud los circulos del usuario
 		let updateAwaitingRequestsRef= fire.database().ref('bussines').child(id).child("awaitingRequests").child(idu);
 		updateAwaitingRequestsRef.remove();
-		console.log("rechazar");
+		//console.log("rechazar");
 	}
 
 
@@ -367,29 +385,31 @@ class Goochat extends Component{
 
 
 	render(){
-		const idTest = 'jose_id';
+		//const idTest = 'jose_id';
 		return(
-			<div className="container-fluid Goochat" style={{"border":"1px solid black","height":"100%","margin":"0","width":"100%"}}>
+			<div className="container-fluid Goochat" style={{"height":"100%","margin":"0","width":"100%"}}>
 				<div className="row">
-					<div className="col-md-8" style={ {"border":"1px solid black"}}>
-						<div style={{"border":"1px solid black","width":"100%"}}>
+					<div className="col-md-9" style={ {"height":"100vh","background":"url(./assets/images/background-inicio.png)","backgroundSize":"100% 100%","backgroundRepeat":"no-repeat"}}>
+						
+
+
+						<div style={{"width":"100%","position":"absolute","left": "0px","top": "0px","background": "#ededed","color": "gray","textAlign":"left","paddingLeft":"10%","fontSize":"10px"}}>
 							<Info />
 						</div>
-						<div style={{"border":"1px solid black","width":"100%"}}>
+						<div style={{"width": "100%", "height": "100vh" ,"background":"url(./assets/images/goo-logo.svg)","backgroundSize": "250px","backgroundRepeat": "no-repeat","backgroundPosition": "center"}}>
 							<ViewMessage />
 						</div>
 					</div>
 
-					<div style={{"position":"fixed","top":"0px"}}>
-						<input type="text" id="id_user" value={ idTest } readOnly></input>
+					<div style={{"position":"fixed","bottom":"0px"}}>
+						<input type="text" id="id_user" ></input>
 						<button onClick={this.eventosFire}>entrar</button>
 					</div>
 
-					 <div className="col-md-4 goochat-content-list">
+					 <div className="col-md-3 goochat-content-list">
 					 	<div className="row">
 						 	<div className="col-md-12" style={{"paddingRight":"0px","paddingLeft": "0px"}}>
-								<Bussines {...this.state}/>	
-								{"probando codigo para recuperar mis datos ",console.log(this.state)}			 		
+								<Bussines {...this.state}/>			 		
 						 	</div>	
 						 	<div className="col-md-12 Info-menu">
 								<h3 id="goochat-menu-info">Mis circulos empresariales.</h3>				 		
@@ -402,7 +422,7 @@ class Goochat extends Component{
 									<ListChat contactChat={this.state.contactChat}/>
 								</div>
 								<div className={ this.state.menu.search ? 'show':'hidden' } id="goochat-search" >
-									<ListSearch contactSearch={this.state.contactSearch} contactSendRequest={this.sendRequest} search={this.loadSearch} contactRemoveRequest={this.removeRequest} awaitingRequests={this.state.awaitingRequests}/>
+									<ListSearch contactSearch={this.state.contactSearch} contactSendRequest={this.sendRequest} search={this.loadSearch} contactRemoveRequest={this.removeRequest} awaitingRequests={this.state.awaitingRequests} listCircle={this.state.contactCircle}/>
 								</div>
 								<div className={ this.state.menu.request ? 'show':'hidden' } id="goochat-request" >
 									<ListRequest contactRequest={this.state.contactRequest} acceptRequest={this.acceptRequest} rejectRequest={this.rejectRequest}/>

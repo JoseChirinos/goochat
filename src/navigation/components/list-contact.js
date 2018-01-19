@@ -11,7 +11,9 @@ class ListMessage extends Component{
 
 		if(nextProps.contactCircle != null){
 		     this.setState({contactUser: nextProps.contactCircle});
-		} 
+		}else{
+		     this.setState({contactUser: []});
+		}
 	}
 
 	render(){
