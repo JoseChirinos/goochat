@@ -39,8 +39,7 @@ class Card extends Component{
 								 listNavigation==1 && send==0 ?
 								  "icon-user-plus":
 								  listNavigation==1 && send==1?
-								  "icon-x":
-								  "icon-x"
+								  "icon-x":"icon-x"
 								} onClick={
 									listNavigation==0?
 									()=>this.props.contactDelete(this.props.idBussines):

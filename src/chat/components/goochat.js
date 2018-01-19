@@ -125,14 +125,8 @@ class Goochat extends Component{
 	}
 
 	componentDidMount(){	
-	 	//this.loadLastChat();
-	 	//this.dateFire();
-	 	//console.log("fecha ",h.getDay());
-	 	this.loadAwaitingRequests();
-
+	 	//this.loadAwaitingRequests();
 	}
-
-//extraigo la fecha y hora del servidor de firebase
 	dateFire=()=>{
 		let dateRef = fire.database().ref("/.info/serverTimeOffset");
 	 	var serverTime;
@@ -172,8 +166,9 @@ class Goochat extends Component{
 	loadCircle=()=>{
 		var id = document.getElementById('id_user').value;
 		let circleRef = fire.database().ref('bussines/'+id).child('bussines_circle');
-		    circleRef.orderByChild('lagree').equalTo(true).on('value', snapshot => { 
-		    this.setState({contactCircle: snapshot.val() });
+		circleRef.orderByChild('lagree').equalTo(true).on('value', snapshot => { 
+			this.setState({contactCircle:[]});
+		    this.setState({contactCircle:snapshot.val()});
 		});
 	}
 
@@ -249,6 +244,13 @@ class Goochat extends Component{
 		var idu = document.getElementById('id_user').value;
 		let deleteCircleRef= fire.database().ref('bussines').child(idu).child("bussines_circle").child(id);
 		deleteCircleRef.remove();
+
+
+		let deleteCircleUsuRef= fire.database().ref('bussines').child(id).child("bussines_circle").child(idu);
+		deleteCircleUsuRef.remove();
+
+
+
 	}
 
 
@@ -275,9 +277,7 @@ class Goochat extends Component{
 		removeRequestRef.remove();
 		let awaitingRequestsRef= fire.database().ref('bussines').child(""+idu).child("awaitingRequests").child(id);
 		awaitingRequestsRef.remove();
-		//console.log("funciona xD "+id);
 	}
-	//
 
 
 
@@ -295,10 +295,14 @@ class Goochat extends Component{
 
 	acceptRequest=(id)=>{
 		var idu = document.getElementById('id_user').value;
+		
 		let acceptRef= fire.database().ref('bussines').child(idu).child("bussines_circle").child(id);
+		
 		acceptRef.update({
- 		  lagree:true,
+ 		  lagree:true
 		});
+
+
 		//guardo mis datos en los circulos del usuario
 		let saveMyDateRef= fire.database().ref('bussines').child(id).child("bussines_circle").child(idu);
 		saveMyDateRef.update({
@@ -309,6 +313,16 @@ class Goochat extends Component{
  		 	name_bussines:this.state.name_bussines
 		});		
 		//console.log("aceptar");
+
+
+
+
+		let updateRef= fire.database().ref('bussines').child(id).child("awaitingRequests").child(idu);
+		updateRef.remove();	
+		//console.log("aceptar");
+
+
+
 	}
 
 
@@ -371,7 +385,7 @@ class Goochat extends Component{
 
 
 	render(){
-		const idTest = 'jose_id';
+		//const idTest = 'jose_id';
 		return(
 			<div className="container-fluid Goochat" style={{"height":"100%","margin":"0","width":"100%"}}>
 				<div className="row">
@@ -384,8 +398,8 @@ class Goochat extends Component{
 						</div>
 					</div>
 
-					<div style={{"position":"fixed","top":"0px"}}>
-						<input type="text" id="id_user" value={ idTest } readOnly></input>
+					<div style={{"position":"fixed","bottom":"0px"}}>
+						<input type="text" id="id_user" ></input>
 						<button onClick={this.eventosFire}>entrar</button>
 					</div>
 
