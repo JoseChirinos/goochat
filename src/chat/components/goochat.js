@@ -112,6 +112,7 @@ class Goochat extends Component{
 		} 
 		if(menu.search && !this.state.runFire.search){
 	    	this.loadSearch("");
+	    	this.loadAwaitingRequests();
 	    	runFire['search']=true;
 		} 
 		if(menu.request && !this.state.runFire.request){

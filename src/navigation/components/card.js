@@ -13,7 +13,9 @@ class Card extends Component{
 			name_bussines:name_bussines,
 			img_url:img_url
 		}
-		//console.log("props del card ",this.props);
+		console.log("props del listnavigation ",listNavigation);
+
+		console.log("props del send ",send);
 
 		return(
 				<div className="card-container">
