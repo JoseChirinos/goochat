@@ -16,7 +16,7 @@ class ListMessage extends Component{
 
 
 	render(){
-	
+		console.log("lista de contactos",this.props.listCircle);
 		return(
 			<div className="contentSearch">
 
@@ -30,18 +30,27 @@ class ListMessage extends Component{
 					Object.keys(this.state.contactUser).map( id =>{
 						var stateCardSearch=false;
 						console.log(this.props.awaitingRequests);
+						
 						Object.keys(this.props.awaitingRequests||{}).map(idu=>{
-							console.log("este id =>: "+idu);
+							//console.log("este id =>: "+idu);
 							if(this.state.contactUser[id].id == idu){
 								stateCardSearch=true;
 							}
 						})
+						var stateCircle=false;
+						Object.keys(this.props.listCircle||{}).map(idUs=>{
+							if(idUs==this.state.contactUser[id].id){
+								stateCircle=true;
+							}
+						})
+
+
 						return (
 							<div key={this.state.contactUser[id].id}>	
 									{
 										stateCardSearch?
-										(<Card {...this.state.contactUser[id].info} listNavigation="1" idBussines={this.state.contactUser[id].id} send="1" sendRequest={this.props.contactSendRequest} removeRequest={this.props.contactRemoveRequest}/>):
-										(<Card {...this.state.contactUser[id].info} listNavigation="1" idBussines={this.state.contactUser[id].id} send="0" removeRequest={this.props.contactRemoveRequest} sendRequest={this.props.contactSendRequest}/>)
+										(<Card {...this.state.contactUser[id].info} stateCircle={stateCircle} listNavigation="1" idBussines={this.state.contactUser[id].id} send="1" sendRequest={this.props.contactSendRequest} removeRequest={this.props.contactRemoveRequest}/>):
+										(<Card {...this.state.contactUser[id].info} stateCircle={stateCircle} listNavigation="1" idBussines={this.state.contactUser[id].id} send="0" removeRequest={this.props.contactRemoveRequest} sendRequest={this.props.contactSendRequest}/>)
 									}
 								<br/>
 							</div>

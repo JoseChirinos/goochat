@@ -419,7 +419,7 @@ class Goochat extends Component{
 									<ListChat contactChat={this.state.contactChat}/>
 								</div>
 								<div className={ this.state.menu.search ? 'show':'hidden' } id="goochat-search" >
-									<ListSearch contactSearch={this.state.contactSearch} contactSendRequest={this.sendRequest} search={this.loadSearch} contactRemoveRequest={this.removeRequest} awaitingRequests={this.state.awaitingRequests}/>
+									<ListSearch contactSearch={this.state.contactSearch} contactSendRequest={this.sendRequest} search={this.loadSearch} contactRemoveRequest={this.removeRequest} awaitingRequests={this.state.awaitingRequests} listCircle={this.state.contactCircle}/>
 								</div>
 								<div className={ this.state.menu.request ? 'show':'hidden' } id="goochat-request" >
 									<ListRequest contactRequest={this.state.contactRequest} acceptRequest={this.acceptRequest} rejectRequest={this.rejectRequest}/>
