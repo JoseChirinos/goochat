@@ -390,10 +390,13 @@ class Goochat extends Component{
 			<div className="container-fluid Goochat" style={{"height":"100%","margin":"0","width":"100%"}}>
 				<div className="row">
 					<div className="col-md-9" style={ {"height":"100vh","background":"url(./assets/images/background-inicio.png)","backgroundSize":"100% 100%","backgroundRepeat":"no-repeat"}}>
+						
+
+
 						<div style={{"width":"100%","position":"absolute","left": "0px","top": "0px","background": "#ededed","color": "gray","textAlign":"left","paddingLeft":"10%","fontSize":"10px"}}>
 							<Info />
 						</div>
-						<div style={{"border": "1px solid black","width": "100%", "height": "100vh"}}>
+						<div style={{"width": "100%", "height": "100vh" ,"background":"url(./assets/images/goo-logo.svg)","backgroundSize": "250px","backgroundRepeat": "no-repeat","backgroundPosition": "center"}}>
 							<ViewMessage />
 						</div>
 					</div>
