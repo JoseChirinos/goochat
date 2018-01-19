@@ -167,7 +167,6 @@ class Goochat extends Component{
 		var id = document.getElementById('id_user').value;
 		let circleRef = fire.database().ref('bussines/'+id).child('bussines_circle');
 		circleRef.orderByChild('lagree').equalTo(true).on('value', snapshot => { 
-			this.setState({contactCircle:[]});
 		    this.setState({contactCircle:snapshot.val()});
 		});
 	}
