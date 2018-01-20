@@ -54,7 +54,9 @@ class Goochat extends Component{
 	}
 
 	eventoFromMenu = (select) =>{
+
 		var menu = {};
+		
 		document.getElementById('circle').className="icon-triangle evento";
 		document.getElementById('square').className="icon-message-square evento";
 		document.getElementById('search').className="icon-search evento";
@@ -134,8 +136,6 @@ class Goochat extends Component{
 	}
 
 
-
-
 	dateFire=()=>{
 		let dateRef = fire.database().ref("/.info/serverTimeOffset");
 	 	var serverTime;
@@ -150,17 +150,6 @@ class Goochat extends Component{
 		var a =new Date(ms);
 		return a;
 	}
-
-
-
-
-
-
-
-
-
-
-
 
 	//consultas firebase
 	loadAwaitingRequests=()=>{
@@ -221,6 +210,16 @@ class Goochat extends Component{
 		});	
 	}
 
+
+
+
+
+
+
+
+
+
+
 	loadLastChat=()=>{
 		var id = document.getElementById('id_user').value;
 		let chatRef = fire.database().ref('bussines').child(id).child("chat");
@@ -236,7 +235,7 @@ class Goochat extends Component{
 		  		});
 		 		var objInfo={
 		 			id:id,
-		 			latest_message:snapshot.val()[id].info.latest_message,
+		 			latest_message:snapshot.val()[id].info.latest_message||{date: 1516460733007,id_bussines: "sergio_id",img_url: "",message: "error"},
 		 			name_description:snapshot.val()[id].info.name_description||{img_url:"",description:""},
 		 			unread_messages:unreadMessages
 		 		}
@@ -245,6 +244,17 @@ class Goochat extends Component{
 		  	this.setState({contactChat:jsonTemp});
 		});	
 	}
+
+
+
+
+
+
+
+
+
+
+
 
 	//card actions
 
@@ -327,9 +337,6 @@ class Goochat extends Component{
 
 	//codigo del chat
 
-
-
-
 	//muestra la info del contacto
 	showInfoContact=(obj)=>{
 		this.loadChatContact(obj.id);
@@ -338,25 +345,6 @@ class Goochat extends Component{
 		//console.log("funciona",obj);
 		//console.log(this.state.id_contact);
 	}
-
-		
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 	loadChatContact=(idu)=>{
@@ -389,44 +377,33 @@ class Goochat extends Component{
  		name_bussines:this.state.name_bussines||"",
  	 	img_url:this.state.img_url||"",
  	 	description:this.state.description||""
-		});	
-
-
-		let infoYourRef= fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(this.state.id_contact).child('info/name_description');
+	});	
+	let infoYourRef= fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(this.state.id_contact).child('info/name_description');
 		infoYourRef.update({
  		 	name_bussines:this.state.infoContact.name_bussines||"error",
  		 	img_url:this.state.infoContact.img_url||"",
  		 	description:this.state.infoContact.description||"error"
-		});	
+	});	
 
-
-
-
-
-
-
-		let saveMyDateRef= fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(this.state.id_contact).child('messages');
-		saveMyDateRef.push({
+	let saveMyDateRef= fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(this.state.id_contact).child('messages');
+	saveMyDateRef.push({
  		 	date:this.dateFire(),
  		 	name_bussines:this.state.name_bussines,
  		 	id_bussines:this.state.id_bussines,
  		 	img_url:this.state.img_url,
  		 	message:message,
  		 	viewed:false
-		});	
+	});	
 
-		let saveYourDateRef= fire.database().ref('bussines').child(this.state.id_contact).child("chat").child(this.state.id_bussines).child('messages');
-		saveYourDateRef.push({
- 		 	date:this.dateFire(),
- 		 	name_bussines:this.state.name_bussines,
- 		 	id_bussines:this.state.id_bussines,
- 		 	img_url:this.state.img_url,
- 		 	message:message,
- 		 	viewed:false
-		});	
-
-
-
+	let saveYourDateRef= fire.database().ref('bussines').child(this.state.id_contact).child("chat").child(this.state.id_bussines).child('messages');
+	saveYourDateRef.push({
+ 	 	date:this.dateFire(),
+ 	 	name_bussines:this.state.name_bussines,
+ 	 	id_bussines:this.state.id_bussines,
+    	img_url:this.state.img_url,
+ 	 	message:message,
+ 	 	viewed:false
+	});	
 
 		let saveYourLatestMessageRef= fire.database().ref('bussines').child(this.state.id_contact).child("chat").child(this.state.id_bussines).child('info').child('latest_message');
 		saveYourLatestMessageRef.update({
@@ -436,8 +413,6 @@ class Goochat extends Component{
  		 	img_url:this.state.img_url
 		});	
 
-
-
 		let saveMyLatestMessageRef= fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(this.state.id_contact).child('info').child('latest_message');
 		saveMyLatestMessageRef.update({
  		 	date:this.dateFire(),
@@ -446,30 +421,7 @@ class Goochat extends Component{
  		 	img_url:this.state.img_url
 		});	
 
-
-
-
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	actualizarDatos = (d) => {
 		this.setState(d);
