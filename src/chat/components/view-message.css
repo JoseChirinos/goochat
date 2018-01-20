@@ -1,0 +1,8 @@
+.message-input{
+   position: fixed;
+   bottom: 0px;
+   left: 0px;
+   right: 0px;
+   padding-left: 2%;
+   margin-right: calc(100%*0.25); 
+}

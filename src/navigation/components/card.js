@@ -6,25 +6,26 @@ class Card extends Component{
 
 
 	render(){
-		const {name_bussines,img_url,description,listNavigation,lagree,send}=this.props;
-		//console.log("card => ",this.props.contactDelete);
+		const {name_bussines,description,listNavigation,lagree,send}=this.props;
+		console.log("card prueba card=> ",this.props);
 		var obj={
+			id:this.props.idBussines,
 			description:description,
 			name_bussines:name_bussines,
-			img_url:img_url
+			img_url:this.props.img_url||''
 		}
-		console.log("props del card ",listNavigation);
+		//console.log("props del card ",listNavigation);
 
-		console.log("props del send ",send);
-		console.log("ver ",this.props.stateCircle);
+		//console.log("props del send ",send);
+		//console.log("ver ",this.props.stateCircle);
 		return(
 				<div className="card-container">
 					<div className="row">
 						<div className="col-md-3 card-containerImg">
-							<img className="card-img" src={img_url}></img>
+							<img className="card-img" src={this.props.img_url||''}></img>
 						</div>
-						<div className="col-md-4">
-							<div className="row">
+						<div className="col-md-4 card-containerName" onClick={()=>this.props.showInfoContact(obj)}>
+							<div className="row" >
 								<div className="col-md-12">
 									<h3 className="truncado">{name_bussines}</h3>
 								</div>
@@ -55,7 +56,7 @@ class Card extends Component{
 							</span>
 						</div>
 						<div className="col-md-2 card-navigation">
-							<span className={listNavigation==0 ? "icon-navigation" :listNavigation==1 ? "icon-navigation":"icon-check"} onClick={listNavigation==3?()=>this.props.acceptRequest(this.props.idBussines):function(){return 0}}/>
+							<span className={listNavigation==0 ? "icon-link" :listNavigation==1 ? "icon-link":"icon-check"} onClick={listNavigation==3?()=>this.props.acceptRequest(this.props.idBussines):function(){return 0}}/>
 						</div>
 					</div>
 				</div>

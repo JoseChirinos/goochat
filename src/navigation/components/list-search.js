@@ -49,8 +49,8 @@ class ListMessage extends Component{
 							<div key={this.state.contactUser[id].id}>	
 									{
 										stateCardSearch?
-										(<Card {...this.state.contactUser[id].info} stateCircle={stateCircle} listNavigation="1" idBussines={this.state.contactUser[id].id} send="1" sendRequest={this.props.contactSendRequest} removeRequest={this.props.contactRemoveRequest}/>):
-										(<Card {...this.state.contactUser[id].info} stateCircle={stateCircle} listNavigation="1" idBussines={this.state.contactUser[id].id} send="0" removeRequest={this.props.contactRemoveRequest} sendRequest={this.props.contactSendRequest}/>)
+										(<Card showInfoContact={this.props.showInfoContact} {...this.state.contactUser[id].info} stateCircle={stateCircle} listNavigation="1" idBussines={this.state.contactUser[id].id} send="1" sendRequest={this.props.contactSendRequest} removeRequest={this.props.contactRemoveRequest}/>):
+										(<Card showInfoContact={this.props.showInfoContact} {...this.state.contactUser[id].info} stateCircle={stateCircle} listNavigation="1" idBussines={this.state.contactUser[id].id} send="0" removeRequest={this.props.contactRemoveRequest} sendRequest={this.props.contactSendRequest}/>)
 									}
 								<br/>
 							</div>

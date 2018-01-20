@@ -71,3 +71,13 @@
 .sendRequest{
 	color:#17cad3;
 }
+.card-containerName{
+	height:100px;
+	cursor:pointer
+}
+.card-container:hover{
+    background: #fbfbfb;
+}
+
+
+
