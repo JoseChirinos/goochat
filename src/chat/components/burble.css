@@ -5,6 +5,7 @@
 	float: left;
 	/*background: rgba(0,0,0,0.5);*/
 	margin-bottom: 15px;
+
 }
 
 .burbble{
@@ -40,6 +41,7 @@
 	position: relative;
 	float: right;
 	margin-right:5%;
+	margin-bottom: 33px;
 }
 
 .rigth-dat{

@@ -360,6 +360,8 @@ class Goochat extends Component{
 	  			objTemp.push(snapshot.val()[ida])
 		    });
 		    this.setState({chatContact:objTemp});
+		    document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
+		
 		    //console.log("mostrando los datos desde el state : ",objTemp);
 		});
 	
@@ -420,8 +422,13 @@ class Goochat extends Component{
  		 	message:message,
  		 	img_url:this.state.img_url
 		});	
+		// document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
+		
 
+		//console.log("tamano del scroll ",this.props.contentViewMessage.scrollHeight);
 	}
+
+
 
 	actualizarDatos = (d) => {
 		this.setState(d);
@@ -430,6 +437,10 @@ class Goochat extends Component{
 
 	render(){
 		//const idTest = 'jose_id';
+		// if(document.getElementById('contentViewMessage')!=null){
+		// 	document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
+		// }
+
 		return(
 			<div className="container-fluid Goochat" style={{"height":"100%","margin":"0","width":"100%"}}>
 				<div className="row">
@@ -440,8 +451,8 @@ class Goochat extends Component{
 						<div style={{"zIndex": "1000","width":"100%","position":"absolute","left": "0px","top": "0px","background": "#ededed","color": "gray","textAlign":"left","paddingLeft":"3%","fontSize":"10px"}}>
 							<Info infoContact={this.state.infoContact}/>
 						</div>
-						<div style={{"overflowY":"auto","width": "100%", "height": "100vh" ,"background":"url(./assets/images/goo-logo.svg)","backgroundSize": "250px","backgroundRepeat": "no-repeat","backgroundPosition": "center"}}>
-							<ViewMessage sendMessage={this.sendMessage} chatContact={this.state.chatContact} myID={this.state.id_bussines}/>
+						<div id="contentViewMessage" style={{"paddingBottom":"100px","overflowY":"auto","width": "100%", "height": "100vh" ,"background":"url(./assets/images/goo-logo.svg)","backgroundSize": "250px","backgroundRepeat": "no-repeat","backgroundPosition": "center"}}>
+							<ViewMessage contentViewMessage={document.getElementById('contentViewMessage')} sendMessage={this.sendMessage} chatContact={this.state.chatContact} myID={this.state.id_bussines}/>
 						</div>
 					</div>
 

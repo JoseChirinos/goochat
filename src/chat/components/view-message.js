@@ -5,8 +5,16 @@ import Burble from './burble';
 import './view-message.css'
 
 class Message extends Component{
+
+
+
 	render(){
 		var showInput=true;
+		// if(this.props.contentViewMessage!=null){
+		// 	console.log("tamano del scroll ",this.props.contentViewMessage.scrollHeight);
+		// 	//this.props.contentViewMessage.scrollIntoView(false);
+		// 	this.props.contentViewMessage.scrollTop=this.props.contentViewMessage.scrollHeight;
+		// }
 		return(
 			<div>
 				<br></br> <br></br>
@@ -14,14 +22,12 @@ class Message extends Component{
 				{
 					Object.keys(this.props.chatContact||{}).map(index=>{
 						if(this.props.chatContact[index].id_bussines!=this.props.myID){
-							console.log("entro a");
 							return (<Burble key={index} iz="0" obj={this.props.chatContact[index]}/>)
 						}else{
-							console.log("entro b");
 							return(<Burble key={index} iz="1" obj={this.props.chatContact[index]}/>)			
 						}
 					})
-				}
+				}		
 				<div className="message-input">
 					{
 						showInput?(<Input sendMessage={this.props.sendMessage}/>):""
