@@ -13,15 +13,13 @@ class ListMessage extends Component{
 	}
 	render(){
 		console.log("mostrando los datos desde el lisMessage",this.state.contactMessages);
-
-		
 		return(
 			<div className="content-chat">
 				{
 					Object.keys(this.state.contactMessages||{}).map( index =>{
 						return (
 								<div key={index}>
-									<CardMessage userInfo={this.state.contactMessages[index]}/>
+									<CardMessage showInfoContact={this.props.showInfoContact} userInfo={this.state.contactMessages[index]}/>
 								<br/>
 							</div>
 						)

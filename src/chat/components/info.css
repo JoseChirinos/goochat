@@ -1,0 +1,10 @@
+.info-img{
+	width: 45px;
+	height: 45px;
+	border-radius:50% 50%;
+	float: right;
+	margin-left: 3px;
+}
+.name{
+	color:#46515f;
+}

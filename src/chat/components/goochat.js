@@ -23,11 +23,14 @@ class Goochat extends Component{
 		id_bussines:'',
 		img_url:'',
 		online:'',
+		id_contact:'',
 		awaitingRequests:{},
 		contactCircle:[],
 		contactRequest:[],
 		contactSearch:[],
 		contactChat:[],
+		infoContact:[],
+		chatContact:[],
 		menu:{
 			listContact:true,
 			chatList:false,
@@ -127,7 +130,12 @@ class Goochat extends Component{
 
 	componentDidMount(){	
 	 	//this.loadAwaitingRequests();
+		//this.loadChatContact("jose_id");
 	}
+
+
+
+
 	dateFire=()=>{
 		let dateRef = fire.database().ref("/.info/serverTimeOffset");
 	 	var serverTime;
@@ -229,7 +237,7 @@ class Goochat extends Component{
 		 		var objInfo={
 		 			id:id,
 		 			latest_message:snapshot.val()[id].info.latest_message,
-		 			name_description:snapshot.val()[id].info.name_description,
+		 			name_description:snapshot.val()[id].info.name_description||{img_url:"",description:""},
 		 			unread_messages:unreadMessages
 		 		}
 		 		jsonTemp.push(objInfo);
@@ -245,12 +253,8 @@ class Goochat extends Component{
 		let deleteCircleRef= fire.database().ref('bussines').child(idu).child("bussines_circle").child(id);
 		deleteCircleRef.remove();
 
-
 		let deleteCircleUsuRef= fire.database().ref('bussines').child(id).child("bussines_circle").child(idu);
 		deleteCircleUsuRef.remove();
-
-
-
 	}
 
 
@@ -278,19 +282,6 @@ class Goochat extends Component{
 		let awaitingRequestsRef= fire.database().ref('bussines').child(""+idu).child("awaitingRequests").child(id);
 		awaitingRequestsRef.remove();
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 	acceptRequest=(id)=>{
@@ -324,27 +315,7 @@ class Goochat extends Component{
 
 
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	 rejectRequest=(id)=>{
+	rejectRequest=(id)=>{
 		var idu = document.getElementById('id_user').value;
 		let rejectRef= fire.database().ref('bussines').child(idu).child("bussines_circle").child(id);
 		rejectRef.remove();
@@ -354,10 +325,131 @@ class Goochat extends Component{
 		//console.log("rechazar");
 	}
 
+	//codigo del chat
 
 
 
 
+	//muestra la info del contacto
+	showInfoContact=(obj)=>{
+		this.loadChatContact(obj.id);
+		this.setState({infoContact:obj});
+		this.setState({id_contact:obj.id});
+		//console.log("funciona",obj);
+		//console.log(this.state.id_contact);
+	}
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	loadChatContact=(idu)=>{
+		
+		var id = document.getElementById('id_user').value;
+		//var id="sergio_id";
+		var objTemp;
+		let chatRef = fire.database().ref('bussines').child(id+'/chat/'+idu+'/messages');
+		chatRef.on('value', snapshot => {	
+			objTemp=[];
+		  	Object.keys(snapshot.val()||{}).map(ida=>{
+	  			//console.log("probando codigo",snapshot.val()[ida]);
+	  			objTemp.push(snapshot.val()[ida])
+		    });
+		    this.setState({chatContact:objTemp});
+		    //console.log("mostrando los datos desde el state : ",objTemp);
+		});
+	
+	}
+
+
+
+	sendMessage=(message)=>{
+		//console.log("id del ke se le enviara el mensaje ",this.state.id_contact);
+		// //console.log("mensaje ",message);
+		// goochat-c3355 bussines sergio_id chat jose_id messages ajsdkjahsjdhajsd
+	 
+	 let infoRef=fire.database().ref('bussines').child(this.state.id_contact).child("chat").child(this.state.id_bussines).child('info/name_description');
+		infoRef.update({
+ 		name_bussines:this.state.name_bussines||"",
+ 	 	img_url:this.state.img_url||"",
+ 	 	description:this.state.description||""
+		});	
+
+
+		let infoYourRef= fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(this.state.id_contact).child('info/name_description');
+		infoYourRef.update({
+ 		 	name_bussines:this.state.infoContact.name_bussines||"error",
+ 		 	img_url:this.state.infoContact.img_url||"",
+ 		 	description:this.state.infoContact.description||"error"
+		});	
+
+
+
+
+
+
+
+		let saveMyDateRef= fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(this.state.id_contact).child('messages');
+		saveMyDateRef.push({
+ 		 	date:this.dateFire(),
+ 		 	name_bussines:this.state.name_bussines,
+ 		 	id_bussines:this.state.id_bussines,
+ 		 	img_url:this.state.img_url,
+ 		 	message:message,
+ 		 	viewed:false
+		});	
+
+		let saveYourDateRef= fire.database().ref('bussines').child(this.state.id_contact).child("chat").child(this.state.id_bussines).child('messages');
+		saveYourDateRef.push({
+ 		 	date:this.dateFire(),
+ 		 	name_bussines:this.state.name_bussines,
+ 		 	id_bussines:this.state.id_bussines,
+ 		 	img_url:this.state.img_url,
+ 		 	message:message,
+ 		 	viewed:false
+		});	
+
+
+
+
+		let saveYourLatestMessageRef= fire.database().ref('bussines').child(this.state.id_contact).child("chat").child(this.state.id_bussines).child('info').child('latest_message');
+		saveYourLatestMessageRef.update({
+ 		 	date:this.dateFire(),
+ 		 	id_bussines:this.state.id_bussines,
+ 		 	message:message,
+ 		 	img_url:this.state.img_url
+		});	
+
+
+
+		let saveMyLatestMessageRef= fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(this.state.id_contact).child('info').child('latest_message');
+		saveMyLatestMessageRef.update({
+ 		 	date:this.dateFire(),
+ 		 	id_bussines:this.state.id_bussines,
+ 		 	message:message,
+ 		 	img_url:this.state.img_url
+		});	
+
+
+
+
+	}
 
 
 
@@ -393,15 +485,15 @@ class Goochat extends Component{
 						
 
 
-						<div style={{"width":"100%","position":"absolute","left": "0px","top": "0px","background": "#ededed","color": "gray","textAlign":"left","paddingLeft":"10%","fontSize":"10px"}}>
-							<Info />
+						<div style={{"zIndex": "1000","width":"100%","position":"absolute","left": "0px","top": "0px","background": "#ededed","color": "gray","textAlign":"left","paddingLeft":"3%","fontSize":"10px"}}>
+							<Info infoContact={this.state.infoContact}/>
 						</div>
-						<div style={{"width": "100%", "height": "100vh" ,"background":"url(./assets/images/goo-logo.svg)","backgroundSize": "250px","backgroundRepeat": "no-repeat","backgroundPosition": "center"}}>
-							<ViewMessage />
+						<div style={{"overflowY":"auto","width": "100%", "height": "100vh" ,"background":"url(./assets/images/goo-logo.svg)","backgroundSize": "250px","backgroundRepeat": "no-repeat","backgroundPosition": "center"}}>
+							<ViewMessage sendMessage={this.sendMessage} chatContact={this.state.chatContact} myID={this.state.id_bussines}/>
 						</div>
 					</div>
 
-					<div style={{"position":"fixed","bottom":"0px"}}>
+					<div style={{"position":"fixed","top":"200px"}}>
 						<input type="text" id="id_user" ></input>
 						<button onClick={this.eventosFire}>entrar</button>
 					</div>
@@ -416,16 +508,16 @@ class Goochat extends Component{
 						 	</div>					 	
 						 	<div className="col-md-12" id="goochat-contact" style={{"width":"100%"}}>
 
-								<ListContact estado={ this.state.menu.listContact ? 'show':'hidden' } contactCircle={this.state.contactCircle} contactDelete={this.deleteItemCircle}/>
+								<ListContact showInfoContact={this.showInfoContact} estado={ this.state.menu.listContact ? 'show':'hidden' } contactCircle={this.state.contactCircle} contactDelete={this.deleteItemCircle}/>
 
 								<div className={ this.state.menu.chatList ? 'show':'hidden' } id="goochat-chatlist" >
-									<ListChat contactChat={this.state.contactChat}/>
+									<ListChat showInfoContact={this.showInfoContact} contactChat={this.state.contactChat}/>
 								</div>
-								<div className={ this.state.menu.search ? 'show':'hidden' } id="goochat-search" >
-									<ListSearch contactSearch={this.state.contactSearch} contactSendRequest={this.sendRequest} search={this.loadSearch} contactRemoveRequest={this.removeRequest} awaitingRequests={this.state.awaitingRequests} listCircle={this.state.contactCircle}/>
+								<div className={this.state.menu.search ? 'show':'hidden' } id="goochat-search" >
+									<ListSearch showInfoContact={this.showInfoContact} contactSearch={this.state.contactSearch} contactSendRequest={this.sendRequest} search={this.loadSearch} contactRemoveRequest={this.removeRequest} awaitingRequests={this.state.awaitingRequests} listCircle={this.state.contactCircle}/>
 								</div>
-								<div className={ this.state.menu.request ? 'show':'hidden' } id="goochat-request" >
-									<ListRequest contactRequest={this.state.contactRequest} acceptRequest={this.acceptRequest} rejectRequest={this.rejectRequest}/>
+								<div className={this.state.menu.request ? 'show':'hidden' } id="goochat-request" >
+									<ListRequest showInfoContact={this.showInfoContact} contactRequest={this.state.contactRequest} acceptRequest={this.acceptRequest} rejectRequest={this.rejectRequest}/>
 								</div>
 
 						 	</div>
