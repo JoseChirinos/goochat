@@ -9,7 +9,6 @@ class Message extends Component{
 
 
 	render(){
-		var showInput=true;
 		// if(this.props.contentViewMessage!=null){
 		// 	console.log("tamano del scroll ",this.props.contentViewMessage.scrollHeight);
 		// 	//this.props.contentViewMessage.scrollIntoView(false);
@@ -28,10 +27,8 @@ class Message extends Component{
 						}
 					})
 				}		
-				<div className="message-input">
-					{
-						showInput?(<Input sendMessage={this.props.sendMessage}/>):""
-					}
+				<div className={this.props.inputSendState?"show message-input":"hidden message-input"}>
+					<Input sendMessage={this.props.sendMessage}/>
 				</div>
 			</div>
 		)

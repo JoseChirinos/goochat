@@ -4,7 +4,7 @@ import './burble.css';
 class Burble extends Component{
 	render(){
 		//console.log
-		//console.log("props del burble",this.props.obj);
+		console.log("props del burble",this.props.obj);
 		var h=new Date(this.props.obj.date);
 		var hora=h.getHours()+":"+h.getMinutes();
 		//console.log("date",this.props.obj.date);

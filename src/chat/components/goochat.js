@@ -43,7 +43,9 @@ class Goochat extends Component{
 			search:false,
 			request:false
 		},
-		chatListUser:{}
+		chatListUser:{},
+		numberOfMessage:10,
+		inputSendState:false
 	}
 
 	loadListChat=(e)=>{
@@ -348,11 +350,11 @@ class Goochat extends Component{
 
 
 	loadChatContact=(idu)=>{
-		
+		this.state.inputSendState=true;
 		var id = document.getElementById('id_user').value;
 		//var id="sergio_id";
 		var objTemp;
-		let chatRef = fire.database().ref('bussines').child(id+'/chat/'+idu+'/messages');
+		let chatRef = fire.database().ref('bussines').child(id+'/chat/'+idu+'/messages').limitToLast(this.state.numberOfMessage);
 		chatRef.on('value', snapshot => {	
 			objTemp=[];
 		  	Object.keys(snapshot.val()||{}).map(ida=>{
@@ -431,8 +433,46 @@ class Goochat extends Component{
 
 
 	actualizarDatos = (d) => {
-		this.setState(d);
+		let infoRef=fire.database().ref('bussines').child(this.state.id_contact).child("chat").child(this.state.id_bussines).child('info/name_description');
+			infoRef.update({
+ 			name_bussines:this.state.name_bussines||"",
+ 	 		img_url:this.state.img_url||"",
+ 	 		description:this.state.description||""
+		});	
 	}
+
+	//evento ke carga los mensajes de 30 en 30
+
+	scrollLoadMessage=()=>{
+		if(document.getElementById('contentViewMessage').scrollTop<=10){
+
+			this.state.numberOfMessage+=10;
+			// this.state.id_contact
+				var id = document.getElementById('id_user').value;
+					//var id="sergio_id";
+					var objTemp;
+					let chatRef = fire.database().ref('bussines').child(id+'/chat/'+this.state.id_contact+'/messages').limitToLast(this.state.numberOfMessage);
+					chatRef.on('value', snapshot => {	
+						objTemp=[];
+					  	Object.keys(snapshot.val()||{}).map(ida=>{
+				  			//console.log("probando codigo",snapshot.val()[ida]);
+				  			objTemp.push(snapshot.val()[ida])
+					    });
+					    this.setState({chatContact:objTemp});
+					     document.getElementById('contentViewMessage').scrollTop=1500;	
+					    //console.log("mostrando los datos desde el state : ",objTemp);
+						chatRef.off();
+					});
+
+
+			// this.state.numberOfMessage;
+
+			console.log("escroll funcionadno ",this.state.numberOfMessage);
+		}
+	}
+
+
+
 
 
 	render(){
@@ -451,8 +491,8 @@ class Goochat extends Component{
 						<div style={{"zIndex": "1000","width":"100%","position":"absolute","left": "0px","top": "0px","background": "#ededed","color": "gray","textAlign":"left","paddingLeft":"3%","fontSize":"10px"}}>
 							<Info infoContact={this.state.infoContact}/>
 						</div>
-						<div id="contentViewMessage" style={{"paddingBottom":"100px","overflowY":"auto","width": "100%", "height": "100vh" ,"background":"url(./assets/images/goo-logo.svg)","backgroundSize": "250px","backgroundRepeat": "no-repeat","backgroundPosition": "center"}}>
-							<ViewMessage contentViewMessage={document.getElementById('contentViewMessage')} sendMessage={this.sendMessage} chatContact={this.state.chatContact} myID={this.state.id_bussines}/>
+						<div onScroll={this.scrollLoadMessage} id="contentViewMessage" style={{"paddingBottom":"100px","overflowY":"auto","width": "100%", "height": "100vh" ,"background":"url(./assets/images/goo-logo.svg)","backgroundSize": "250px","backgroundRepeat": "no-repeat","backgroundPosition": "center"}}>
+							<ViewMessage updateViewed={this.updateViewed}  inputSendState={this.state.inputSendState} contentViewMessage={document.getElementById('contentViewMessage')} sendMessage={this.sendMessage} chatContact={this.state.chatContact} myID={this.state.id_bussines}/>
 						</div>
 					</div>
 
