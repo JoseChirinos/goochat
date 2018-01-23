@@ -449,10 +449,9 @@ class Goochat extends Component{
 		    });
 		    this.setState({chatContact:objTemp});
 
+		    
+		    //document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
 
-
-
-		    document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
 		    //console.log("mostrando los datos desde el state : ",objTemp);
 		});
 	

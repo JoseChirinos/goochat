@@ -7,7 +7,9 @@ import './view-message.css'
 class Message extends Component{
 
 
-
+	componentDidMount(){
+		document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
+	}
 	render(){
 		// this.props.contentViewMessage.scrollTop=this.props.contentViewMessage.scrollHeigth;
 		return(
