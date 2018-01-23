@@ -21,10 +21,10 @@ class Card extends Component{
 		return(
 				<div className="card-container">
 					<div className="row">
-						<div className="col-md-3 card-containerImg">
+						<div className="col-xs-3 col-sm-3 col-md-3 card-containerImg">
 							<img className="card-img" src={this.props.img_url||''}></img>
 						</div>
-						<div className="col-md-4 card-containerName" onClick={()=>this.props.showInfoContact(obj)}>
+						<div className="col-xs-4 col-sm-4 col-md-4 card-containerName" onClick={()=>this.props.showInfoContact(obj)}>
 							<div className="row" >
 								<div className="col-md-12">
 									<h3 className="truncado">{name_bussines}</h3>
@@ -36,7 +36,7 @@ class Card extends Component{
 								</div>
 							</div>
 						</div>
-						<div className="col-md-3 card-delete">
+						<div className="col-xs-3 col-sm-3 col-md-3 card-delete">
 							<span className={
 								listNavigation==0 ?
 								 "icon-user-minus" :
@@ -54,7 +54,7 @@ class Card extends Component{
 									()=>this.props.removeRequest(this.props.idBussines):
 									()=>this.props.rejectRequest(this.props.idBussines)}/>
 						</div>
-						<div className="col-md-2 card-navigation">
+						<div className="col-xs-2 col-sm-2 col-md-2 card-navigation">
 							<span className={listNavigation==0 ? "icon-link" :listNavigation==1 ? "icon-link":"icon-check"} onClick={listNavigation==3?()=>this.props.acceptRequest(this.props.idBussines):function(){return 0}}/>
 						</div>
 					</div>

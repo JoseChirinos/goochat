@@ -11,9 +11,10 @@ class Message extends Component{
 	render(){
 		// this.props.contentViewMessage.scrollTop=this.props.contentViewMessage.scrollHeigth;
 		return(
-			<div>
+			<div className="row">
 				<br></br> <br></br>
 				<br></br> <br></br>
+
 				{
 					Object.keys(this.props.chatContact||{}).map(index=>{
 						if(this.props.chatContact[index].id_bussines!=this.props.myID){
@@ -22,7 +23,8 @@ class Message extends Component{
 							return(<Burble key={index} iz="1" obj={this.props.chatContact[index]}/>)			
 						}
 					})
-				}		
+				}	
+				
 				<div className={this.props.inputSendState?"show message-input":"hidden message-input"}>
 					<Input sendMessage={this.props.sendMessage}/>
 				</div>

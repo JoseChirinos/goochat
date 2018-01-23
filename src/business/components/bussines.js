@@ -7,10 +7,10 @@ class Bussines extends Component{
 		return(
 			<div className="Bussines-container">
 				<div className="row">
-					<div className="col-md-3 img-container" >
+					<div className="col-xs-3 col-sm-3 col-md-3 img-container" >
 						<img className="Bussines-image" src={img_url}/>
 					</div>
-					<div className="col-md-9">
+					<div className="col-xs-9 col-sm-9 col-md-9">
 						<div className="row information">
 							<div className="col-md-12">
 								<h3>{name_bussines}</h3>						

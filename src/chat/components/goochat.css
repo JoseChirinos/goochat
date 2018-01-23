@@ -31,3 +31,15 @@
     padding-bottom: 210px;
     background: #d9e1e4;
 }
+
+
+/*a partie del ancho de 892 escondemos la parte de mensajes y mostramos solo el menu*/
+
+@media (max-width: 992px){
+	#chatMessage{
+		display: none;
+	}
+	.imput-search{
+		width: 100%;
+	}
+}

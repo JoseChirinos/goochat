@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import CardMessage from './../../navigation/components/card-message';
 import './list-chat.css';
 class ListMessage extends Component{
+	// onlineContact
 	state={
 		contactMessages:[]
 	}
@@ -19,7 +20,7 @@ class ListMessage extends Component{
 					Object.keys(this.state.contactMessages||{}).map( index =>{
 						return (
 								<div key={index}>
-									<CardMessage showInfoContact={this.props.showInfoContact} userInfo={this.state.contactMessages[index]}/>
+									<CardMessage onlineContact={this.props.onlineContact}  showInfoContact={this.props.showInfoContact} userInfo={this.state.contactMessages[index]}/>
 								<br/>
 							</div>
 						)

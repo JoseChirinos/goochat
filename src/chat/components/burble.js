@@ -25,43 +25,30 @@ class Burble extends Component{
 		var hora=h.getHours()+":"+h.getMinutes();
 		return(
 			this.props.iz==0?(
-			<div className="burble-container">
-				<div className="row burbble">
-					<div className="col-md-3 imgLogo">
-						<img src={this.props.obj.img_url} alt=""/>
-					</div>
-					<div className="col-md-9">
-						<div className="row">
-							<div className="col-md-12" style={{"color":"#64b0bd"}}>{this.props.obj.name_bussines}</div>
-							<div className="col-md-12">
-								<p>{this.props.obj.message}</p>
-							</div>
+				<div className="col-xs-12 col-sm-12 col-md-12" style={{"width":"100%"}}>
+					<div className="msj macro">
+						<div className="avatar">
+							<img className="img-circle" style={{"width": "100px","position": "absolute","top": "7px","left": "20px"}} src={this.props.obj.img_url}/>
+						</div>
+						<div className="text text-l">
+							<p style={{"color":"#475566","fontSize":"16px","fontFamily": "Roboto"}}>{this.props.obj.message}</p>
+							<p><small style={{"fontSize":"13px"}}>{hora}</small></p>
 						</div>
 					</div>
 				</div>
-				<div className="col-md-12 dateInfo">
-					{hora}
-				</div>
-			</div>
-			):(
-			<div className="burble-container rigth">
-				<div className="row burbble rigth-burbble">
-					<div className="col-md-9">
-						<div className="row">
-							<div className="col-md-12" style={{"color":"#64b0bd"}}>{this.props.obj.name_bussines}</div>
-							<div className="col-md-12">
-								<p>{this.props.obj.message}</p>
-							</div>
+				):
+			(
+				<div className="col-xs-12 col-sm-12 col-md-12" style={{"width":"100%"}}>
+					<div className="msj-rta macro">
+						<div className="text text-r">
+							<p style={{"color":"#475566","fontSize":"16px","fontFamily": "Roboto"}}>{this.props.obj.message}</p>
+							<p><small style={{"fontSize":"13px"}}>{hora}</small></p>
+						</div>
+						<div className="avatar" style={{"padding":"0px 0px 0px 10px !important"}}>
+							<img className="img-circle" style={{"width": "100px","position": "absolute","top": "7px","right": "20px"}} src={this.props.obj.img_url}/>
 						</div>
 					</div>
-					<div className="col-md-3 imgLogo">
-						<img src={this.props.obj.img_url} alt=""/>
-					</div>
-					<div className="col-md-12 dateInfo rigth-dat">
-						{hora}
-					</div>
 				</div>
-			</div>
 			)
 
 		)
