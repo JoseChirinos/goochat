@@ -516,6 +516,7 @@ class Goochat extends Component{
 		// document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
 		
 
+		document.getElementById('inputSendMessage').value="";
 		//console.log("tamano del scroll ",this.props.contentViewMessage.scrollHeight);
 	}
 
