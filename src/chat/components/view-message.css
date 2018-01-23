@@ -6,3 +6,18 @@
    padding-left: 2%;
    margin-right: calc(100%*0.25); 
 }
+
+
+@media (max-width: 991px) {
+  .message-input{
+	   margin-right: calc(100%*0.01); 
+   }
+
+}
+
+@media (max-width: 483px){
+	.message-input{
+		margin-right: calc(100%*0.07);   
+   	}
+
+}

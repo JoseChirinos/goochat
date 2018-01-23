@@ -31,6 +31,7 @@ class Goochat extends Component{
 		contactChat:[],
 		infoContact:[],
 		chatContact:[],
+		onlineContact:[],
 		menu:{
 			listContact:true,
 			chatList:false,
@@ -45,7 +46,8 @@ class Goochat extends Component{
 		},
 		chatListUser:{},
 		numberOfMessage:10,
-		inputSendState:false
+		inputSendState:false,
+		scrollActive:true
 	}
 
 	loadListChat=(e)=>{
@@ -104,6 +106,12 @@ class Goochat extends Component{
 	    	this.setState({ name_bussines:obj.myInfo.name_bussines,id_bussines:obj.id,img_url:obj.myInfo.img_url,online:obj.myInfo.online,description:obj.myInfo.description});
 	    });
 	    this.viewState();
+
+	    let onlineOnBussines = fire.database().ref('bussines/'+id).child('info_bussines');
+	    onlineOnBussines.update({
+	    	online:true
+	    });
+
 	}
 	
 	viewState=(men)=>{
@@ -114,6 +122,7 @@ class Goochat extends Component{
 			runFire['listContact']=true;
 		}
 		if(menu.chatList && !this.state.runFire.chatList){
+			this.contactOnLine();
 			this.loadLastChat();
 			runFire['chatList']=true;
 		} 
@@ -135,7 +144,26 @@ class Goochat extends Component{
 	componentDidMount(){	
 	 	//this.loadAwaitingRequests();
 		//this.loadChatContact("jose_id");
+		window.addEventListener("beforeunload", this.onUnload);
+	
 	}
+
+
+	// componentWillUnmount() {
+ //       window.addEventListener("beforeunload", this.onUnload);
+	// }
+
+
+
+
+	onUnload=()=>{
+		let onlineOnBussines = fire.database().ref('bussines/'+this.state.id_bussines).child('info_bussines');
+	    onlineOnBussines.update({
+	    	online:false
+	    });
+	}
+
+
 
 
 	dateFire=()=>{
@@ -279,7 +307,6 @@ class Goochat extends Component{
 		chatRef.on('value', snapshot => {	
 			jsonTemp=[];
 		  	Object.keys(snapshot.val()||{}).map(id=>{
-	  			
 	  			var unreadMessages=this.pruebaCode(id);
 		 		var objInfo={
 		 			id:id,
@@ -288,7 +315,6 @@ class Goochat extends Component{
 		 			unread_messages:unreadMessages
 		 		}
 		 		jsonTemp.push(objInfo);
-
 		     });
 		  	this.setState({contactChat:jsonTemp});
 			
@@ -304,6 +330,97 @@ class Goochat extends Component{
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	contactOnLine=()=>{
+		var jsonTemp=[];
+		let onLineRef = fire.database().ref('bussines');
+		onLineRef.on('value', snapshot => {
+			Object.keys(snapshot.val()).map(idu=>{
+				var objTemp1={
+					id_contact:idu,
+					name_bussines:snapshot.val()[idu].info_bussines.name_bussines,
+					online:snapshot.val()[idu].info_bussines.online
+				};
+				console.log("Nueva prueba de code para el chat => ",objTemp1);
+				jsonTemp.push(objTemp1);
+			});
+
+		  	console.log("probando codigo del oonlineeeeeeeee ",jsonTemp);
+			this.setState({onlineContact:jsonTemp});
+		});	
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	backMenu=()=>{
+		document.getElementById("chatMessage").className="col-sm-12 col-md-9 col-lg-9 hide";
+		document.getElementById("goochat-menu").className="col-sm-12 col-md-3 col-lg-3 goochat-content-list show";	
+	}
 
 
 	//card actions
@@ -396,6 +513,33 @@ class Goochat extends Component{
 		this.updateViewed(obj.id);
 		//console.log("funciona",obj);
 		//console.log(this.state.id_contact);
+
+
+		//document.getElementById("chatMessage").className="col-sm-12 col-md-9 col-lg-9 show";
+		//document.getElementById("goochat-menu").className="col-sm-12 col-md-3 col-lg-3 goochat-content-list hide";
+
+
+		//prueba de codigo para  el modal del chat
+
+		if (window.matchMedia("(min-width: 892px)").matches) {
+  			document.getElementById("chatMessage").className="col-sm-12 col-md-9 col-lg-9 show";
+			document.getElementById("goochat-menu").className="col-sm-12 col-md-3 col-lg-3 goochat-content-list show";	
+		} else {
+			document.getElementById("chatMessage").className="col-sm-12 col-md-9 col-lg-9 show";
+			document.getElementById("goochat-menu").className="col-sm-12 col-md-3 col-lg-3 goochat-content-list hide";	
+		}
+
+
+
+		// if(document.getElementById("chatMessage").className=="col-sm-12 col-md-9 col-lg-9" && document.getElementById("goochat-menu").className=="col-sm-12 col-md-3 col-lg-3 goochat-content-list"){
+		// 	document.getElementById("chatMessage").className="col-sm-12 col-md-9 col-lg-9 show";
+		// 	document.getElementById("goochat-menu").className="col-sm-12 col-md-3 col-lg-3 goochat-content-list show";
+		// }else{
+		// 	document.getElementById("chatMessage").className="col-sm-12 col-md-9 col-lg-9 show";
+		// 	document.getElementById("goochat-menu").className="col-sm-12 col-md-3 col-lg-3 goochat-content-list hide";	
+		// }
+		//fin de la prueba del menu
+		
 		document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
 	}
 
@@ -533,7 +677,7 @@ class Goochat extends Component{
 	//evento ke carga los mensajes de 30 en 30
 
 	scrollLoadMessage=()=>{
-		if(document.getElementById('contentViewMessage').scrollTop<=10){
+		if(document.getElementById('contentViewMessage').scrollTop<=1){
 
 			this.state.numberOfMessage+=10;
 			// this.state.id_contact
@@ -547,16 +691,22 @@ class Goochat extends Component{
 				  			//console.log("probando codigo",snapshot.val()[ida]);
 				  			objTemp.push(snapshot.val()[ida])
 					    });
+
+					  	Object.keys(objTemp).length;
+
 					    this.setState({chatContact:objTemp});
-					     document.getElementById('contentViewMessage').scrollTop=1500;	
+					    if(this.state.scrollActive && this.state.numberOfMessage<=Object.keys(objTemp).length){
+					    	document.getElementById('contentViewMessage').scrollTop=1500;	
+					    }
 					    //console.log("mostrando los datos desde el state : ",objTemp);
 						chatRef.off();
 					});
 
 
 			// this.state.numberOfMessage;
-
+		
 			console.log("escroll funcionadno ",this.state.numberOfMessage);
+		
 		}
 	}
 
@@ -573,16 +723,15 @@ class Goochat extends Component{
 		return(
 			<div className="container-fluid Goochat" style={{"height":"100%","margin":"0","width":"100%"}}>
 				<div className="row">
-					<div className="col-md-9" style={ {"height":"100vh","background":"url(./assets/images/background-inicio.png)","backgroundSize":"100% 100%","backgroundRepeat":"no-repeat"}}>
-						
-
-
+					<div id="chatMessage" className="col-sm-12 col-md-9 col-lg-9" style={ {"overflowX":"hidden","overflowY":"hidden","height":"100vh","background":"url(./assets/images/background-inicio.png)","backgroundSize":"100% 100%","backgroundRepeat":"no-repeat"}}>
+					
 						<div style={{"zIndex": "1000","width":"100%","position":"absolute","left": "0px","top": "0px","background": "#ededed","color": "gray","textAlign":"left","paddingLeft":"3%","fontSize":"10px"}}>
-							<Info infoContact={this.state.infoContact}/>
+							<Info backMenu={this.backMenu} infoContact={this.state.infoContact}/>
 						</div>
-						<div onScroll={this.scrollLoadMessage} id="contentViewMessage" style={{"paddingBottom":"100px","overflowY":"auto","width": "100%", "height": "100vh" ,"background":"url(./assets/images/goo-logo.svg)","backgroundSize": "250px","backgroundRepeat": "no-repeat","backgroundPosition": "center"}}>
+						<div onScroll={this.scrollLoadMessage} id="contentViewMessage" style={{"paddingRight":"20px","paddingLeft": "20px","paddingBottom":"100px","overflowY":"auto","width": "100%", "height": "100vh" ,"background":"url(./assets/images/goo-logo.svg)","backgroundSize": "250px","backgroundRepeat": "no-repeat","backgroundPosition": "center"}}>
 							<ViewMessage inputSendState={this.state.inputSendState} contentViewMessage={document.getElementById('contentViewMessage')} sendMessage={this.sendMessage} chatContact={this.state.chatContact} myID={this.state.id_bussines}/>
 						</div>
+					
 					</div>
 
 					<div style={{"position":"fixed","top":"200px"}}>
@@ -590,7 +739,7 @@ class Goochat extends Component{
 						<button onClick={this.eventosFire}>entrar</button>
 					</div>
 
-					 <div className="col-md-3 goochat-content-list">
+					 <div id="goochat-menu" className="col-sm-12 col-md-3 col-lg-3 goochat-content-list">
 					 	<div className="row">
 						 	<div className="col-md-12" style={{"paddingRight":"0px","paddingLeft": "0px"}}>
 								<Bussines {...this.state}/>			 		
@@ -603,7 +752,7 @@ class Goochat extends Component{
 								<ListContact showInfoContact={this.showInfoContact} estado={ this.state.menu.listContact ? 'show':'hidden' } contactCircle={this.state.contactCircle} contactDelete={this.deleteItemCircle}/>
 
 								<div className={ this.state.menu.chatList ? 'show':'hidden' } id="goochat-chatlist" >
-									<ListChat showInfoContact={this.showInfoContact} contactChat={this.state.contactChat}/>
+									<ListChat onlineContact={this.state.onlineContact} showInfoContact={this.showInfoContact} contactChat={this.state.contactChat}/>
 								</div>
 								<div className={this.state.menu.search ? 'show':'hidden' } id="goochat-search" >
 									<ListSearch showInfoContact={this.showInfoContact} contactSearch={this.state.contactSearch} contactSendRequest={this.sendRequest} search={this.loadSearch} contactRemoveRequest={this.removeRequest} awaitingRequests={this.state.awaitingRequests} listCircle={this.state.contactCircle}/>

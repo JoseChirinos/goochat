@@ -9,10 +9,20 @@
     font-size: 25px;
     text-align: center;
 }
-/*
-.imput-search:hover{
-	background: #01132957;
-}*/
+@media (max-width: 991) {
+    .imput-search {
+        position: fixed;
+        z-index: 100000;
+        margin-top: 160px;
+        top: 0px;
+        padding: 5px;
+        background: #0113291f;
+        width: 100%;
+        color: #4d6179;
+        font-size: 25px;
+        text-align: center;
+    }     
+}
 
 .search-input{
         border-top: 0;

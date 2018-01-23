@@ -37,7 +37,7 @@
 	padding-right: 0px !important;
 	cursor: pointer;
 	text-align: center;
-	width: 13%;
+	width:calc(100%*0.15);
 	height: 100px;
 	border-radius:0px 5px 5px 0px;
 }
