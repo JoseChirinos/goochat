@@ -9,11 +9,7 @@ class Message extends Component{
 
 
 	render(){
-		// if(this.props.contentViewMessage!=null){
-		// 	console.log("tamano del scroll ",this.props.contentViewMessage.scrollHeight);
-		// 	//this.props.contentViewMessage.scrollIntoView(false);
-		// 	this.props.contentViewMessage.scrollTop=this.props.contentViewMessage.scrollHeight;
-		// }
+		// this.props.contentViewMessage.scrollTop=this.props.contentViewMessage.scrollHeigth;
 		return(
 			<div>
 				<br></br> <br></br>

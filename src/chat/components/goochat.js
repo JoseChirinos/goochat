@@ -222,19 +222,65 @@ class Goochat extends Component{
 
 
 
+
+
+
+
+
+
+
+	//funcion de prueba
+
+	pruebaCode=(id)=>{
+		
+		var jsonTemp;
+		let chatRef1 = fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(id).child("messages").limitToLast(1000);
+		chatRef1.orderByChild("viewed").equalTo(false).on('value', snapshot => {
+			jsonTemp=snapshot.val();
+			chatRef1.off();
+			//console.log("ddimension exacta",Object.keys(jsonTemp).length);
+		});
+		try{
+		var lon=Object.keys(jsonTemp).length;
+		}catch(e){var lon=0;}
+		if(this.state.id_contact==id){
+			this.updateViewed(id);
+		}
+		return lon;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//fin de la funcion de prueba
+
+
 	loadLastChat=()=>{
 		var id = document.getElementById('id_user').value;
 		let chatRef = fire.database().ref('bussines').child(id).child("chat");
+
 		var jsonTemp;
 		chatRef.on('value', snapshot => {	
 			jsonTemp=[];
 		  	Object.keys(snapshot.val()||{}).map(id=>{
-	  			var unreadMessages=0;
-		  		Object.keys(snapshot.val()[id].messages).map(idMessages=>{
-		  			if(!snapshot.val()[id].messages[idMessages].viewed){
-		  				unreadMessages++;
-		  			}
-		  		});
+	  			
+	  			var unreadMessages=this.pruebaCode(id);
 		 		var objInfo={
 		 			id:id,
 		 			latest_message:snapshot.val()[id].info.latest_message||{date: 1516460733007,id_bussines: "sergio_id",img_url: "",message: "error"},
@@ -242,8 +288,10 @@ class Goochat extends Component{
 		 			unread_messages:unreadMessages
 		 		}
 		 		jsonTemp.push(objInfo);
+
 		     });
 		  	this.setState({contactChat:jsonTemp});
+			
 		});	
 	}
 
@@ -341,12 +389,42 @@ class Goochat extends Component{
 
 	//muestra la info del contacto
 	showInfoContact=(obj)=>{
-		this.loadChatContact(obj.id);
+
 		this.setState({infoContact:obj});
 		this.setState({id_contact:obj.id});
+		this.loadChatContact(obj.id);
+		this.updateViewed(obj.id);
 		//console.log("funciona",obj);
 		//console.log(this.state.id_contact);
+		document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
 	}
+
+
+	//actualizar datos viewed
+
+	updateViewed=(id)=>{
+		var jsonTemp={};
+		let chatRef1 = fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(id).child("messages").limitToLast(1000);
+		chatRef1.orderByChild("viewed").equalTo(false).on('value', snapshot => {
+			jsonTemp=snapshot.val();
+			chatRef1.off();
+			//console.log("ddimension exacta",Object.keys(jsonTemp).length);
+		});
+		try{
+			Object.keys(jsonTemp).map(idMessage=>{
+				let chatRef2 = fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(id).child("messages").child(idMessage);
+				chatRef2.update({
+					viewed:true
+				});
+			});
+		}catch(e){}
+	}
+
+
+
+	//fin de actualizar datos
+
+
 
 
 	loadChatContact=(idu)=>{
@@ -359,11 +437,22 @@ class Goochat extends Component{
 			objTemp=[];
 		  	Object.keys(snapshot.val()||{}).map(ida=>{
 	  			//console.log("probando codigo",snapshot.val()[ida]);
-	  			objTemp.push(snapshot.val()[ida])
+	  			//console.log("probando datos "+ida,snapshot.val()[ida]);
+	  			var objTempMessage=snapshot.val()[ida];
+	  			var codeObject={
+	  				code:ida,myId:this.state.id_bussines,
+	  				yourId:idu
+	  			};
+	  			var obj = Object.assign(objTempMessage,codeObject);
+	  			//console.log("probando new object : ",obj);
+	  			objTemp.push(obj);
 		    });
 		    this.setState({chatContact:objTemp});
+
+
+
+
 		    document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
-		
 		    //console.log("mostrando los datos desde el state : ",objTemp);
 		});
 	
@@ -396,7 +485,7 @@ class Goochat extends Component{
  		 	id_bussines:this.state.id_bussines,
  		 	img_url:this.state.img_url,
  		 	message:message,
- 		 	viewed:false
+ 		 	viewed:true
 	});	
 
 	let saveYourDateRef= fire.database().ref('bussines').child(this.state.id_contact).child("chat").child(this.state.id_bussines).child('messages');
@@ -492,7 +581,7 @@ class Goochat extends Component{
 							<Info infoContact={this.state.infoContact}/>
 						</div>
 						<div onScroll={this.scrollLoadMessage} id="contentViewMessage" style={{"paddingBottom":"100px","overflowY":"auto","width": "100%", "height": "100vh" ,"background":"url(./assets/images/goo-logo.svg)","backgroundSize": "250px","backgroundRepeat": "no-repeat","backgroundPosition": "center"}}>
-							<ViewMessage updateViewed={this.updateViewed}  inputSendState={this.state.inputSendState} contentViewMessage={document.getElementById('contentViewMessage')} sendMessage={this.sendMessage} chatContact={this.state.chatContact} myID={this.state.id_bussines}/>
+							<ViewMessage inputSendState={this.state.inputSendState} contentViewMessage={document.getElementById('contentViewMessage')} sendMessage={this.sendMessage} chatContact={this.state.chatContact} myID={this.state.id_bussines}/>
 						</div>
 					</div>
 

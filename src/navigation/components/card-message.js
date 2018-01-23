@@ -33,7 +33,7 @@ class Card extends Component{
 						<div className="col-md-3 card-containerImg">
 							<img className="card-img" src={userInfo.name_description.img_url||"error"}></img>
 						</div>
-						<div className="col-md-7" onClick={()=>this.props.showInfoContact(obj)} style={{"height": "100px","cursor":"pointer"}}>
+						<div className="col-md-7" onClick={()=>this.props.showInfoContact(obj)} style={{"height": "100px","cursor":"pointer","paddingRight": "30px"}}>
 							<div className="row">
 								<div className="col-md-12">
 									<h3 className="truncado">{userInfo.name_description.name_bussines||"error"}</h3>
