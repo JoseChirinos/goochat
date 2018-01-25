@@ -9,15 +9,15 @@ class Input extends Component{
 	updateMessage=(m)=>{
 		this.setState({message:m});
 
-		// if(m==ctrlKey){
-		// 	alert("presionado");
-		// }
 	}
 	prueba=(e)=>{
+
 		var tecla = (document.all) ? e.keyCode : e.which;
-		if(e.ctrlKey  && tecla==13){
-			this.props.sendMessage(this.state.message);
+		if(e.ctrlKey  && tecla==13 && document.getElementById('inputSendMessage').value!=""){
 			document.getElementById('inputSendMessage').value="";
+			this.props.sendMessage(this.state.message);
+			this.setState({message:''});
+			
 		}
 	}
 

@@ -1,28 +1,61 @@
 // Dependences
 import React, { Component } from 'react';
 import './card.css';
+import fire from './../../config-chat/firebase-config';
 class Card extends Component{
-	
+	state={
+		online:false
+	}
+
+	componentWillMount(){
+		if(this.props.listNavigation==0){
+			this.contactOnLinePrueba(this.props.idBussines);
+		}
+	}
+
+
+	contactOnLinePrueba=(id)=>{
+		var online=false;
+		let refOnlineUser=fire.database().ref('bussines').child(id);
+		refOnlineUser.on('value',snapshot=>{
+			console.log("id del user "+snapshot.val().info_bussines.name_bussines+" "+snapshot.val().info_bussines.online);
+			if(snapshot.val().info_bussines.online){
+				this.setState({online:true});
+			}else{
+				this.setState({online:false});
+			}
+		});
+	}
 
 
 	render(){
 		const {name_bussines,description,listNavigation,lagree,send}=this.props;
-		console.log("card prueba card=> ",this.props);
 		var obj={
 			id:this.props.idBussines,
 			description:description,
 			name_bussines:name_bussines,
 			img_url:this.props.img_url||''
 		}
-		//console.log("props del card ",listNavigation);
-
-		//console.log("props del send ",send);
-		//console.log("ver ",this.props.stateCircle);
 		return(
 				<div className="card-container">
 					<div className="row">
 						<div className="col-xs-3 col-sm-3 col-md-3 card-containerImg">
 							<img className="card-img" src={this.props.img_url||''}></img>
+							
+
+
+
+							<div className={this.props.listNavigation==0 && this.state.online?"circle-active":this.props.listNavigation==0 && !this.state.online?"circle":"hidden"} style={{"position":"relative","marginTop": "-19px","marginLeft": "8px"}}></div>
+
+
+
+
+
+
+
+
+
+
 						</div>
 						<div className="col-xs-4 col-sm-4 col-md-4 card-containerName" onClick={()=>this.props.showInfoContact(obj)}>
 							<div className="row" >
