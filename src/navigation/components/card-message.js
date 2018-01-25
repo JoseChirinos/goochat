@@ -2,20 +2,35 @@
 import React, { Component } from 'react';
 import './card-message.css';
 import moment from 'moment';
-class Card extends Component{
-	render(){
-		const {userInfo}=this.props;
-		var online=false;
+import fire from './../../config-chat/firebase-config';
 
-		Object.keys(this.props.onlineContact).map(index=>{
-			if(this.props.onlineContact[index].id_contact == this.props.userInfo.id){
-				if(this.props.onlineContact[index].online){
-					online=true;
-				}else{
-					online=false;
-				}
+class Card extends Component{
+	state={
+		online:false
+	}
+
+	componentWillMount(){
+		this.contactOnLinePrueba(this.props.userInfo.id);
+	}
+
+
+	contactOnLinePrueba=(id)=>{
+		var online=false;
+		let refOnlineUser=fire.database().ref('bussines').child(id);
+		refOnlineUser.on('value',snapshot=>{
+			console.log("id del user "+snapshot.val().info_bussines.name_bussines+" "+snapshot.val().info_bussines.online);
+			if(snapshot.val().info_bussines.online){
+				this.setState({online:true});
+			}else{
+				this.setState({online:false});
 			}
 		});
+	}
+
+	render(){
+		const {userInfo}=this.props;
+		
+		//var online=this.props.contactOnLinePrueba(userInfo.id);
 
 
 
@@ -40,7 +55,6 @@ class Card extends Component{
 			}
 		}
 	
-		console.log("props de los mmensajes",this.props);
 		return(
 				<div className="card-container">
 					<div className="row">
@@ -52,7 +66,7 @@ class Card extends Component{
 
 
 
-                            <div className={online?"circle-active":"circle"} style={{"position":"relative","marginTop": "-19px","marginLeft": "8px"}}></div>
+                            <div className={this.state.online?"circle-active":"circle"} style={{"position":"relative","marginTop": "-19px","marginLeft": "8px"}}></div>
 
 
 
@@ -79,7 +93,7 @@ class Card extends Component{
 							</div>
 						</div>
 						<div className="col-xs-2 col-sm-2 col-md-2 card-navigation">
-							<div className={userInfo.unread_messages==0?"unreadMessages hidden":"unreadMessages"}>
+							<div className={userInfo.unread_messages==0 || userInfo.unread_messages==null?"unreadMessages hidden":"unreadMessages"}>
 								{userInfo.unread_messages}
 							</div>
 							<span className="icon-link"/>

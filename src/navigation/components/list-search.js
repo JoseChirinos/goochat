@@ -16,7 +16,7 @@ class ListMessage extends Component{
 
 
 	render(){
-		console.log("lista de contactos",this.props.listCircle);
+		//console.log("lista de contactos",this.props.listCircle);
 		return(
 			<div className="contentSearch">
 
