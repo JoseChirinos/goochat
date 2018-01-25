@@ -10,7 +10,7 @@ import Bussines from './../../business/components/bussines';
 import ListContact from './../../navigation/components/list-contact';
 import ListChat from './../../navigation/components/list-chat';
 import ListSearch from './../../navigation/components/list-search';
-import ListRequest from './../../navigation/components/list-request';	
+import ListRequest from './../../navigation/components/list-request';
 import Menu from './../../navigation/components/menu';
 //style css
 
@@ -53,7 +53,7 @@ class Goochat extends Component{
 
 	loadListChat=(e)=>{
 		let chatRef = fire.database().ref('bussines/'+this.state.id_bussines).child('chat');
-		chatRef.on('value', snapshot => { 
+		chatRef.on('value', snapshot => {
 			this.setState({chatListUser: snapshot.val()});
 		});
 	}
@@ -61,7 +61,7 @@ class Goochat extends Component{
 	eventoFromMenu = (select) =>{
 
 		var menu = {};
-		
+
 		document.getElementById('circle').className="icon-triangle evento";
 		document.getElementById('square').className="icon-message-square evento";
 		document.getElementById('search').className="icon-search evento";
@@ -98,7 +98,7 @@ class Goochat extends Component{
 
 		this.viewState(menu);
 	}
-	
+
 	eventosFire = () =>{
 		var id = document.getElementById('id_user').value;
 	    let nameBussines = fire.database().ref('bussines/'+id).child('info_bussines');
@@ -114,7 +114,7 @@ class Goochat extends Component{
 	    });
 
 	}
-	
+
 	viewState=(men)=>{
 		var runFire=this.state.runFire;
 		var menu=men||this.state.menu;
@@ -126,12 +126,12 @@ class Goochat extends Component{
 			//this.contactOnLine();
 			this.loadLastChat();
 			runFire['chatList']=true;
-		} 
+		}
 		if(menu.search && !this.state.runFire.search){
 	    	this.loadSearch("");
 	    	this.loadAwaitingRequests();
 	    	runFire['search']=true;
-		} 
+		}
 		if(menu.request && !this.state.runFire.request){
 			this.loadRequest();
 			runFire['request']=true;
@@ -142,7 +142,7 @@ class Goochat extends Component{
 
 	}
 
-	componentDidMount(){	
+	componentDidMount(){
 		window.addEventListener("beforeunload", this.onUnload);
 		this.id_contactVar='';
 
@@ -180,7 +180,7 @@ class Goochat extends Component{
 	loadAwaitingRequests=()=>{
 		var id = document.getElementById('id_user').value;
 		let awaitingRequestsRef = fire.database().ref('bussines/'+id).child('awaitingRequests');
-		awaitingRequestsRef.on('value', snapshot => { 
+		awaitingRequestsRef.on('value', snapshot => {
 		    this.setState({awaitingRequests: snapshot.val() });
 		    //console.log(this.state.awaitingRequests);
 		});
@@ -189,7 +189,7 @@ class Goochat extends Component{
 	loadCircle=()=>{
 		var id = document.getElementById('id_user').value;
 		let circleRef = fire.database().ref('bussines/'+id).child('bussines_circle');
-		circleRef.orderByChild('lagree').equalTo(true).on('value', snapshot => { 
+		circleRef.orderByChild('lagree').equalTo(true).on('value', snapshot => {
 		    this.setState({contactCircle:snapshot.val()});
 		});
 	}
@@ -197,7 +197,7 @@ class Goochat extends Component{
 	loadRequest=()=>{
 		var id = document.getElementById('id_user').value;
 		let requestRef = fire.database().ref('bussines/'+id).child('bussines_circle');
-		    requestRef.orderByChild('lagree').equalTo(false).on('value', snapshot => { 
+		    requestRef.orderByChild('lagree').equalTo(false).on('value', snapshot => {
 		    this.setState({contactRequest: snapshot.val()});
 		});
 	}
@@ -233,7 +233,7 @@ class Goochat extends Component{
 				}
 		     });
 			this.setState({contactSearch:jsonTemp});
-		});	
+		});
 	}
 
 
@@ -312,14 +312,14 @@ class Goochat extends Component{
 
 		var jsonTemp;
 		var objInfo;
-		chatRef.on('value', snapshot => {	
+		chatRef.on('value', snapshot => {
 			jsonTemp=[];
 
 			//console.log("probando usuarios ke me enviaron un mensaje : ",snapshot.val());
 
 		  	Object.keys(snapshot.val()).map(id=>{
-		  	
-		 	
+
+
 		 	objInfo={
 	 			id:id,
 	 			latest_message:snapshot.val()[id].info.latest_message||{date: 1516460733007,id_bussines: "sergio_id",img_url: "",message: "error"},
@@ -340,14 +340,14 @@ class Goochat extends Component{
 
 		  	//console.log("probando codigo del list chat........ : ",jsonTemp);
 		  	this.setState({contactChat:jsonTemp});
-		});	
+		});
 	}
 
 
 
 	backMenu=()=>{
 		document.getElementById("chatMessage").className="col-sm-12 col-md-9 col-lg-9 hide";
-		document.getElementById("goochat-menu").className="col-sm-12 col-md-3 col-lg-3 goochat-content-list show";	
+		document.getElementById("goochat-menu").className="col-sm-12 col-md-3 col-lg-3 goochat-content-list show";
 	}
 
 
@@ -377,7 +377,7 @@ class Goochat extends Component{
 		awaitingRequestsRef.update({
  		  "state": true
 		});
-		
+
 	}
 	removeRequest=(id)=>{
 		var idu = document.getElementById('id_user').value;
@@ -390,9 +390,9 @@ class Goochat extends Component{
 
 	acceptRequest=(id)=>{
 		var idu = document.getElementById('id_user').value;
-		
+
 		let acceptRef= fire.database().ref('bussines').child(idu).child("bussines_circle").child(id);
-		
+
 		acceptRef.update({
  		  lagree:true
 		});
@@ -406,10 +406,10 @@ class Goochat extends Component{
  		 	img_url:this.state.img_url,
  		 	lagree:true,
  		 	name_bussines:this.state.name_bussines
-		});		
-		
+		});
+
 		let updateRef= fire.database().ref('bussines').child(id).child("awaitingRequests").child(idu);
-		updateRef.remove();	
+		updateRef.remove();
 
 	}
 	rejectRequest=(id)=>{
@@ -418,10 +418,10 @@ class Goochat extends Component{
 		rejectRef.remove();
 		let updateAwaitingRequestsRef= fire.database().ref('bussines').child(id).child("awaitingRequests").child(idu);
 		updateAwaitingRequestsRef.remove();
-	
+
 	}
 
-    
+
 
 	showInfoContact=(obj)=>{
 		//probando codigo
@@ -431,7 +431,7 @@ class Goochat extends Component{
 		this.updateViewed(obj.id);
 		this.loadChatContact(obj.id);
  		// this.loadChatContact(obj.id);
-		
+
 
 
 
@@ -445,10 +445,10 @@ class Goochat extends Component{
 
 		if (window.matchMedia("(min-width: 892px)").matches) {
   			document.getElementById("chatMessage").className="col-sm-12 col-md-9 col-lg-9 show";
-			document.getElementById("goochat-menu").className="col-sm-12 col-md-3 col-lg-3 goochat-content-list show";	
+			document.getElementById("goochat-menu").className="col-sm-12 col-md-3 col-lg-3 goochat-content-list show";
 		} else {
 			document.getElementById("chatMessage").className="col-sm-12 col-md-9 col-lg-9 show";
-			document.getElementById("goochat-menu").className="col-sm-12 col-md-3 col-lg-3 goochat-content-list hide";	
+			document.getElementById("goochat-menu").className="col-sm-12 col-md-3 col-lg-3 goochat-content-list hide";
 		}
 
 		document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
@@ -483,41 +483,12 @@ class Goochat extends Component{
 
 
 	loadChatContact=(idu)=>{
-<<<<<<< HEAD
-		this.state.inputSendState=true;
-		var id = document.getElementById('id_user').value;
-		//var id="sergio_id";
-		var objTemp;
-		let chatRef = fire.database().ref('bussines').child(id+'/chat/'+idu+'/messages').limitToLast(this.state.numberOfMessage);
-		chatRef.on('value', snapshot => {	
-			objTemp=[];
-		  	Object.keys(snapshot.val()||{}).map(ida=>{
-	  			//console.log("probando codigo",snapshot.val()[ida]);
-	  			//console.log("probando datos "+ida,snapshot.val()[ida]);
-	  			var objTempMessage=snapshot.val()[ida];
-	  			var codeObject={
-	  				code:ida,myId:this.state.id_bussines,
-	  				yourId:idu
-	  			};
-	  			var obj = Object.assign(objTempMessage,codeObject);
-	  			//console.log("probando new object : ",obj);
-	  			objTemp.push(obj);
-		    });
-		    this.setState({chatContact:objTemp});
-
-		    
-		    //document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
-
-		    //console.log("mostrando los datos desde el state : ",objTemp);
-		});
-	
-=======
 		if(idu!=''){
 			this.state.inputSendState=true;
 			var id = document.getElementById('id_user').value;
 			var objTemp;
 			let chatRef = fire.database().ref('bussines').child(id+'/chat/'+idu+'/messages').limitToLast(this.state.numberOfMessage);
-			chatRef.on('value', snapshot => {	
+			chatRef.on('value', snapshot => {
 				objTemp=[];
 			  	Object.keys(snapshot.val()||{}).map(ida=>{
 		  			var objTempMessage=snapshot.val()[ida];
@@ -534,7 +505,6 @@ class Goochat extends Component{
 				}
 			});
 		}
->>>>>>> 9a9e8c98ed27fe5c0a19cf55f6ec903e933e3621
 	}
 
 
@@ -546,13 +516,13 @@ class Goochat extends Component{
 	 		name_bussines:this.state.name_bussines||"",
 	 	 	img_url:this.state.img_url||"",
 	 	 	description:this.state.description||""
-		});	
+		});
 		let infoYourRef= fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(this.state.id_contact).child('info/name_description');
 			infoYourRef.update({
 	 		 	name_bussines:this.state.infoContact.name_bussines||"error",
 	 		 	img_url:this.state.infoContact.img_url||"",
 	 		 	description:this.state.infoContact.description||"error"
-		});	
+		});
 
 		let saveMyDateRef= fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(this.state.id_contact).child('messages');
 		saveMyDateRef.push({
@@ -562,7 +532,7 @@ class Goochat extends Component{
 	 		 	img_url:this.state.img_url,
 	 		 	message:message,
 	 		 	viewed:true
-		});	
+		});
 
 		let saveYourDateRef= fire.database().ref('bussines').child(this.state.id_contact).child("chat").child(this.state.id_bussines).child('messages');
 		saveYourDateRef.push({
@@ -572,7 +542,7 @@ class Goochat extends Component{
 	    	img_url:this.state.img_url,
 	 	 	message:message,
 	 	 	viewed:false
-		});	
+		});
 
 			let saveYourLatestMessageRef= fire.database().ref('bussines').child(this.state.id_contact).child("chat").child(this.state.id_bussines).child('info').child('latest_message');
 			saveYourLatestMessageRef.update({
@@ -580,7 +550,7 @@ class Goochat extends Component{
 	 		 	id_bussines:this.state.id_bussines,
 	 		 	message:message,
 	 		 	img_url:this.state.img_url
-			});	
+			});
 
 			let saveMyLatestMessageRef= fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(this.state.id_contact).child('info').child('latest_message');
 			saveMyLatestMessageRef.update({
@@ -588,8 +558,8 @@ class Goochat extends Component{
 	 		 	id_bussines:this.state.id_bussines,
 	 		 	message:message,
 	 		 	img_url:this.state.img_url
-			});	
-			
+			});
+
 
 			document.getElementById('inputSendMessage').value="";
 		}
@@ -603,7 +573,7 @@ class Goochat extends Component{
  			name_bussines:this.state.name_bussines||"",
  	 		img_url:this.state.img_url||"",
  	 		description:this.state.description||""
-		});	
+		});
 	}
 
 	//evento ke carga los mensajes de 30 en 30
@@ -615,7 +585,7 @@ class Goochat extends Component{
 				var id = document.getElementById('id_user').value;
 					var objTemp;
 					let chatRef = fire.database().ref('bussines').child(id+'/chat/'+this.state.id_contact+'/messages').limitToLast(this.state.numberOfMessage);
-					chatRef.on('value', snapshot => {	
+					chatRef.on('value', snapshot => {
 						objTemp=[];
 					  	Object.keys(snapshot.val()||{}).map(ida=>{
 				  			objTemp.push(snapshot.val()[ida])
@@ -625,13 +595,13 @@ class Goochat extends Component{
 
 					    this.setState({chatContact:objTemp});
 					    if(this.state.scrollActive && this.state.numberOfMessage<=Object.keys(objTemp).length){
-					    	document.getElementById('contentViewMessage').scrollTop=1200;	
+					    	document.getElementById('contentViewMessage').scrollTop=1200;
 					    }
 					 	chatRef.off();
 					});
 ``
 			//console.log("escroll funcionadno ",this.state.numberOfMessage);
-		
+
 		}
 	}
 
@@ -644,14 +614,14 @@ class Goochat extends Component{
 			<div className="container-fluid Goochat" style={{"height":"100%","margin":"0","width":"100%"}}>
 				<div className="row">
 					<div id="chatMessage" className="col-sm-12 col-md-9 col-lg-9" style={ {"overflowX":"hidden","overflowY":"hidden","height":"100vh","background":"url(./assets/images/background-inicio.png)","backgroundSize":"100% 100%","backgroundRepeat":"no-repeat"}}>
-					
+
 						<div style={{"zIndex": "1000","width":"100%","position":"absolute","left": "0px","top": "0px","background": "#ededed","color": "gray","textAlign":"left","paddingLeft":"3%","fontSize":"10px"}}>
 							<Info backMenu={this.backMenu} infoContact={this.state.infoContact}/>
 						</div>
 						<div onScroll={this.scrollLoadMessage} id="contentViewMessage" style={{"paddingRight":"20px","paddingLeft": "20px","paddingBottom":"100px","overflowY":"auto","width": "100%", "height": "100vh" ,"background":"url(./assets/images/goo-logo.svg)","backgroundSize": "250px","backgroundRepeat": "no-repeat","backgroundPosition": "center"}}>
 							<ViewMessage inputSendState={this.state.inputSendState} contentViewMessage={document.getElementById('contentViewMessage')} sendMessage={this.sendMessage} chatContact={this.state.chatContact} myID={this.state.id_bussines}/>
 						</div>
-					
+
 					</div>
 
 					<div style={{"position":"fixed","top":"200px"}}>
@@ -662,11 +632,11 @@ class Goochat extends Component{
 					 <div id="goochat-menu" className="col-sm-12 col-md-3 col-lg-3 goochat-content-list">
 					 	<div className="row">
 						 	<div className="col-md-12" style={{"paddingRight":"0px","paddingLeft": "0px"}}>
-								<Bussines {...this.state}/>			 		
-						 	</div>	
+								<Bussines {...this.state}/>
+						 	</div>
 						 	<div className="col-md-12 Info-menu">
-								<h3 id="goochat-menu-info">Mis circulos empresariales.</h3>				 		
-						 	</div>					 	
+								<h3 id="goochat-menu-info">Mis circulos empresariales.</h3>
+						 	</div>
 						 	<div className="col-md-12" id="goochat-contact" style={{"width":"100%"}}>
 
 								<ListContact showInfoContact={this.showInfoContact} estado={ this.state.menu.listContact ? 'show':'hidden' } contactCircle={this.state.contactCircle} contactDelete={this.deleteItemCircle}/>
