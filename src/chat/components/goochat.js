@@ -545,6 +545,8 @@ class Goochat extends Component{
 
 	scrollLoadMessage=()=>{
 		if(document.getElementById('contentViewMessage').scrollTop==0){
+			var scrollHeightPrev=document.getElementById('contentViewMessage').scrollHeight;
+
 
 			this.state.numberOfMessage+=10;
 				var id = document.getElementById('id_user').value;
@@ -560,11 +562,12 @@ class Goochat extends Component{
 
 					    this.setState({chatContact:objTemp});
 					    if(this.state.scrollActive && this.state.numberOfMessage<=Object.keys(objTemp).length){
-					    	document.getElementById('contentViewMessage').scrollTop=1200;	
+					    	document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight-scrollHeightPrev;	
+					    	//document.getElementById('contentViewMessage').scrollTo(0, 1200); 
+					    	//document.getElementById('contentViewMessage').onscroll = function () { document.getElementById('contentViewMessage').scrollTo(0, 1200); };
 					    }
 					 	chatRef.off();
 					});
-``
 			//console.log("escroll funcionadno ",this.state.numberOfMessage);
 		
 		}
