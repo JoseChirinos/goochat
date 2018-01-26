@@ -47,7 +47,6 @@ class Goochat extends Component{
 		chatListUser:{},
 		numberOfMessage:10,
 		inputSendState:false,
-		scrollActive:true,
 		viewMessageSwitch:true,
 	}
 
@@ -188,24 +187,30 @@ class Goochat extends Component{
 
 	loadCircle=()=>{
 		var id = document.getElementById('id_user').value;
+		document.getElementById('menu').className="show";
 		let circleRef = fire.database().ref('bussines/'+id).child('bussines_circle');
 		circleRef.orderByChild('lagree').equalTo(true).on('value', snapshot => {
 		    this.setState({contactCircle:snapshot.val()});
+			document.getElementById('menu').className="hidden";
 		});
 	}
 
 	loadRequest=()=>{
+		document.getElementById('menu').className="show";
 		var id = document.getElementById('id_user').value;
 		let requestRef = fire.database().ref('bussines/'+id).child('bussines_circle');
 		    requestRef.orderByChild('lagree').equalTo(false).on('value', snapshot => {
 		    this.setState({contactRequest: snapshot.val()});
+		    document.getElementById('menu').className="hidden";
 		});
 	}
 
 	loadSearch=(e)=>{
 		// var idu = document.getElementById('id_user').value;
+		document.getElementById('menu').className="show";
 		let searchRef = fire.database().ref('bussines');
 		searchRef.on('value', snapshot => {
+			document.getElementById('menu').className="show";
 			var jsonTemp=[];
 			//console.log("prueba del  search ",snapshot.val());
 		  	Object.keys(snapshot.val()).map(id=>{
@@ -230,6 +235,7 @@ class Goochat extends Component{
 				 		);
 					}
 				}
+				document.getElementById('menu').className="hidden";
 		     });
 			this.setState({contactSearch:jsonTemp});
 		});
@@ -277,7 +283,7 @@ class Goochat extends Component{
 
 
 	loadLastChat=()=>{
-
+		document.getElementById('menu').className="show";
 		let chatRef = fire.database().ref('bussines').child(this.state.id_bussines).child("chat");
 		chatRef.on('value', snapshot => {
 			var jsonTemp;
@@ -311,8 +317,10 @@ class Goochat extends Component{
 						this.updateViewed(this.id_contactVar);
 					}
 				});
+
 			this.setState({contactChat:lastChat});
 			//console.log(lastChat);
+			document.getElementById('menu').className="hidden";
 		});
 	}
 
@@ -403,7 +411,7 @@ class Goochat extends Component{
 		this.id_contactVar=obj.id;
 		this.updateViewed(obj.id);
 		this.loadChatContact(obj.id);
-
+		console.log("probando codigo del shoowInfoContact");
 
 
 		if (window.matchMedia("(min-width: 892px)").matches) {
@@ -414,7 +422,6 @@ class Goochat extends Component{
 			document.getElementById("goochat-menu").className="col-sm-12 col-md-3 col-lg-3 goochat-content-list hide";
 		}
 
-		document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
 	}
 
 
@@ -449,15 +456,16 @@ class Goochat extends Component{
 
 	loadChatContact=(idu)=>{
 		if(idu!=''){
-
 			document.getElementById('loader').className="show";
 
 			this.state.inputSendState=true;
+
+
 			var id = document.getElementById('id_user').value;
-			var objTemp;
+			//var objTemp;
 			let chatRef = fire.database().ref('bussines').child(id+'/chat/'+idu+'/messages').limitToLast(this.state.numberOfMessage);
 			chatRef.on('value', snapshot => {
-				objTemp=[];
+				var objTemp=[];
 			  	Object.keys(snapshot.val()||{}).map(ida=>{
 		  			var objTempMessage=snapshot.val()[ida];
 		  			var codeObject={
@@ -470,11 +478,14 @@ class Goochat extends Component{
 			  	if(this.id_contactVar==idu){
 			    	this.setState({chatContact:objTemp});
 			    	document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
+			    
+			    	var audioElement = document.createElement('audio');
+			    	audioElement.setAttribute('src', '../../assets/audio/MessageNonzerobot.mp3');
+			   		audioElement.play();
+					document.getElementById('loader').className="hidden";	
 				}
-
-			document.getElementById('loader').className="hidden";
-
 			});
+			//document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
 		}
 	}
 
@@ -550,32 +561,43 @@ class Goochat extends Component{
 
 	scrollLoadMessage=()=>{
 		if(document.getElementById('contentViewMessage').scrollTop==0){
+			// console.log("funciona bien este scroll :v");
 			document.getElementById('loader').className="show";
+			var scrollHeightPrev=document.getElementById('contentViewMessage').scrollHeight;	
 
-			var scrollHeightPrev=document.getElementById('contentViewMessage').scrollHeight;
 
-			this.state.numberOfMessage+=10;
-				var id = document.getElementById('id_user').value;
-					var objTemp;
+
+					this.state.numberOfMessage+=10;
+					var id = document.getElementById('id_user').value;
+
+
+
 					let chatRef = fire.database().ref('bussines').child(id+'/chat/'+this.state.id_contact+'/messages').limitToLast(this.state.numberOfMessage);
 					chatRef.on('value', snapshot => {
-						objTemp=[];
+						//document.getElementById('loader').className="show";
+						
+						var objTemp=[];
 					  	Object.keys(snapshot.val()||{}).map(ida=>{
 				  			objTemp.push(snapshot.val()[ida])
 					    });
 
-					  	Object.keys(objTemp).length;
+
 
 					    this.setState({chatContact:objTemp});
-					    if(this.state.scrollActive && this.state.numberOfMessage<=Object.keys(objTemp).length){
-					    	document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight-scrollHeightPrev;
-					    	document.getElementById('contentViewMessage').style.overflowY="hidden";
+
+	    			  	var scrollNewPosition= document.getElementById('contentViewMessage').scrollHeight - scrollHeightPrev;
+					    
+					    if(this.state.numberOfMessage<=Object.keys(objTemp).length){
+							document.getElementById('contentViewMessage').style.overflowY="hidden";
+
+					    	document.getElementById('contentViewMessage').scrollTop=scrollNewPosition;
+
 					    	document.getElementById('contentViewMessage').style.overflowY="scroll";
-
+					    	console.log("entro aki xD heigt anterior "+document.getElementById('contentViewMessage').scrollHeight+" nuevoHeigth :"+scrollHeightPrev);
 					    }
-					 	chatRef.off();
 					 	document.getElementById('loader').className="hidden";
-
+					 	//console.log("termino de ejecutarsse el scroll");
+					 	chatRef.off();
 					});
 
 		}
@@ -596,7 +618,7 @@ class Goochat extends Component{
 						</div>
 						<div onScroll={this.scrollLoadMessage} id="contentViewMessage" style={{"paddingRight":"20px","paddingLeft": "20px","paddingBottom":"100px","overflowY":"auto","width": "100%", "height": "100vh" ,"background":"url(./assets/images/goo-logo.svg)","backgroundSize": "250px","backgroundRepeat": "no-repeat","backgroundPosition": "center"}}>
 							<div id="loader" className="hidden"  style={{"position":"absolute","zIndex":"10","width":"100%","left":"0px","background":"linear-gradient(#00000057,rgba(255, 255, 255, 0))"}}>
-								<Loader></Loader>
+								<Loader size="0"></Loader>
 							</div>
 							<ViewMessage inputSendState={this.state.inputSendState} contentViewMessage={document.getElementById('contentViewMessage')} sendMessage={this.sendMessage} chatContact={this.state.chatContact} myID={this.state.id_bussines}/>
 						</div>
@@ -618,8 +640,8 @@ class Goochat extends Component{
 						 	</div>
 						 	<div className="col-md-12" id="goochat-contact" style={{"width":"100%"}}>
 
-						 		<div id="menu" className="show"  style={{"position":"absolute","zIndex":"10","width":"100%","left":"0px"}}>
-									<Loader></Loader>
+						 		<div id="menu" className="hidden"  style={{"position":"absolute","zIndex":"10","width":"100%","left":"0px"}}>
+									<Loader size="1"></Loader>
 								</div>
 
 								<ListContact showInfoContact={this.showInfoContact} estado={ this.state.menu.listContact ? 'show':'hidden' } contactCircle={this.state.contactCircle} contactDelete={this.deleteItemCircle}/>

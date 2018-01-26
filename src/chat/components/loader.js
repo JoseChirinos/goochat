@@ -4,7 +4,7 @@ import './loader.css';
 
 class Loader extends Component{
 	render(){
-		return(<div className='loader'>Loading</div>);
+		return(<div className={this.props.size==0?'loader':'loaderp'}>Loading</div>);
 	}
 }
 export default Loader;
