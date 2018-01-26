@@ -4,7 +4,7 @@ import fire from './../../config-chat/firebase-config';
 // Modules
 import Info from './../../chat/components/info';
 import ViewMessage from './../../chat/components/view-message';
-
+import Loader from './loader'
 // modules navigation
 import Bussines from './../../business/components/bussines';
 import ListContact from './../../navigation/components/list-contact';
@@ -449,6 +449,9 @@ class Goochat extends Component{
 
 	loadChatContact=(idu)=>{
 		if(idu!=''){
+
+			document.getElementById('loader').className="show";
+
 			this.state.inputSendState=true;
 			var id = document.getElementById('id_user').value;
 			var objTemp;
@@ -468,6 +471,9 @@ class Goochat extends Component{
 			    	this.setState({chatContact:objTemp});
 			    	document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
 				}
+
+			document.getElementById('loader').className="hidden";
+
 			});
 		}
 	}
@@ -524,9 +530,8 @@ class Goochat extends Component{
 	 		 	message:message,
 	 		 	img_url:this.state.img_url
 			});
-
-
 			document.getElementById('inputSendMessage').value="";
+
 		}
 	}
 
@@ -545,8 +550,9 @@ class Goochat extends Component{
 
 	scrollLoadMessage=()=>{
 		if(document.getElementById('contentViewMessage').scrollTop==0){
-			var scrollHeightPrev=document.getElementById('contentViewMessage').scrollHeight;
+			document.getElementById('loader').className="show";
 
+			var scrollHeightPrev=document.getElementById('contentViewMessage').scrollHeight;
 
 			this.state.numberOfMessage+=10;
 				var id = document.getElementById('id_user').value;
@@ -563,12 +569,14 @@ class Goochat extends Component{
 					    this.setState({chatContact:objTemp});
 					    if(this.state.scrollActive && this.state.numberOfMessage<=Object.keys(objTemp).length){
 					    	document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight-scrollHeightPrev;
-					    	//document.getElementById('contentViewMessage').scrollTo(0, 1200);
-					    	//document.getElementById('contentViewMessage').onscroll = function () { document.getElementById('contentViewMessage').scrollTo(0, 1200); };
+					    	document.getElementById('contentViewMessage').style.overflowY="hidden";
+					    	document.getElementById('contentViewMessage').style.overflowY="scroll";
+
 					    }
 					 	chatRef.off();
+					 	document.getElementById('loader').className="hidden";
+
 					});
-			//console.log("escroll funcionadno ",this.state.numberOfMessage);
 
 		}
 	}
@@ -587,6 +595,9 @@ class Goochat extends Component{
 							<Info backMenu={this.backMenu} infoContact={this.state.infoContact}/>
 						</div>
 						<div onScroll={this.scrollLoadMessage} id="contentViewMessage" style={{"paddingRight":"20px","paddingLeft": "20px","paddingBottom":"100px","overflowY":"auto","width": "100%", "height": "100vh" ,"background":"url(./assets/images/goo-logo.svg)","backgroundSize": "250px","backgroundRepeat": "no-repeat","backgroundPosition": "center"}}>
+							<div id="loader" className="hidden"  style={{"position":"absolute","zIndex":"10","width":"100%","left":"0px","background":"linear-gradient(#00000057,rgba(255, 255, 255, 0))"}}>
+								<Loader></Loader>
+							</div>
 							<ViewMessage inputSendState={this.state.inputSendState} contentViewMessage={document.getElementById('contentViewMessage')} sendMessage={this.sendMessage} chatContact={this.state.chatContact} myID={this.state.id_bussines}/>
 						</div>
 
@@ -607,9 +618,11 @@ class Goochat extends Component{
 						 	</div>
 						 	<div className="col-md-12" id="goochat-contact" style={{"width":"100%"}}>
 
+						 		<div id="menu" className="show"  style={{"position":"absolute","zIndex":"10","width":"100%","left":"0px"}}>
+									<Loader></Loader>
+								</div>
+
 								<ListContact showInfoContact={this.showInfoContact} estado={ this.state.menu.listContact ? 'show':'hidden' } contactCircle={this.state.contactCircle} contactDelete={this.deleteItemCircle}/>
-
-
 
 
 								<div className={ this.state.menu.chatList ? 'show':'hidden' } id="goochat-chatlist" >

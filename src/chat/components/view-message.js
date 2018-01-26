@@ -5,6 +5,7 @@ import Burble from './burble';
 import moment from 'moment';
 import './view-message.css'
 
+
 class Message extends Component{
 
 
@@ -18,6 +19,8 @@ class Message extends Component{
 			<div className="row">
 				<br></br> <br></br>
 				<br></br> <br></br>
+
+			
 
 				{
 					Object.keys(this.props.chatContact||{}).map(index=>{
