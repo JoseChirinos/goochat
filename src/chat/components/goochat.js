@@ -618,9 +618,11 @@ class Goochat extends Component{
 						 	</div>					 	
 						 	<div className="col-md-12" id="goochat-contact" style={{"width":"100%"}}>
 
+						 		<div id="menu" className="show"  style={{"position":"absolute","zIndex":"10","width":"100%","left":"0px"}}>
+									<Loader></Loader>
+								</div>
+
 								<ListContact showInfoContact={this.showInfoContact} estado={ this.state.menu.listContact ? 'show':'hidden' } contactCircle={this.state.contactCircle} contactDelete={this.deleteItemCircle}/>
-
-
 
 
 								<div className={ this.state.menu.chatList ? 'show':'hidden' } id="goochat-chatlist" >
