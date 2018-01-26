@@ -203,17 +203,16 @@ class Goochat extends Component{
 	}
 
 	loadSearch=(e)=>{
-		var idu = document.getElementById('id_user').value;
+		// var idu = document.getElementById('id_user').value;
 		let searchRef = fire.database().ref('bussines');
-		var jsonTemp;
 		searchRef.on('value', snapshot => {
-			jsonTemp=[];
+			var jsonTemp=[];
 			//console.log("prueba del  search ",snapshot.val());
 		  	Object.keys(snapshot.val()).map(id=>{
 		 		var name=snapshot.val()[id].info_bussines['name_bussines'];
 		 		if(e!=""){
 			 		if(name.toLowerCase().indexOf(e.toLowerCase())!=-1){
-			 			if(idu!=id){
+			 			if(this.state.id_bussines!=id){
 				 			jsonTemp.push({
 				 					id:id,
 				 					info:snapshot.val()[id].info_bussines
@@ -223,7 +222,7 @@ class Goochat extends Component{
 
 					}
 				}else{
-					if(idu!=id){
+					if(this.state.id_bussines!=id){
 						jsonTemp.push({
 				 				id:id,
 				 				info:snapshot.val()[id].info_bussines
@@ -256,90 +255,64 @@ class Goochat extends Component{
 	//funcion de prueba
 
 	pruebaCode=(id)=>{
-		var bool=true;
-		if(bool){
-			bool=false;
-			if(this.state.id_contact!=id){
-				var jsonTemp={};
-				let chatRef2 = fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(id).child("messages").limitToLast(1000);
-
-
-				chatRef2.orderByChild('viewed').equalTo(false).on('value', snapshot => {
-					jsonTemp=snapshot.val();
-				});
-				var lon;
-				try{
-					lon=Object.keys(jsonTemp).length;
-				}catch(e){lon=0;}
-				if(this.state.id_contact==id){
-					this.updateViewed(id);
-					return 0;
-				}else{
-					return lon;
-				}
+		if(this.state.id_contact!=id){
+			var jsonTemp={};
+			let chatRef2 = fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(id).child("messages").limitToLast(1000);
+			chatRef2.orderByChild('viewed').equalTo(false).on('value', snapshot => {
+				jsonTemp=snapshot.val();
+				chatRef2.off();
+			});
+			var lon;
+			try{
+				lon=Object.keys(jsonTemp).length;
+			}catch(e){lon=0;}
+			if(this.state.id_contact==id){
+				this.updateViewed(id);
+				return 0;
+			}else{
+				return lon;
 			}
-		}else{
-			this.updateViewed(id);
-			return 0;
 		}
 	}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	//fin de la funcion de prueba
-
-
 	loadLastChat=()=>{
-		var id = document.getElementById('id_user').value;
-		let chatRef = fire.database().ref('bussines').child(id).child("chat");
-
-		var jsonTemp;
-		var objInfo;
+		
+		let chatRef = fire.database().ref('bussines').child(this.state.id_bussines).child("chat");
 		chatRef.on('value', snapshot => {	
-			jsonTemp=[];
+			var jsonTemp;
+			var objInfo;
+			var lastChat=[];
+			var jsonTemp={};
+			// var idCompare='';
 
-			//console.log("probando usuarios ke me enviaron un mensaje : ",snapshot.val());
+			jsonTemp= snapshot.val();
+			lastChat=[];
 
-		  	Object.keys(snapshot.val()).map(id=>{
-		  	
-		 	
-		 	objInfo={
-	 			id:id,
-	 			latest_message:snapshot.val()[id].info.latest_message||{date: 1516460733007,id_bussines: "sergio_id",img_url: "",message: "error"},
-	 			name_description:snapshot.val()[id].info.name_description||{img_url:"",description:""},
-	 			unread_messages:this.pruebaCode(id)==null?0:this.pruebaCode(id)
-		 	}
+				Object.keys(jsonTemp).map(id=>{	
+					var unreadMessages=this.pruebaCode(id);
+					if(unreadMessages==null){
+						unreadMessages=0;
+					}
+				 	objInfo={
+			 			id:id,
+			 			latest_message:jsonTemp[id].info.latest_message||{date: 1516460733007,id_bussines: "sergio_id",img_url: "",message: "error"},
+			 			name_description:jsonTemp[id].info.name_description||{img_url:"",description:""},
+			 			unread_messages:unreadMessages
+				 	}
 
-		 	//haecemos kke un sonido suene en el caso de que que tengamos mensajes sin leer
-			if(objInfo.unread_messages!=0 && objInfo.unread_messages!=null && this.id_contactVar!=objInfo.id){
-				var audioElement = document.createElement('audio');
-	    		audioElement.setAttribute('src', '../../assets/audio/ding.mp3');
-	   			audioElement.play();
-			}
+					lastChat.push(objInfo);
 
-
-		 	jsonTemp.push(objInfo);
-		});
-
-		  	//console.log("probando codigo del list chat........ : ",jsonTemp);
-		  	this.setState({contactChat:jsonTemp});
+				 	if(objInfo.unread_messages!=0 && objInfo.unread_messages!=null && this.id_contactVar!=objInfo.id){
+						var audioElement = document.createElement('audio');
+			    		audioElement.setAttribute('src', '../../assets/audio/ding.mp3');
+			   			audioElement.play();
+					}else{
+						this.updateViewed(this.id_contactVar);
+					}
+				});
+			this.setState({contactChat:lastChat});
+			//console.log(lastChat);
 		});	
 	}
 
@@ -430,17 +403,7 @@ class Goochat extends Component{
 		this.id_contactVar=obj.id;
 		this.updateViewed(obj.id);
 		this.loadChatContact(obj.id);
- 		// this.loadChatContact(obj.id);
-		
-
-
-
-
-
-
-
-
-
+ 	
 
 
 		if (window.matchMedia("(min-width: 892px)").matches) {
@@ -458,20 +421,22 @@ class Goochat extends Component{
 	//actualizar datos viewed
 
 	updateViewed=(id)=>{
-		var jsonTemp={};
-		let chatRef1 = fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(id).child("messages").limitToLast(1000);
-		chatRef1.orderByChild("viewed").equalTo(false).on('value', snapshot => {
-			jsonTemp=snapshot.val();
-			chatRef1.off();
-			//console.log("ddimension exacta",Object.keys(jsonTemp).length);
-		});
 		try{
-			Object.keys(jsonTemp).map(idMessage=>{
-				let chatRef2 = fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(id).child("messages").child(idMessage);
-				chatRef2.update({
-					viewed:true
-				});
+			var jsonTemp={};
+			let chatRef1 = fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(id).child("messages").limitToLast(100);
+			chatRef1.orderByChild("viewed").equalTo(false).on('value', snapshot => {
+				jsonTemp=snapshot.val();
+				chatRef1.off();
+				//console.log("ddimension exacta",Object.keys(jsonTemp).length);
 			});
+			try{
+				Object.keys(jsonTemp).map(idMessage=>{
+					let chatRef2 = fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(id).child("messages").child(idMessage);
+					chatRef2.update({
+						viewed:true
+					});
+				});
+			}catch(e){}
 		}catch(e){}
 	}
 
