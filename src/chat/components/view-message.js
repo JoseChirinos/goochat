@@ -34,7 +34,7 @@ class Message extends Component{
 						var dia=date.getDate()<10?"0"+date.getDate():date.getDate();
 						var fecha=dia+" - "+mes+' - '+date.getFullYear();
 					
-						console.log("probando =>   "+fecha1+"   "+fecha)
+						//s("probando =>   "+fecha1+"   "+fecha)
 
 						if(fecha1!=fecha){
 							f=this.props.chatContact[index].date;

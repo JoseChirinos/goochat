@@ -18,7 +18,7 @@ class Card extends Component{
 		var online=false;
 		let refOnlineUser=fire.database().ref('bussines').child(id);
 		refOnlineUser.on('value',snapshot=>{
-			console.log("id del user "+snapshot.val().info_bussines.name_bussines+" "+snapshot.val().info_bussines.online);
+			//console.log("id del user "+snapshot.val().info_bussines.name_bussines+" "+snapshot.val().info_bussines.online);
 			if(snapshot.val().info_bussines.online){
 				this.setState({online:true});
 			}else{
