@@ -30,11 +30,14 @@ class Card extends Component{
 
 	render(){
 		const {name_bussines,description,listNavigation,lagree,send}=this.props;
+
+		console.log("probando cards => ",this.props);
 		var obj={
 			id:this.props.idBussines,
 			description:description,
 			name_bussines:name_bussines,
-			img_url:this.props.img_url||''
+			img_url:this.props.img_url||'',
+			url_page:this.props.url_page
 		}
 		return(
 				<div className="card-container">
@@ -89,7 +92,16 @@ class Card extends Component{
 							</span>
 						</div>
 						<div className="col-xs-2 col-sm-2 col-md-2 card-navigation">
-							<span className={listNavigation==0 ? "icon-link" :listNavigation==1 ? "icon-link":"icon-check"} onClick={listNavigation==3?()=>this.props.acceptRequest(this.props.idBussines):function(){return 0}}/>
+								{
+									listNavigation==0 || listNavigation==1?
+									(
+										<a href={this.props.url_page}>
+											<span className={listNavigation==0 ? "icon-link" :listNavigation==1 ? "icon-link":"icon-check"} onClick={listNavigation==3?()=>this.props.acceptRequest(this.props.idBussines):function(){return 0}}/>
+										</a>
+									):
+									(<span className={listNavigation==0 ? "icon-link" :listNavigation==1 ? "icon-link":"icon-check"} onClick={listNavigation==3?()=>this.props.acceptRequest(this.props.idBussines):function(){return 0}}/>)
+								}
+							
 						</div>
 					</div>
 				</div>

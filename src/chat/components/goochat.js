@@ -23,6 +23,7 @@ class Goochat extends Component{
 		id_bussines:'',
 		img_url:'',
 		online:'',
+		url_page:'',
 		id_contact:'',
 		awaitingRequests:{},
 		contactCircle:[],
@@ -103,7 +104,7 @@ class Goochat extends Component{
 	    let nameBussines = fire.database().ref('bussines/'+id).child('info_bussines');
 	    nameBussines.on('value', snapshot => {
 	    let obj = { myInfo: snapshot.val(), id: id };
-	    	this.setState({ name_bussines:obj.myInfo.name_bussines,id_bussines:obj.id,img_url:obj.myInfo.img_url,online:obj.myInfo.online,description:obj.myInfo.description});
+	    	this.setState({ name_bussines:obj.myInfo.name_bussines,id_bussines:obj.id,img_url:obj.myInfo.img_url,online:obj.myInfo.online,description:obj.myInfo.description,url_page:obj.myInfo.url_page});
 	    });
 	    this.viewState();
 
@@ -141,12 +142,6 @@ class Goochat extends Component{
 
 	}
 
-	componentDidMount(){
-		window.addEventListener("beforeunload", this.onUnload);
-		this.id_contactVar='';
-
-
-	}
 
 
 
@@ -241,23 +236,6 @@ class Goochat extends Component{
 		});
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	//funcion de prueba
 
 	pruebaCode=(id)=>{
@@ -303,7 +281,7 @@ class Goochat extends Component{
 				 	objInfo={
 			 			id:id,
 			 			latest_message:jsonTemp[id].info.latest_message||{date: 1516460733007,id_bussines: "sergio_id",img_url: "",message: "error"},
-			 			name_description:jsonTemp[id].info.name_description||{img_url:"",description:""},
+			 			name_description:jsonTemp[id].info.name_description||{img_url:"",description:"",url_page:""},
 			 			unread_messages:unreadMessages
 				 	}
 
@@ -350,6 +328,7 @@ class Goochat extends Component{
  		"date": this.dateFire(),
  		"description":this.state.description,
  		"img_url":this.state.img_url,
+ 		"url_page":this.state.url_page,
  		"lagree":false,
  		"name_bussines":this.state.name_bussines
 		});
@@ -386,6 +365,7 @@ class Goochat extends Component{
  		 	description:this.state.description,
  		 	img_url:this.state.img_url,
  		 	lagree:true,
+ 		 	url_page:this.state.url_page,
  		 	name_bussines:this.state.name_bussines
 		});
 
@@ -406,14 +386,20 @@ class Goochat extends Component{
 
 	showInfoContact=(obj)=>{
 		//probando codigo
+		console.log("probando codigo.......klasd",obj);
+
+
+
 		this.setState({infoContact:obj});
 		this.setState({id_contact:obj.id});
+
+
 		this.id_contactVar=obj.id;
 		this.updateViewed(obj.id);
+
 		this.loadChatContact(obj.id);
-		console.log("probando codigo del shoowInfoContact");
 
-
+		//console.log("probando codigo del shoowInfoContact");
 		if (window.matchMedia("(min-width: 892px)").matches) {
   			document.getElementById("chatMessage").className="col-sm-12 col-md-9 col-lg-9 show";
 			document.getElementById("goochat-menu").className="col-sm-12 col-md-3 col-lg-3 goochat-content-list show";
@@ -457,10 +443,8 @@ class Goochat extends Component{
 	loadChatContact=(idu)=>{
 		if(idu!=''){
 			document.getElementById('loader').className="show";
-
+			console.log("funciona perfecto el load contact");
 			this.state.inputSendState=true;
-
-
 			var id = document.getElementById('id_user').value;
 			//var objTemp;
 			let chatRef = fire.database().ref('bussines').child(id+'/chat/'+idu+'/messages').limitToLast(this.state.numberOfMessage);
@@ -469,7 +453,8 @@ class Goochat extends Component{
 			  	Object.keys(snapshot.val()||{}).map(ida=>{
 		  			var objTempMessage=snapshot.val()[ida];
 		  			var codeObject={
-		  				code:ida,myId:this.state.id_bussines,
+		  				code:ida,
+		  				myId:this.state.id_bussines,
 		  				yourId:idu
 		  			};
 		  			var obj = Object.assign(objTempMessage,codeObject);
@@ -478,11 +463,11 @@ class Goochat extends Component{
 			  	if(this.id_contactVar==idu){
 			    	this.setState({chatContact:objTemp});
 			    	document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
-			    
 			    	var audioElement = document.createElement('audio');
 			    	audioElement.setAttribute('src', '../../assets/audio/MessageNonzerobot.mp3');
 			   		audioElement.play();
-					document.getElementById('loader').className="hidden";	
+					document.getElementById('loader').className="hidden";
+
 				}
 			});
 			//document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
@@ -497,13 +482,15 @@ class Goochat extends Component{
 			infoRef.update({
 	 		name_bussines:this.state.name_bussines||"",
 	 	 	img_url:this.state.img_url||"",
-	 	 	description:this.state.description||""
+	 	 	description:this.state.description||"",
+	 	 	url_page:this.state.url_page
 		});
 		let infoYourRef= fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(this.state.id_contact).child('info/name_description');
 			infoYourRef.update({
 	 		 	name_bussines:this.state.infoContact.name_bussines||"error",
 	 		 	img_url:this.state.infoContact.img_url||"",
-	 		 	description:this.state.infoContact.description||"error"
+	 		 	description:this.state.infoContact.description||"error",
+	 		 	url_page:this.state.infoContact.url_page||"error.com"
 		});
 
 		let saveMyDateRef= fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(this.state.id_contact).child('messages');
@@ -531,6 +518,7 @@ class Goochat extends Component{
 	 		 	date:this.dateFire(),
 	 		 	id_bussines:this.state.id_bussines,
 	 		 	message:message,
+	 		 	url_page:this.state.url_page,
 	 		 	img_url:this.state.img_url
 			});
 
@@ -539,6 +527,7 @@ class Goochat extends Component{
 	 		 	date:this.dateFire(),
 	 		 	id_bussines:this.state.id_bussines,
 	 		 	message:message,
+	 		 	url_page:this.state.url_page,
 	 		 	img_url:this.state.img_url
 			});
 			document.getElementById('inputSendMessage').value="";
@@ -553,55 +542,169 @@ class Goochat extends Component{
 			infoRef.update({
  			name_bussines:this.state.name_bussines||"",
  	 		img_url:this.state.img_url||"",
- 	 		description:this.state.description||""
+ 	 		description:this.state.description||"",
+ 	 		url_page:this.state.url_page
 		});
 	}
 
 	//evento ke carga los mensajes de 30 en 30
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//este did mount fue movido aki para poder trabajarlo mejor
+	componentDidMount(){
+		window.addEventListener("beforeunload", this.onUnload);
+		this.id_contactVar='';
+		this.scrollHeightPrev=0;
+
+		//probando guardar datos 
+		//funciona bien 
+
+
+		//formato del json de la nueva empresa
+
+
+		//si es para actualizar datos solo debe tener el mismo id y luego se cambiara los datos modificados
+
+		var objJson={
+			id:"asdasddnajksnjd",
+			country:"china",
+			description:"shin fu ha",
+			img_url:"http://cdn1.iconfinder.com/data/icons/occupation-gray/512/chinese-512.png",
+
+			name_bussines:"hiroko saka moko :v",
+			url_page:"kunFu.com",
+			region:"okinawa :v"
+		};
+
+		// esta es la funcion la de aqui abajo :v
+
+		// this.saveNewUser(objJson);
+	}
 	scrollLoadMessage=()=>{
 		if(document.getElementById('contentViewMessage').scrollTop==0){
-			// console.log("funciona bien este scroll :v");
+			
 			document.getElementById('loader').className="show";
-			var scrollHeightPrev=document.getElementById('contentViewMessage').scrollHeight;	
 
-
-
-					this.state.numberOfMessage+=10;
-					var id = document.getElementById('id_user').value;
-
-
-
-					let chatRef = fire.database().ref('bussines').child(id+'/chat/'+this.state.id_contact+'/messages').limitToLast(this.state.numberOfMessage);
-					chatRef.on('value', snapshot => {
-						//document.getElementById('loader').className="show";
-						
-						var objTemp=[];
-					  	Object.keys(snapshot.val()||{}).map(ida=>{
-				  			objTemp.push(snapshot.val()[ida])
-					    });
-
-
-
-					    this.setState({chatContact:objTemp});
-
-	    			  	var scrollNewPosition= document.getElementById('contentViewMessage').scrollHeight - scrollHeightPrev;
-					    
-					    if(this.state.numberOfMessage<=Object.keys(objTemp).length){
-							document.getElementById('contentViewMessage').style.overflowY="hidden";
-
-					    	document.getElementById('contentViewMessage').scrollTop=scrollNewPosition;
-
-					    	document.getElementById('contentViewMessage').style.overflowY="scroll";
-					    	console.log("entro aki xD heigt anterior "+document.getElementById('contentViewMessage').scrollHeight+" nuevoHeigth :"+scrollHeightPrev);
-					    }
-					 	document.getElementById('loader').className="hidden";
-					 	//console.log("termino de ejecutarsse el scroll");
-					 	chatRef.off();
-					});
-
+				this.scrollHeightPrev=document.getElementById('contentViewMessage').scrollHeight;
+				this.state.numberOfMessage+=10;
+				var id =this.state.id_bussines;	
+				let chatRef = fire.database().ref('bussines').child(id+'/chat/'+this.state.id_contact+'/messages').limitToLast(this.state.numberOfMessage);
+				
+				console.log("number of message"+this.state.numberOfMessage);
+				console.log("scroll prev"+this.scrollHeightPrev);
+				console.log("prueba del hidden o show => ",document.getElementById('loader').className);
+				
+				chatRef.on('value', snapshot => {
+					
+					var objTemp=[];
+				  	Object.keys(snapshot.val()||{}).map(ida=>{
+			  			objTemp.push(snapshot.val()[ida])
+				    });
+				    
+				    this.setState({chatContact:objTemp});
+    			  	var scrollNewPosition= document.getElementById('contentViewMessage').scrollHeight - this.scrollHeightPrev;
+				    if(this.state.numberOfMessage<=Object.keys(objTemp).length){
+						document.getElementById('contentViewMessage').style.overflowY="hidden";
+				    	document.getElementById('contentViewMessage').scrollTop=scrollNewPosition;
+				    	document.getElementById('contentViewMessage').style.overflowY="scroll";
+				    	console.log("entro aki xD heigt anterior "+document.getElementById('contentViewMessage').scrollHeight+" nuevoHeigth :"+this.scrollHeightPrev);
+				    }
+				 	document.getElementById('loader').className="hidden";
+				 	chatRef.off();
+				});
 		}
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//sta es la funcion que guardara y actualizara los datos del usuario
+
+
+
+	saveNewUser=(obj)=>{
+		let refNewUser=fire.database().ref('bussines').child(obj.id+"");
+		refNewUser.update({
+			info_bussines:{
+				country:obj.country,
+				description:obj.description,
+				img_url:obj.img_url,
+				name_bussines:obj.name_bussines,
+				online:true,
+				url_page:obj.url_page,
+				region:obj.region
+			}
+		});
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -620,7 +723,7 @@ class Goochat extends Component{
 							<div id="loader" className="hidden"  style={{"position":"absolute","zIndex":"10","width":"100%","left":"0px","background":"linear-gradient(#00000057,rgba(255, 255, 255, 0))"}}>
 								<Loader size="0"></Loader>
 							</div>
-							<ViewMessage inputSendState={this.state.inputSendState} contentViewMessage={document.getElementById('contentViewMessage')} sendMessage={this.sendMessage} chatContact={this.state.chatContact} myID={this.state.id_bussines}/>
+							<ViewMessage inputSendState={this.state.inputSendState} sendMessage={this.sendMessage} chatContact={this.state.chatContact} myID={this.state.id_bussines}/>
 						</div>
 
 					</div>

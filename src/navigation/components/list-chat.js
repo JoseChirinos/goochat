@@ -13,7 +13,7 @@ class ListMessage extends Component{
 		} 
 	}
 	render(){
-		//console.log("mostrando los datos desde el lisMessage",this.state.contactMessages);
+		console.log("mostrando los datos desde el lisMessage",this.props);
 		return(
 			<div className="content-chat">
 				{

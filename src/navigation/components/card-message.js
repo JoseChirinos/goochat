@@ -32,6 +32,7 @@ class Card extends Component{
 		
 		//var online=this.props.contactOnLinePrueba(userInfo.id);
 
+		console.log("probando.....",this.props);
 
 
 
@@ -44,14 +45,16 @@ class Card extends Component{
 			var obj={
 			id:userInfo.id,
 			img_url:userInfo.name_description.img_url||'',
-			name_bussines:userInfo.name_description.name_bussines
+			name_bussines:userInfo.name_description.name_bussines,
+			url_page:userInfo.name_description.url_page
 			}
 		}else{
 			var fecha="aqui el error";
 			var obj={
 				id:"",
 				img_url:""||'',
-				name_bussines:""
+				name_bussines:"",
+				url_page:"no tiene.com"
 			}
 		}
 	
@@ -96,7 +99,9 @@ class Card extends Component{
 							<div className={userInfo.unread_messages==0 || userInfo.unread_messages==null?"unreadMessages hidden":"unreadMessages"}>
 								{userInfo.unread_messages}
 							</div>
+							<a href={this.props.userInfo.name_description.url_page}>
 							<span className="icon-link"/>				
+							</a>
 						</div>
 					</div>
 				</div>
