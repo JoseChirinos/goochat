@@ -55,7 +55,7 @@ class Message extends Component{
 										</div>
 										):""
 									}
-									<Burble iz="0" obj={this.props.chatContact[index]}/>
+									<Burble url_img={this.props.url_img} iz="0" obj={this.props.chatContact[index]}/>
 								</div>
 							)
 						}else{
@@ -67,7 +67,7 @@ class Message extends Component{
 										</div>
 										):""
 									}
-									<Burble iz="1" obj={this.props.chatContact[index]}/>
+									<Burble myUrl_img={this.props.myUrl_img} url_img={this.props.url_img} iz="1" obj={this.props.chatContact[index]}/>
 								</div>
 							)			
 						}

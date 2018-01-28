@@ -32,7 +32,7 @@ class Burble extends Component{
 				<div className="col-xs-12 col-sm-12 col-md-12" style={{"width":"100%"}}>
 					<div className="msj macro">
 						<div className="avatar">
-							<img className="img-circle" src={this.props.obj.img_url}/>
+							<img className="img-circle" src={this.props.url_img}/>
 						</div>
 						<div className="text text-l">
 							<p style={{"color":"#475566","fontSize":"16px","fontFamily": "Roboto"}}>{this.props.obj.message}</p>
@@ -49,7 +49,7 @@ class Burble extends Component{
 							<p><small style={{"fontSize":"13px"}}>{hora}</small></p>
 						</div>
 						<div className="avatar" style={{"padding":"0px 0px 0px 10px !important"}}>
-							<img className="img-circle" src={this.props.obj.img_url}/>
+							<img className="img-circle" src={this.props.myUrl_img}/>
 						</div>
 					</div>
 				</div>

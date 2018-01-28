@@ -387,9 +387,6 @@ class Goochat extends Component{
 	showInfoContact=(obj)=>{
 		//probando codigo
 		console.log("probando codigo.......klasd",obj);
-
-
-
 		this.setState({infoContact:obj});
 		this.setState({id_contact:obj.id});
 
@@ -594,19 +591,13 @@ class Goochat extends Component{
 
 		//probando guardar datos 
 		//funciona bien 
-
-
 		//formato del json de la nueva empresa
-
-
 		//si es para actualizar datos solo debe tener el mismo id y luego se cambiara los datos modificados
-
 		var objJson={
 			id:"asdasddnajksnjd",
 			country:"china",
 			description:"shin fu ha",
 			img_url:"http://cdn1.iconfinder.com/data/icons/occupation-gray/512/chinese-512.png",
-
 			name_bussines:"hiroko saka moko :v",
 			url_page:"kunFu.com",
 			region:"okinawa :v"
@@ -723,7 +714,7 @@ class Goochat extends Component{
 							<div id="loader" className="hidden"  style={{"position":"absolute","zIndex":"10","width":"100%","left":"0px","background":"linear-gradient(#00000057,rgba(255, 255, 255, 0))"}}>
 								<Loader size="0"></Loader>
 							</div>
-							<ViewMessage inputSendState={this.state.inputSendState} sendMessage={this.sendMessage} chatContact={this.state.chatContact} myID={this.state.id_bussines}/>
+							<ViewMessage myUrl_img={this.state.img_url} url_img={this.state.infoContact.img_url} inputSendState={this.state.inputSendState} sendMessage={this.sendMessage} chatContact={this.state.chatContact} myID={this.state.id_bussines}/>
 						</div>
 
 					</div>
