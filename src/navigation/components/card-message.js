@@ -6,13 +6,23 @@ import fire from './../../config-chat/firebase-config';
 
 class Card extends Component{
 	state={
-		online:false
+		online:false,
+		img:''
 	}
 
 	componentWillMount(){
 		this.contactOnLinePrueba(this.props.userInfo.id);
+		this.urlImgUserItem(this.props.userInfo.id);
 	}
 
+	urlImgUserItem=(id)=>{
+		let imgRef = fire.database().ref('bussines').child(id).child("info_bussines");
+		var urlImg="";
+		imgRef.on('value', snapshot => {
+			urlImg=snapshot.val().img_url;
+			this.setState({img:urlImg});
+		});
+	}
 
 	contactOnLinePrueba=(id)=>{
 		var online=false;
@@ -44,7 +54,7 @@ class Card extends Component{
 		
 			var obj={
 			id:userInfo.id,
-			img_url:userInfo.name_description.img_url||'',
+			img_url:this.state.img||'',
 			name_bussines:userInfo.name_description.name_bussines,
 			url_page:userInfo.name_description.url_page
 			}
@@ -62,7 +72,7 @@ class Card extends Component{
 				<div className="card-container">
 					<div className="row">
 						<div className="col-xs-3 col-sm-3 col-md-3 card-containerImg">
-							<img className="card-img" src={userInfo.name_description.img_url||"error"}></img>
+							<img className="card-img" src={this.state.img||"error"}></img>
 
 
 

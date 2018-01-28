@@ -260,10 +260,11 @@ class Goochat extends Component{
 	}
 
 
+	
 	loadLastChat=()=>{
 		document.getElementById('menu').className="show";
 		let chatRef = fire.database().ref('bussines').child(this.state.id_bussines).child("chat");
-		chatRef.on('value', snapshot => {
+		chatRef.orderByChild('info/latest_message/date').on('value', snapshot => {
 			var jsonTemp;
 			var objInfo;
 			var lastChat=[];
@@ -272,6 +273,7 @@ class Goochat extends Component{
 
 			jsonTemp= snapshot.val();
 			lastChat=[];
+
 
 				Object.keys(jsonTemp).map(id=>{
 					var unreadMessages=this.pruebaCode(id);
@@ -528,7 +530,6 @@ class Goochat extends Component{
 	 		 	img_url:this.state.img_url
 			});
 			document.getElementById('inputSendMessage').value="";
-
 		}
 	}
 
@@ -589,10 +590,6 @@ class Goochat extends Component{
 		this.id_contactVar='';
 		this.scrollHeightPrev=0;
 
-		//probando guardar datos 
-		//funciona bien 
-		//formato del json de la nueva empresa
-		//si es para actualizar datos solo debe tener el mismo id y luego se cambiara los datos modificados
 		var objJson={
 			id:"asdasddnajksnjd",
 			country:"china",

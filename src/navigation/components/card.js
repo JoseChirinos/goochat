@@ -4,15 +4,25 @@ import './card.css';
 import fire from './../../config-chat/firebase-config';
 class Card extends Component{
 	state={
-		online:false
+		online:false,
+		img:''
 	}
 
 	componentWillMount(){
 		if(this.props.listNavigation==0){
 			this.contactOnLinePrueba(this.props.idBussines);
 		}
+		this.urlImgUserItem(this.props.idBussines);
 	}
 
+	urlImgUserItem=(id)=>{
+		let imgRef = fire.database().ref('bussines').child(id).child("info_bussines");
+		var urlImg="";
+		imgRef.on('value', snapshot => {
+			urlImg=snapshot.val().img_url;
+			this.setState({img:urlImg});
+		});
+	}
 
 	contactOnLinePrueba=(id)=>{
 		var online=false;
@@ -28,6 +38,9 @@ class Card extends Component{
 	}
 
 
+
+
+
 	render(){
 		const {name_bussines,description,listNavigation,lagree,send}=this.props;
 
@@ -36,14 +49,19 @@ class Card extends Component{
 			id:this.props.idBussines,
 			description:description,
 			name_bussines:name_bussines,
-			img_url:this.props.img_url||'',
+			img_url:this.state.img||'',
 			url_page:this.props.url_page
 		}
+
+
+
+
+
 		return(
 				<div className="card-container">
 					<div className="row">
 						<div className="col-xs-3 col-sm-3 col-md-3 card-containerImg">
-							<img className="card-img" src={this.props.img_url||''}></img>
+							<img className="card-img" src={this.state.img||''}></img>
 							
 
 
