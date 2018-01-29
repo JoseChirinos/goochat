@@ -29,7 +29,7 @@ class ListMessage extends Component{
 				{
 					Object.keys(this.state.contactUser).map( id =>{
 						var stateCardSearch=false;
-						console.log(this.props.awaitingRequests);
+						//console.log(this.props.awaitingRequests);
 						
 						Object.keys(this.props.awaitingRequests||{}).map(idu=>{
 							//console.log("este id =>: "+idu);

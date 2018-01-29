@@ -44,7 +44,7 @@ class Card extends Component{
 	render(){
 		const {name_bussines,description,listNavigation,lagree,send}=this.props;
 
-		console.log("probando cards => ",this.props);
+	//	console.log("probando cards => ",this.props);
 		var obj={
 			id:this.props.idBussines,
 			description:description,

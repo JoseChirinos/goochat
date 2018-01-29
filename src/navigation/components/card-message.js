@@ -28,7 +28,7 @@ class Card extends Component{
 		var online=false;
 		let refOnlineUser=fire.database().ref('bussines').child(id);
 		refOnlineUser.on('value',snapshot=>{
-			console.log("id del user "+snapshot.val().info_bussines.name_bussines+" "+snapshot.val().info_bussines.online);
+			//console.log("id del user "+snapshot.val().info_bussines.name_bussines+" "+snapshot.val().info_bussines.online);
 			if(snapshot.val().info_bussines.online){
 				this.setState({online:true});
 			}else{
@@ -42,7 +42,7 @@ class Card extends Component{
 		
 		//var online=this.props.contactOnLinePrueba(userInfo.id);
 
-		console.log("probando.....",this.props);
+		//console.log("probando.....",this.props);
 
 
 
@@ -72,7 +72,7 @@ class Card extends Component{
 				<div className="card-container">
 					<div className="row">
 						<div className="col-xs-3 col-sm-3 col-md-3 card-containerImg">
-							<img className="card-img" src={this.state.img||"error"}></img>
+							<img className="card-img" src={this.state.img||""}></img>
 
 
 
@@ -94,10 +94,10 @@ class Card extends Component{
 						<div className="col-xs-7 col-sm-7 col-md-7" onClick={()=>this.props.showInfoContact(obj)} style={{"height": "100px","cursor":"pointer","paddingRight": "30px"}}>
 							<div className="row">
 								<div className="col-md-12">
-									<h3 className="truncado">{userInfo.name_description.name_bussines||"error"}</h3>
+									<h3 className="truncado">{userInfo.name_description.name_bussines||""}</h3>
 								</div>
 								<div className="col-md-12">
-									<p className="card-p truncado-p">{userInfo.latest_message.message||"error"}</p>
+									<p className="card-p truncado-p">{userInfo.latest_message.message||""}</p>
 								</div>
 								<div className="col-md-12">
 								<p className="card-fecha">{fecha}</p>

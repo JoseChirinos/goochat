@@ -58,8 +58,9 @@ class Goochat extends Component{
 		});
 	}
 
-	eventoFromMenu = (select) =>{
+	eventoFromMenu = (select) =>{	
 
+		//this.scrollHeightPrev=document.getElementById('contentViewMessage').scrollHeight;
 		var menu = {};
 
 		document.getElementById('circle').className="icon-triangle evento";
@@ -264,14 +265,15 @@ class Goochat extends Component{
 	loadLastChat=()=>{
 		document.getElementById('menu').className="show";
 		let chatRef = fire.database().ref('bussines').child(this.state.id_bussines).child("chat");
-		chatRef.orderByChild('info/latest_message/date').on('value', snapshot => {
+		chatRef.orderByChild('info\latest_message\date').on('value', snapshot => {
 			var jsonTemp;
 			var objInfo;
 			var lastChat=[];
 			var jsonTemp={};
 			// var idCompare='';
 
-			jsonTemp= snapshot.val();
+			jsonTemp=snapshot.val();
+		
 			lastChat=[];
 
 
@@ -386,17 +388,83 @@ class Goochat extends Component{
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	showInfoContact=(obj)=>{
-		//probando codigo
-		console.log("probando codigo.......klasd",obj);
+		this.state.numberOfMessage=10;
 		this.setState({infoContact:obj});
 		this.setState({id_contact:obj.id});
-
-
 		this.id_contactVar=obj.id;
 		this.updateViewed(obj.id);
-
 		this.loadChatContact(obj.id);
+
+
+
+		console.log("tamaño anterior del showInfoContact => => 3",document.getElementById('contentViewMessage').scrollHeight);
+		
+
+
+
+
+
+
 
 		//console.log("probando codigo del shoowInfoContact");
 		if (window.matchMedia("(min-width: 892px)").matches) {
@@ -432,20 +500,58 @@ class Goochat extends Component{
 		}catch(e){}
 	}
 
+	
 
 
-	//fin de actualizar datos
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
 	loadChatContact=(idu)=>{
 		if(idu!=''){
+
 			document.getElementById('loader').className="show";
-			console.log("funciona perfecto el load contact");
 			this.state.inputSendState=true;
 			var id = document.getElementById('id_user').value;
-			//var objTemp;
 			let chatRef = fire.database().ref('bussines').child(id+'/chat/'+idu+'/messages').limitToLast(this.state.numberOfMessage);
 			chatRef.on('value', snapshot => {
 				var objTemp=[];
@@ -459,30 +565,105 @@ class Goochat extends Component{
 		  			var obj = Object.assign(objTempMessage,codeObject);
 		  			objTemp.push(obj);
 			    });
-			  	if(this.id_contactVar==idu){
+			  	if(this.id_contactVar==idu && document.getElementById('contentViewMessage').scrollTop!=0){
 			    	this.setState({chatContact:objTemp});
 			    	document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
 			    	var audioElement = document.createElement('audio');
 			    	audioElement.setAttribute('src', '../../assets/audio/MessageNonzerobot.mp3');
 			   		audioElement.play();
 					document.getElementById('loader').className="hidden";
-
 				}
+				if(this.id_contactVar==idu && document.getElementById('contentViewMessage').scrollTop==0){
+					this.setState({chatContact:objTemp});
+					document.getElementById('contentViewMessage').scrollTop=(this.scrollHeightPrev-document.getElementById('contentViewMessage').scrollHeight)*-1;
+
+				}	
+
+
+				console.log("tamaño anterior => => 1",document.getElementById('contentViewMessage').scrollHeight);
+				
+
+
+				console.log("provando codigo => => 2",this.scrollHeightPrev);
+
+
+
+
+
+				if(this.id_contactVar!=idu){
+					this.state.numberOfMessage=10;
+				}
+				document.getElementById('loader').className="hidden";
 			});
-			//document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
 		}
 	}
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	sendMessage=(message)=>{
+
 		if(message!=""){
 		 let infoRef=fire.database().ref('bussines').child(this.state.id_contact).child("chat").child(this.state.id_bussines).child('info/name_description');
 			infoRef.update({
-	 		name_bussines:this.state.name_bussines||"",
-	 	 	img_url:this.state.img_url||"",
-	 	 	description:this.state.description||"",
-	 	 	url_page:this.state.url_page
+		 		name_bussines:this.state.name_bussines||"",
+		 	 	img_url:this.state.img_url||"",
+		 	 	description:this.state.description||"",
+		 	 	url_page:this.state.url_page
 		});
 		let infoYourRef= fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(this.state.id_contact).child('info/name_description');
 			infoYourRef.update({
@@ -504,12 +685,12 @@ class Goochat extends Component{
 
 		let saveYourDateRef= fire.database().ref('bussines').child(this.state.id_contact).child("chat").child(this.state.id_bussines).child('messages');
 		saveYourDateRef.push({
-	 	 	date:this.dateFire(),
-	 	 	name_bussines:this.state.name_bussines,
-	 	 	id_bussines:this.state.id_bussines,
-	    	img_url:this.state.img_url,
-	 	 	message:message,
-	 	 	viewed:false
+		 	 	date:this.dateFire(),
+		 	 	name_bussines:this.state.name_bussines,
+		 	 	id_bussines:this.state.id_bussines,
+		    	img_url:this.state.img_url,
+		 	 	message:message,
+		 	 	viewed:false
 		});
 
 			let saveYourLatestMessageRef= fire.database().ref('bussines').child(this.state.id_contact).child("chat").child(this.state.id_bussines).child('info').child('latest_message');
@@ -545,45 +726,6 @@ class Goochat extends Component{
 		});
 	}
 
-	//evento ke carga los mensajes de 30 en 30
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	//este did mount fue movido aki para poder trabajarlo mejor
 	componentDidMount(){
 		window.addEventListener("beforeunload", this.onUnload);
@@ -600,42 +742,94 @@ class Goochat extends Component{
 			region:"okinawa :v"
 		};
 
-		// esta es la funcion la de aqui abajo :v
 
-		// this.saveNewUser(objJson);
+
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	scrollLoadMessage=()=>{
 		if(document.getElementById('contentViewMessage').scrollTop==0){
-			
+			this.scrollHeightPrev=document.getElementById('contentViewMessage').scrollHeight;
+			this.state.numberOfMessage+=10;
 			document.getElementById('loader').className="show";
+			setTimeout(function(){
+				this.loadChatContact(this.state.id_contact);
+			}.bind(this),200);
 
-				this.scrollHeightPrev=document.getElementById('contentViewMessage').scrollHeight;
-				this.state.numberOfMessage+=10;
-				var id =this.state.id_bussines;	
-				let chatRef = fire.database().ref('bussines').child(id+'/chat/'+this.state.id_contact+'/messages').limitToLast(this.state.numberOfMessage);
-				
-				console.log("number of message"+this.state.numberOfMessage);
-				console.log("scroll prev"+this.scrollHeightPrev);
-				console.log("prueba del hidden o show => ",document.getElementById('loader').className);
-				
-				chatRef.on('value', snapshot => {
-					
-					var objTemp=[];
-				  	Object.keys(snapshot.val()||{}).map(ida=>{
-			  			objTemp.push(snapshot.val()[ida])
-				    });
-				    
-				    this.setState({chatContact:objTemp});
-    			  	var scrollNewPosition= document.getElementById('contentViewMessage').scrollHeight - this.scrollHeightPrev;
-				    if(this.state.numberOfMessage<=Object.keys(objTemp).length){
-						document.getElementById('contentViewMessage').style.overflowY="hidden";
-				    	document.getElementById('contentViewMessage').scrollTop=scrollNewPosition;
-				    	document.getElementById('contentViewMessage').style.overflowY="scroll";
-				    	console.log("entro aki xD heigt anterior "+document.getElementById('contentViewMessage').scrollHeight+" nuevoHeigth :"+this.scrollHeightPrev);
-				    }
-				 	document.getElementById('loader').className="hidden";
-				 	chatRef.off();
-				});
 		}
 	}
 
@@ -656,10 +850,26 @@ class Goochat extends Component{
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	//sta es la funcion que guardara y actualizara los datos del usuario
-
-
-
 	saveNewUser=(obj)=>{
 		let refNewUser=fire.database().ref('bussines').child(obj.id+"");
 		refNewUser.update({
@@ -674,30 +884,7 @@ class Goochat extends Component{
 			}
 		});
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	
 	render(){
 		return(
 			<div className="container-fluid Goochat" style={{"height":"100%","margin":"0","width":"100%"}}>
@@ -737,18 +924,9 @@ class Goochat extends Component{
 
 								<ListContact showInfoContact={this.showInfoContact} estado={ this.state.menu.listContact ? 'show':'hidden' } contactCircle={this.state.contactCircle} contactDelete={this.deleteItemCircle}/>
 
-
 								<div className={ this.state.menu.chatList ? 'show':'hidden' } id="goochat-chatlist" >
 									<ListChat showInfoContact={this.showInfoContact} contactChat={this.state.contactChat}/>
 								</div>
-
-
-
-
-
-
-
-
 
 								<div className={this.state.menu.search ? 'show':'hidden' } id="goochat-search" >
 									<ListSearch showInfoContact={this.showInfoContact} contactSearch={this.state.contactSearch} contactSendRequest={this.sendRequest} search={this.loadSearch} contactRemoveRequest={this.removeRequest} awaitingRequests={this.state.awaitingRequests} listCircle={this.state.contactCircle}/>
