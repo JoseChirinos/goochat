@@ -2,8 +2,28 @@
 import React, { Component } from 'react';
 
 import './menu.css'
-class Menu extends Component{
+class Menu extends Component{	
+	// animation=(id)=>{
+	// 	console.log("provando el id => ",id);
+	// 	document.getElementById(id);
+	// }
+
+	// componentDidMount(){
+		
+	// 	// if(state1){
+	// 	// 	this.animation('square');
+	// 	// }
+	// 	// if(state2){
+	// 	// 	this.animation('plus');
+	// 	// }
+	// }
+
 	render(){
+		const state1=true;
+		const state2=true;
+
+
+
 		return(
 			<div className="menu-container">
 				<div className="row">
@@ -11,12 +31,22 @@ class Menu extends Component{
 						<span id="circle" className="icon-triangle item-selected evento" onClick={ () => this.props.eventoPrueba(0) } />
 					</div>
 					<div className="col-xs-3 col-sm-3 col-md-3 menu-containerSquare">
+						<label className={state1 && this.props.countMessage!=0?"show countMenu":"hidden countMenu"}>
+							{
+								this.props.countMessage!=0?this.props.countMessage:""
+							}
+						</label>
 						<span id="square" className="icon-message-square evento" onClick={ () => this.props.eventoPrueba(1) } />
 					</div>
 					<div className="col-xs-3 col-sm-3 col-md-3 menu-containerSearch">
 						<span id="search" className="icon-search evento" onClick={ () => this.props.eventoPrueba(2) } />
 					</div>
 					<div className="col-xs-3 col-sm-3 col-md-3 menu-containerPlus">
+						<label className={state2 && this.props.countRequest!=0?"show countMenu":"hidden countMenu"}>
+							{
+								this.props.countRequest!=0?this.props.countMessage:""
+							}
+						</label>
 						<span id="plus" className="icon-user-plus evento" onClick={ () => this.props.eventoPrueba(3) } />
 					</div>
 				</div>

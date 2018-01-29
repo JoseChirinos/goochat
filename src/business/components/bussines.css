@@ -13,6 +13,7 @@
 }
 
 .Bussines-container img{
+	background: #ededed;
 	height: 70px;
 	border-radius: 50% 50%;
 	vertical-align: middle;

@@ -18,6 +18,7 @@ class ListMessage extends Component{
 		}
 	}
 
+
 	render(){
 		return(
 			<div className={ this.props.estado }>
