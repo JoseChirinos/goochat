@@ -454,18 +454,6 @@ class Goochat extends Component{
 		this.id_contactVar=obj.id;
 		this.updateViewed(obj.id);
 		this.loadChatContact(obj.id);
-
-
-
-		console.log("tamaño anterior del showInfoContact => => 3",document.getElementById('contentViewMessage').scrollHeight);
-		
-
-
-
-
-
-
-
 		//console.log("probando codigo del shoowInfoContact");
 		if (window.matchMedia("(min-width: 892px)").matches) {
   			document.getElementById("chatMessage").className="col-sm-12 col-md-9 col-lg-9 show";
@@ -548,7 +536,6 @@ class Goochat extends Component{
 
 	loadChatContact=(idu)=>{
 		if(idu!=''){
-
 			document.getElementById('loader').className="show";
 			this.state.inputSendState=true;
 			var id = document.getElementById('id_user').value;
@@ -567,7 +554,7 @@ class Goochat extends Component{
 			    });
 			  	if(this.id_contactVar==idu && document.getElementById('contentViewMessage').scrollTop!=0){
 			    	this.setState({chatContact:objTemp});
-			    	document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
+			    	// document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
 			    	var audioElement = document.createElement('audio');
 			    	audioElement.setAttribute('src', '../../assets/audio/MessageNonzerobot.mp3');
 			   		audioElement.play();
@@ -575,25 +562,14 @@ class Goochat extends Component{
 				}
 				if(this.id_contactVar==idu && document.getElementById('contentViewMessage').scrollTop==0){
 					this.setState({chatContact:objTemp});
-					document.getElementById('contentViewMessage').scrollTop=(this.scrollHeightPrev-document.getElementById('contentViewMessage').scrollHeight)*-1;
+					// document.getElementById('contentViewMessage').scrollTop=(this.scrollHeightPrev-document.getElementById('contentViewMessage').scrollHeight)*-1;
 
-				}	
-
-
-				console.log("tamaño anterior => => 1",document.getElementById('contentViewMessage').scrollHeight);
-				
-
-
-				console.log("provando codigo => => 2",this.scrollHeightPrev);
-
-
-
-
-
+				}
 				if(this.id_contactVar!=idu){
 					this.state.numberOfMessage=10;
 				}
 				document.getElementById('loader').className="hidden";
+				document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
 			});
 		}
 	}
@@ -827,7 +803,55 @@ class Goochat extends Component{
 			this.state.numberOfMessage+=10;
 			document.getElementById('loader').className="show";
 			setTimeout(function(){
-				this.loadChatContact(this.state.id_contact);
+				//this.loadChatContact(this.state.id_contact);
+
+
+
+				let chatRef = fire.database().ref('bussines').child(this.state.id_bussines+'/chat/'+this.state.id_contact+'/messages').limitToLast(this.state.numberOfMessage);
+				chatRef.on('value', snapshot => {
+				var objTemp=[];
+			  	Object.keys(snapshot.val()||{}).map(ida=>{
+		  			var objTempMessage=snapshot.val()[ida];
+		  			var codeObject={
+		  				code:ida,
+		  				myId:this.state.id_bussines,
+		  				yourId:this.state.id_contact
+		  			};
+		  			var obj = Object.assign(objTempMessage,codeObject);
+		  			objTemp.push(obj);
+			    });
+			  	if(this.id_contactVar==this.state.id_contact && document.getElementById('contentViewMessage').scrollTop!=0){
+			    	this.setState({chatContact:objTemp});
+			    	document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
+			    	var audioElement = document.createElement('audio');
+			    	audioElement.setAttribute('src', '../../assets/audio/MessageNonzerobot.mp3');
+			   		audioElement.play();
+					document.getElementById('loader').className="hidden";
+				}
+				if(this.id_contactVar==this.state.id_contact && document.getElementById('contentViewMessage').scrollTop==0){
+					this.setState({chatContact:objTemp});
+					document.getElementById('contentViewMessage').scrollTop=(this.scrollHeightPrev-document.getElementById('contentViewMessage').scrollHeight)*-1;
+
+				}
+				if(this.id_contactVar!=this.state.id_contact){
+					this.state.numberOfMessage=10;
+				}
+				document.getElementById('loader').className="hidden";
+				chatRef.off();
+			});
+
+
+
+
+
+
+
+
+
+
+
+
+
 			}.bind(this),200);
 
 		}
