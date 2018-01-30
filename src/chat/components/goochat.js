@@ -111,11 +111,29 @@ class Goochat extends Component{
 	    });
 	    this.viewState();
 
-	    let onlineOnBussines = fire.database().ref('bussines/'+id).child('info_bussines');
-	    onlineOnBussines.update({
-	    	online:true
+	    //codigo en linea
+
+	    let devicesOnLine = fire.database().ref('bussines/'+id).child('info_bussines').child("devices_online");
+
+	    devicesOnLine.on("value",snapshot=>{
+			var devices=snapshot.val();
+	    	devicesOnLine.off();
+
+	    	console.log(snapshot.val());
+		    let onlineOnBussines = fire.database().ref('bussines/'+id).child('info_bussines');
+				onlineOnBussines.update({
+			    online:true,
+			    devices_online:devices+1
+			});
 	    });
 
+	 //    setTimeout(function(){
+	 //    	let onlineOnBussines = fire.database().ref('bussines/'+id).child('info_bussines');
+		// 	onlineOnBussines.update({
+		//     online:true,
+		//     devices_online:devices+1
+		// });
+	 //    }.bind(),200);
 	}
 
 	viewState=(men)=>{
@@ -149,10 +167,26 @@ class Goochat extends Component{
 
 
 	onUnload=()=>{
-		let onlineOfBussines = fire.database().ref('bussines').child(this.state.id_bussines).child('info_bussines');
-	    onlineOfBussines.update({
-	    	online:false
+
+		let devicesOnLine = fire.database().ref('bussines').child(this.state.id_bussines).child('info_bussines').child("devices_online");
+	    var devices=0;
+	    devicesOnLine.on("value",snapshot=>{
+	    	devices=snapshot.val();
+			devicesOnLine.off();
 	    });
+	    if(devices<=1){
+	    	let onlineOfBussines = fire.database().ref('bussines').child(this.state.id_bussines).child('info_bussines');
+		    onlineOfBussines.update({
+		    	online:false,
+		    	devices_online:0
+		    });
+		}else{
+			var de=devices-1;
+			let onlineOfBussines = fire.database().ref('bussines').child(this.state.id_bussines).child('info_bussines');
+		    onlineOfBussines.update({
+		    	devices_online:de
+		    });
+		}
 	}
 
 
@@ -202,7 +236,7 @@ class Goochat extends Component{
 		    document.getElementById('menu').className="hidden";
 		   // console.log("probando codigo"+cant);
 			var cont=0;
-			Object.keys(snapshot.val()).map( id =>{
+			Object.keys(snapshot.val()||{}).map( id =>{
 				//console.log(id);
 				cont++;
 			});
@@ -607,7 +641,6 @@ class Goochat extends Component{
 
 
 
-
 loadChatContact=(idu)=>{
 	if(idu!=''){
 		document.getElementById('loader').className="show";
@@ -703,41 +736,40 @@ loadChatContact=(idu)=>{
 
 	sendMessage=(message)=>{
 
-		if(message!=""){
-		 let infoRef=fire.database().ref('bussines').child(this.state.id_contact).child("chat").child(this.state.id_bussines).child('info/name_description');
-			infoRef.update({
-		 		name_bussines:this.state.name_bussines||"",
-		 	 	img_url:this.state.img_url||"",
-		 	 	description:this.state.description||"",
-		 	 	url_page:this.state.url_page
-		});
-		let infoYourRef= fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(this.state.id_contact).child('info/name_description');
-			infoYourRef.update({
-	 		 	name_bussines:this.state.infoContact.name_bussines||"error",
-	 		 	img_url:this.state.infoContact.img_url||"",
-	 		 	description:this.state.infoContact.description||"error",
-	 		 	url_page:this.state.infoContact.url_page||"error.com"
-		});
+		if(document.getElementById('inputSendMessage').value!=""){
+			let infoRef=fire.database().ref('bussines').child(this.state.id_contact).child("chat").child(this.state.id_bussines).child('info/name_description');
+				infoRef.update({
+			 		name_bussines:this.state.name_bussines||"",
+			 	 	img_url:this.state.img_url||"",
+			 	 	description:this.state.description||"",
+			 	 	url_page:this.state.url_page
+			});
+			let infoYourRef= fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(this.state.id_contact).child('info/name_description');
+				infoYourRef.update({
+		 		 	name_bussines:this.state.infoContact.name_bussines||"error",
+		 		 	img_url:this.state.infoContact.img_url||"",
+		 		 	description:this.state.infoContact.description||"error",
+		 		 	url_page:this.state.infoContact.url_page||"error.com"
+			});
+			let saveMyDateRef= fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(this.state.id_contact).child('messages');
+			saveMyDateRef.push({
+		 		 	date:this.dateFire(),
+		 		 	name_bussines:this.state.name_bussines,
+		 		 	id_bussines:this.state.id_bussines,
+		 		 	img_url:this.state.img_url,
+		 		 	message:message,
+		 		 	viewed:true
+			});
 
-		let saveMyDateRef= fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(this.state.id_contact).child('messages');
-		saveMyDateRef.push({
-	 		 	date:this.dateFire(),
-	 		 	name_bussines:this.state.name_bussines,
-	 		 	id_bussines:this.state.id_bussines,
-	 		 	img_url:this.state.img_url,
-	 		 	message:message,
-	 		 	viewed:true
-		});
-
-		let saveYourDateRef= fire.database().ref('bussines').child(this.state.id_contact).child("chat").child(this.state.id_bussines).child('messages');
-		saveYourDateRef.push({
-		 	 	date:this.dateFire(),
-		 	 	name_bussines:this.state.name_bussines,
-		 	 	id_bussines:this.state.id_bussines,
-		    	img_url:this.state.img_url,
-		 	 	message:message,
-		 	 	viewed:false
-		});
+			let saveYourDateRef= fire.database().ref('bussines').child(this.state.id_contact).child("chat").child(this.state.id_bussines).child('messages');
+			saveYourDateRef.push({
+			 	 	date:this.dateFire(),
+			 	 	name_bussines:this.state.name_bussines,
+			 	 	id_bussines:this.state.id_bussines,
+			    	img_url:this.state.img_url,
+			 	 	message:message,
+			 	 	viewed:false
+			});
 
 			let saveYourLatestMessageRef= fire.database().ref('bussines').child(this.state.id_contact).child("chat").child(this.state.id_bussines).child('info').child('latest_message');
 			saveYourLatestMessageRef.update({
@@ -779,14 +811,16 @@ loadChatContact=(idu)=>{
 		this.scrollHeightPrev=0;
 
 		var objJson={
-			id:"asdasddnajksnjd",
-			country:"china",
-			description:"shin fu ha",
-			img_url:"http://cdn1.iconfinder.com/data/icons/occupation-gray/512/chinese-512.png",
-			name_bussines:"hiroko saka moko :v",
-			url_page:"kunFu.com",
-			region:"okinawa :v"
+			id:"pepe_id",
+			country:"bolivia",
+			description:"pepe open Red",
+			img_url:"https://d30y9cdsu7xlg0.cloudfront.net/png/17239-200.png",
+			name_bussines:"Open Red.",
+			url_page:"Openred.com",
+			region:"sucre"
 		};
+
+		//this.saveNewUser(objJson);
 
 		this.sound=[];
 	}
@@ -981,7 +1015,7 @@ updateCountRequest=(cant)=>{
 
 					</div>
 
-					<div style={{"position":"fixed","bottom":"70px","zIndex":"16"}}>
+					<div style={{"position":"fixed","bottom":"100px","zIndex":"1000"}}>
 						<input type="text" id="id_user" ></input>
 						<button onClick={this.eventosFire}>entrar</button>
 					</div>
