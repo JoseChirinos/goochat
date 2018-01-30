@@ -37,8 +37,7 @@ class Message extends Component{
 						var dia=date.getDate()<10?"0"+date.getDate():date.getDate();
 						var fecha=dia+" - "+mes+' - '+date.getFullYear();
 					
-						//s("probando =>   "+fecha1+"   "+fecha)
-
+			
 						if(fecha1!=fecha){
 							f=this.props.chatContact[index].date;
 						}
@@ -50,8 +49,8 @@ class Message extends Component{
 							return (
 								<div key={index}>
 									{fecha!=fecha1?(
-										<div className="col-xs-12 col-sm-12 col-md-12" style={{"textAlign": "center","width": "100%"}}>
-											<h3>{fecha}</h3>
+										<div className="col-xs-12 col-sm-12 col-md-12" style={{"textAlign": "center","width": "100%","padding": "20px 10px 30px 10px"}}>
+											<h3 style={{"boxShadow":"0px 2px 10px rgba(0,0,0,0.5)","background":"#d9e1e4","width":"150px","margin":"0 auto"}}>{fecha}</h3>
 										</div>
 										):""
 									}
@@ -62,8 +61,8 @@ class Message extends Component{
 							return(
 								<div key={index}>
 									{fecha!=fecha1?(
-										<div className="col-xs-12 col-sm-12 col-md-12" style={{"textAlign": "center","width": "100%"}}>
-											<h3>{fecha}</h3>
+										<div className="col-xs-12 col-sm-12 col-md-12" style={{"textAlign": "center","width": "100%","padding": "20px 10px 30px 10px"}}>
+											<h3 style={{"boxShadow":"0px 2px 10px rgba(0,0,0,0.5)","background":"#d9e1e4","width":"150px","borderRadius":"10px 10px","margin":"0 auto"}}>{fecha}</h3>
 										</div>
 										):""
 									}

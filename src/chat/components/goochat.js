@@ -180,7 +180,7 @@ class Goochat extends Component{
 		    	online:false,
 		    	devices_online:0
 		    });
-		}else{
+		}else{	
 			var de=devices-1;
 			let onlineOfBussines = fire.database().ref('bussines').child(this.state.id_bussines).child('info_bussines');
 		    onlineOfBussines.update({
@@ -1016,7 +1016,7 @@ updateCountRequest=(cant)=>{
 
 					</div>
 
-					<div style={{"position":"fixed","top":"200px"}}>
+					<div style={{"position":"fixed","bottom":"100px","zIndex":"1000"}}>
 						<input type="text" id="id_user" ></input>
 						<button onClick={this.eventosFire}>entrar</button>
 					</div>
