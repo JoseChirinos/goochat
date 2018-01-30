@@ -49,6 +49,8 @@ class Goochat extends Component{
 		numberOfMessage:10,
 		inputSendState:false,
 		viewMessageSwitch:true,
+		countRequest:0,
+		countMessage:0
 	}
 
 	loadListChat=(e)=>{
@@ -58,7 +60,7 @@ class Goochat extends Component{
 		});
 	}
 
-	eventoFromMenu = (select) =>{	
+	eventoFromMenu = (select) =>{
 
 		//this.scrollHeightPrev=document.getElementById('contentViewMessage').scrollHeight;
 		var menu = {};
@@ -198,6 +200,14 @@ class Goochat extends Component{
 		    requestRef.orderByChild('lagree').equalTo(false).on('value', snapshot => {
 		    this.setState({contactRequest: snapshot.val()});
 		    document.getElementById('menu').className="hidden";
+		   // console.log("probando codigo"+cant);
+			var cont=0;
+			Object.keys(snapshot.val()).map( id =>{
+				//console.log(id);
+				cont++;
+			});
+			//console.log("Probando codigo... ",cont);
+			this.setState({countRequest:cont});
 		});
 	}
 
@@ -261,27 +271,30 @@ class Goochat extends Component{
 	}
 
 
-	
+
 	loadLastChat=()=>{
 		document.getElementById('menu').className="show";
 		let chatRef = fire.database().ref('bussines').child(this.state.id_bussines).child("chat");
 		chatRef.orderByChild('info\latest_message\date').on('value', snapshot => {
 			var jsonTemp;
 			var objInfo;
-			var lastChat=[];
+			//var lastChat=[];
 			var jsonTemp={};
 			// var idCompare='';
-
+			var countMessageVar=0;
+			//fin de los contadores de los contadores del menu
 			jsonTemp=snapshot.val();
-		
-			lastChat=[];
-
-
+			var lastChat=[];
 				Object.keys(jsonTemp).map(id=>{
 					var unreadMessages=this.pruebaCode(id);
 					if(unreadMessages==null){
 						unreadMessages=0;
 					}
+
+					if(unreadMessages!=0){
+						countMessageVar++;
+					}
+
 				 	objInfo={
 			 			id:id,
 			 			latest_message:jsonTemp[id].info.latest_message||{date: 1516460733007,id_bussines: "sergio_id",img_url: "",message: "error"},
@@ -291,17 +304,62 @@ class Goochat extends Component{
 
 					lastChat.push(objInfo);
 
-				 	if(objInfo.unread_messages!=0 && objInfo.unread_messages!=null && this.id_contactVar!=objInfo.id){
-						var audioElement = document.createElement('audio');
-			    		audioElement.setAttribute('src', '../../assets/audio/ding.mp3');
-			   			audioElement.play();
-					}else{
-						this.updateViewed(this.id_contactVar);
-					}
+					// if(objInfo.unread_messages>0 && objInfo.unread_messages!=null){
+					// 	this.sound.push(objInfo);
+					// }
+
+
+				 // 	if(objInfo.unread_messages!=0 && objInfo.unread_messages!=null && this.id_contactVar!=objInfo.id){
+					// 	var audioElement = document.createElement('audio');
+			  //   		audioElement.setAttribute('src', '../../assets/audio/ding.mp3');
+			  //  			audioElement.play();
+					// }else{
+					// 	this.updateViewed(this.id_contactVar);
+					// }
 				});
 
+			//console.log("entrando a las acciones => => ",this.sound);
+			//console.log("entro al recorrido dell lasstChat => => ",lastChat);
+
+			Object.keys(lastChat).map(id=>{
+				if(this.sound!=null && this.sound.length!=0){
+					//console.log("entro al if :v");
+					Object.keys(this.sound).map(idu=>{
+							if(lastChat[id].id==this.sound[idu].id && lastChat[id].unread_messages>0 && lastChat[id].unread_messages!=this.sound[idu].unread_messages){
+								if(this.id_contactVar!=this.sound[idu].id){
+									var audioElement = document.createElement('audio');
+					  		 		audioElement.setAttribute('src', '../../assets/audio/ding.mp3');
+					  				audioElement.play();
+						  			this.sound[idu].unread_messages=lastChat[id].unread_messages;
+								}else{
+									this.updateViewed(this.id_contactVar);
+								}
+							}
+
+					});
+				}else{
+					var ba=false;
+					Object.keys(lastChat).map(id=>{
+						if(lastChat[id].unread_messages>0){
+							this.sound.push(lastChat[id]);
+							ba=true;
+						}
+					});
+					if(ba){
+						var audioElement = document.createElement('audio');
+		  		 		audioElement.setAttribute('src', '../../assets/audio/ding.mp3');
+		  				audioElement.play();
+					}
+		  			//this.sound[idu].unread_messages=lastChat[id].unread_messages;
+
+				}
+			});
+
+
+
+
 			this.setState({contactChat:lastChat});
-			//console.log(lastChat);
+			this.setState({countMessage:countMessageVar});
 			document.getElementById('menu').className="hidden";
 		});
 	}
@@ -448,13 +506,32 @@ class Goochat extends Component{
 
 
 	showInfoContact=(obj)=>{
+
+		if(this.sound!=null && this.sound!=[] && this.sound!=undefined){
+			//console.log("prueba desde el showInfoContact => ",this.sound);
+			Object.keys(this.sound).map(id=>{
+			if(this.sound[id].id==obj.id){
+					this.sound[id].unread_messages=0;
+				}
+			});
+		}
+
+
+
+
+
+
+
+
+
 		this.state.numberOfMessage=10;
 		this.setState({infoContact:obj});
 		this.setState({id_contact:obj.id});
 		this.id_contactVar=obj.id;
 		this.updateViewed(obj.id);
 		this.loadChatContact(obj.id);
-		//console.log("probando codigo del shoowInfoContact");
+
+
 		if (window.matchMedia("(min-width: 892px)").matches) {
   			document.getElementById("chatMessage").className="col-sm-12 col-md-9 col-lg-9 show";
 			document.getElementById("goochat-menu").className="col-sm-12 col-md-3 col-lg-3 goochat-content-list show";
@@ -464,9 +541,6 @@ class Goochat extends Component{
 		}
 
 	}
-
-
-	//actualizar datos viewed
 
 	updateViewed=(id)=>{
 		try{
@@ -488,7 +562,6 @@ class Goochat extends Component{
 		}catch(e){}
 	}
 
-	
 
 
 
@@ -534,45 +607,42 @@ class Goochat extends Component{
 
 
 
-	loadChatContact=(idu)=>{
-		if(idu!=''){
-			document.getElementById('loader').className="show";
-			this.state.inputSendState=true;
-			var id = document.getElementById('id_user').value;
-			let chatRef = fire.database().ref('bussines').child(id+'/chat/'+idu+'/messages').limitToLast(this.state.numberOfMessage);
-			chatRef.on('value', snapshot => {
-				var objTemp=[];
-			  	Object.keys(snapshot.val()||{}).map(ida=>{
-		  			var objTempMessage=snapshot.val()[ida];
-		  			var codeObject={
-		  				code:ida,
-		  				myId:this.state.id_bussines,
-		  				yourId:idu
-		  			};
-		  			var obj = Object.assign(objTempMessage,codeObject);
-		  			objTemp.push(obj);
-			    });
-			  	if(this.id_contactVar==idu && document.getElementById('contentViewMessage').scrollTop!=0){
-			    	this.setState({chatContact:objTemp});
-			    	// document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
-			    	var audioElement = document.createElement('audio');
-			    	audioElement.setAttribute('src', '../../assets/audio/MessageNonzerobot.mp3');
-			   		audioElement.play();
-					document.getElementById('loader').className="hidden";
-				}
-				if(this.id_contactVar==idu && document.getElementById('contentViewMessage').scrollTop==0){
-					this.setState({chatContact:objTemp});
-					// document.getElementById('contentViewMessage').scrollTop=(this.scrollHeightPrev-document.getElementById('contentViewMessage').scrollHeight)*-1;
 
-				}
-				if(this.id_contactVar!=idu){
-					this.state.numberOfMessage=10;
-				}
-				document.getElementById('loader').className="hidden";
-				document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
-			});
-		}
+loadChatContact=(idu)=>{
+	if(idu!=''){
+		document.getElementById('loader').className="show";
+		this.state.inputSendState=true;
+		var id = document.getElementById('id_user').value;
+		let chatRef = fire.database().ref('bussines').child(id+'/chat/'+idu+'/messages').limitToLast(this.state.numberOfMessage);
+		chatRef.on('value', snapshot => {
+			var objTemp=[];
+		  	Object.keys(snapshot.val()||{}).map(ida=>{
+	  			var objTempMessage=snapshot.val()[ida];
+	  			var codeObject={
+	  				code:ida,
+	  				myId:this.state.id_bussines,
+	  				yourId:idu
+	  			};
+	  			var obj = Object.assign(objTempMessage,codeObject);
+	  			objTemp.push(obj);
+		    });
+		  	if(this.id_contactVar==idu && document.getElementById('contentViewMessage').scrollTop!=0){
+		    	this.setState({chatContact:objTemp});
+		    	var audioElement = document.createElement('audio');
+		    	audioElement.setAttribute('src', '../../assets/audio/MessageNonzerobot.mp3');
+		   		audioElement.play();
+			}
+			if(this.id_contactVar==idu && document.getElementById('contentViewMessage').scrollTop==0){
+				this.setState({chatContact:objTemp});
+			}
+			if(this.id_contactVar!=idu){
+				this.state.numberOfMessage=10;
+			}
+			document.getElementById('loader').className="hidden";
+			document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
+		});
 	}
+}
 
 
 
@@ -718,8 +788,7 @@ class Goochat extends Component{
 			region:"okinawa :v"
 		};
 
-
-
+		this.sound=[];
 	}
 
 
@@ -803,10 +872,6 @@ class Goochat extends Component{
 			this.state.numberOfMessage+=10;
 			document.getElementById('loader').className="show";
 			setTimeout(function(){
-				//this.loadChatContact(this.state.id_contact);
-
-
-
 				let chatRef = fire.database().ref('bussines').child(this.state.id_bussines+'/chat/'+this.state.id_contact+'/messages').limitToLast(this.state.numberOfMessage);
 				chatRef.on('value', snapshot => {
 				var objTemp=[];
@@ -839,19 +904,6 @@ class Goochat extends Component{
 				document.getElementById('loader').className="hidden";
 				chatRef.off();
 			});
-
-
-
-
-
-
-
-
-
-
-
-
-
 			}.bind(this),200);
 
 		}
@@ -880,7 +932,9 @@ class Goochat extends Component{
 
 
 
+updateCountRequest=(cant)=>{
 
+}
 
 
 
@@ -908,7 +962,7 @@ class Goochat extends Component{
 			}
 		});
 	}
-	
+
 	render(){
 		return(
 			<div className="container-fluid Goochat" style={{"height":"100%","margin":"0","width":"100%"}}>
@@ -927,7 +981,7 @@ class Goochat extends Component{
 
 					</div>
 
-					<div style={{"position":"fixed","top":"200px"}}>
+					<div style={{"position":"fixed","bottom":"70px","zIndex":"16"}}>
 						<input type="text" id="id_user" ></input>
 						<button onClick={this.eventosFire}>entrar</button>
 					</div>
@@ -961,7 +1015,7 @@ class Goochat extends Component{
 
 						 	</div>
 						 	<div className="col-md-12" style={{"position":"absolute","bottom":"0px","width":"100%","paddingRight":"0px","paddingLeft": "0px"}}>
-								<Menu eventoPrueba={ this.eventoFromMenu }/>
+								<Menu countMessage={this.state.countMessage} countRequest={this.state.countRequest} eventoPrueba={ this.eventoFromMenu }/>
 							</div>
 						</div>
 					</div>

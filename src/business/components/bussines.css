@@ -8,11 +8,12 @@
     color: white;
     height: 130px;
     padding-left: 10%;
-    z-index: 10000;
+    z-index: 15;
     font-family: Roboto;
 }
 
 .Bussines-container img{
+	background: #ededed;
 	height: 70px;
 	border-radius: 50% 50%;
 	vertical-align: middle;

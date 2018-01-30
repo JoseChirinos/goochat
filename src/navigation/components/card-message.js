@@ -37,13 +37,23 @@ class Card extends Component{
 		});
 	}
 
+
+	playSound=()=>{
+		var audioElement = document.createElement('audio');
+		audioElement.setAttribute('src', '../../assets/audio/ding.mp3');
+		audioElement.play();
+	}
+
+
 	render(){
 		const {userInfo}=this.props;
 		
 		//var online=this.props.contactOnLinePrueba(userInfo.id);
 
 		//console.log("probando.....",this.props);
-
+		// if (userInfo.unread_messages>0 && userInfo.unread_messages!=null){
+		// 	this.playSound();
+		// }
 
 
 		if(userInfo.latest_message.date!=null){
