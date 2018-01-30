@@ -8,16 +8,17 @@ class Input extends Component{
 
 	updateMessage=(m)=>{
 		this.setState({message:m});
-
 	}
-	prueba=(e)=>{
 
+
+
+	prueba=(e)=>{
 		var tecla = (document.all) ? e.keyCode : e.which;
 		if(e.ctrlKey  && tecla==13 && document.getElementById('inputSendMessage').value!=""){
-			document.getElementById('inputSendMessage').value="";
+			console.log("funciona")
 			this.props.sendMessage(this.state.message);
 			this.setState({message:''});
-			
+			document.getElementById('inputSendMessage').value="";
 		}
 	}
 
