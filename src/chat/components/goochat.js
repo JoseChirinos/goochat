@@ -954,7 +954,6 @@ countRequest=(ids)=>{
 			this.setState({countRequest:Object.keys(snapshot.val()).length});
 	    }else{
 	    	this.setState({countRequest:0});
-	    
 	    }
 	});
 }
