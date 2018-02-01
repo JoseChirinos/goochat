@@ -14,7 +14,7 @@ class Input extends Component{
 
 	prueba=(e)=>{
 		var tecla = (document.all) ? e.keyCode : e.which;
-		if(e.ctrlKey  && tecla==13 && document.getElementById('inputSendMessage').value!=""){
+		if(tecla==13 && document.getElementById('inputSendMessage').value!=""){
 			console.log("funciona")
 			this.props.sendMessage(this.state.message);
 			this.setState({message:''});

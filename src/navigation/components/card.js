@@ -16,10 +16,10 @@ class Card extends Component{
 	}
 
 	urlImgUserItem=(id)=>{
-		let imgRef = fire.database().ref('bussines').child(id).child("info_bussines");
+		let imgRef = fire.database().ref('bussines').child(id).child("info_bussines").child("img_url");
 		var urlImg="";
 		imgRef.on('value', snapshot => {
-			urlImg=snapshot.val().img_url;
+			urlImg=snapshot.val();
 			this.setState({img:urlImg});
 		});
 	}

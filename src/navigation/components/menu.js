@@ -3,20 +3,18 @@ import React, { Component } from 'react';
 
 import './menu.css'
 class Menu extends Component{	
-	// animation=(id)=>{
-	// 	console.log("provando el id => ",id);
-	// 	document.getElementById(id);
-	// }
+	
+	state={
+		countRequest:0
+	}
 
-	// componentDidMount(){
-		
-	// 	// if(state1){
-	// 	// 	this.animation('square');
-	// 	// }
-	// 	// if(state2){
-	// 	// 	this.animation('plus');
-	// 	// }
-	// }
+	componentWillReceiveProps(nextProps){	
+		if(nextProps.countRequest!=null){
+			this.setState({countRequest:nextProps.countRequest});
+		}else{
+			this.setState({countRequest:0});	
+		}
+	}
 
 	render(){
 		const state1=true;
@@ -42,9 +40,9 @@ class Menu extends Component{
 						<span id="search" className="icon-search evento" onClick={ () => this.props.eventoPrueba(2) } />
 					</div>
 					<div className="col-xs-3 col-sm-3 col-md-3 menu-containerPlus">
-						<label className={state2 && this.props.countRequest!=0?"show countMenu":"hidden countMenu"}>
+						<label className={state2 && this.state.countRequest!=0?"show countMenu":"hidden countMenu"}>
 							{
-								this.props.countRequest!=0?this.props.countMessage:""
+								this.state.countRequest!=0?this.state.countRequest:""
 							}
 						</label>
 						<span id="plus" className="icon-user-plus evento" onClick={ () => this.props.eventoPrueba(3) } />

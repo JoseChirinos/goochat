@@ -7,19 +7,49 @@ import fire from './../../config-chat/firebase-config';
 class Card extends Component{
 	state={
 		online:false,
-		img:''
+		img:'',
+		id_bussines:'',
+		unreadCount:0,
+	}
+
+	componentDidMount(){
+		this.messagesUnread(this.props.userInfo.id);	
+		this.play=true;
+		this.unreadPrev=0
 	}
 
 	componentWillMount(){
+		this.audioElement = document.createElement('audio');
+		this.audioElement.setAttribute('src', '../../assets/audio/ding.mp3');
+	
+
+		this.setState({id_bussines:this.props.id_bussines});
 		this.contactOnLinePrueba(this.props.userInfo.id);
 		this.urlImgUserItem(this.props.userInfo.id);
 	}
 
+	componentWillReceiveProps(nextProps){	
+		if(nextProps != null){
+		 	this.urlImgUserItem(nextProps.userInfo.id);
+		 	this.messagesUnread(nextProps.userInfo.id);
+		}
+
+
+		if(nextProps.userInfo.id){
+			this.messagesUnread(this.props.userInfo.id);	
+		}
+
+		//console.log("props funcionando perfecto => => "); 
+	}
+
+
+
+
 	urlImgUserItem=(id)=>{
-		let imgRef = fire.database().ref('bussines').child(id).child("info_bussines");
+		let imgRef = fire.database().ref('bussines').child(id).child("info_bussines").child("img_url");
 		var urlImg="";
 		imgRef.on('value', snapshot => {
-			urlImg=snapshot.val().img_url;
+			urlImg=snapshot.val();
 			this.setState({img:urlImg});
 		});
 	}
@@ -39,23 +69,45 @@ class Card extends Component{
 
 
 	playSound=()=>{
-		var audioElement = document.createElement('audio');
-		audioElement.setAttribute('src', '../../assets/audio/ding.mp3');
-		audioElement.play();
+		if(this.play){
+			this.play=false;
+			this.audioElement.play();
+		}
+		setTimeout(function(){
+			this.play=true;
+		}.bind(this),1200);	
 	}
+
+
+
+	messagesUnread=(id)=>{
+		let refCountMessage=fire.database().ref('bussines').child(this.state.id_bussines).child('chat').child(id).child('messages');
+	    refCountMessage.orderByChild('viewed').equalTo(false).once('value').then(snapshot=>{
+			if(snapshot.val()!=null){
+				//console.log('asdasd',Object.keys(snapshot.val()).length);
+				this.setState({unreadCount:Object.keys(snapshot.val()).length});
+				if(Object.keys(snapshot.val()).length!=0){
+					// this.props.countMessageUnreadPlus();
+				}
+
+
+				if(this.unreadPrev!=Object.keys(snapshot.val()).length){
+					this.playSound();
+					this.unreadPrev=Object.keys(snapshot.val()).length;
+				}
+			}else{
+				this.setState({unreadCount:0});
+				// this.props.countMessageUnreadMinus();
+			}
+		});
+	}
+
+
+
 
 
 	render(){
 		const {userInfo}=this.props;
-		
-		//var online=this.props.contactOnLinePrueba(userInfo.id);
-
-		//console.log("probando.....",this.props);
-		// if (userInfo.unread_messages>0 && userInfo.unread_messages!=null){
-		// 	this.playSound();
-		// }
-
-
 		if(userInfo.latest_message.date!=null){
 			var date=new Date(userInfo.latest_message.date);
 			var mes=(date.getMonth()+1)<10?"0"+(date.getMonth()+1):(date.getMonth()+1);
@@ -77,7 +129,8 @@ class Card extends Component{
 				url_page:"no tiene.com"
 			}
 		}
-	
+
+
 		return(
 				<div className="card-container">
 					<div className="row">
@@ -116,8 +169,8 @@ class Card extends Component{
 							</div>
 						</div>
 						<div className="col-xs-2 col-sm-2 col-md-2 card-navigation">
-							<div className={userInfo.unread_messages==0 || userInfo.unread_messages==null?"unreadMessages hidden":"unreadMessages"}>
-								{userInfo.unread_messages}
+							<div className={this.state.unreadCount==0 || this.state.unreadCount==null?"unreadMessages hidden":"unreadMessages"}>
+								{this.state.unreadCount}
 							</div>
 							<a href={this.props.userInfo.name_description.url_page}>
 							<span className="icon-link"/>				

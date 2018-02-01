@@ -104,6 +104,8 @@ class Goochat extends Component{
 
 	eventosFire = () =>{
 		var id = document.getElementById('id_user').value;
+		this.countChatMessage(id);
+		this.countRequest(id);
 	    let nameBussines = fire.database().ref('bussines/'+id).child('info_bussines');
 	    nameBussines.on('value', snapshot => {
 	    let obj = { myInfo: snapshot.val(), id: id };
@@ -115,11 +117,11 @@ class Goochat extends Component{
 
 	    let devicesOnLine = fire.database().ref('bussines/'+id).child('info_bussines').child("devices_online");
 
-	    devicesOnLine.on("value",snapshot=>{
+	    devicesOnLine.once("value").then(snapshot=>{
 			var devices=snapshot.val();
-	    	devicesOnLine.off();
+	    	// devicesOnLine.off();
 
-	    	console.log(snapshot.val());
+	    	//console.log(snapshot.val());
 		    let onlineOnBussines = fire.database().ref('bussines/'+id).child('info_bussines');
 				onlineOnBussines.update({
 			    online:true,
@@ -134,6 +136,7 @@ class Goochat extends Component{
 		//     devices_online:devices+1
 		// });
 	 //    }.bind(),200);
+
 	}
 
 	viewState=(men)=>{
@@ -170,9 +173,9 @@ class Goochat extends Component{
 
 		let devicesOnLine = fire.database().ref('bussines').child(this.state.id_bussines).child('info_bussines').child("devices_online");
 	    var devices=0;
-	    devicesOnLine.on("value",snapshot=>{
+	    devicesOnLine.once("value").then(snapshot=>{
 	    	devices=snapshot.val();
-			devicesOnLine.off();
+			// devicesOnLine.off();
 	    });
 	    if(devices<=1){
 	    	let onlineOfBussines = fire.database().ref('bussines').child(this.state.id_bussines).child('info_bussines');
@@ -235,20 +238,20 @@ class Goochat extends Component{
 		    this.setState({contactRequest: snapshot.val()});
 		    document.getElementById('menu').className="hidden";
 		   // console.log("probando codigo"+cant);
-			var cont=0;
-			Object.keys(snapshot.val()||{}).map( id =>{
-				//console.log(id);
-				cont++;
-			});
+			// var cont=0;
+			// Object.keys(snapshot.val()||{}).map( id =>{
+			// 	//console.log(id);
+			// 	cont++;
+			// });
 			//console.log("Probando codigo... ",cont);
-			this.setState({countRequest:cont});
+			//this.setState({countRequest:cont});
 		});
 	}
 
 	loadSearch=(e)=>{
 		// var idu = document.getElementById('id_user').value;
 		document.getElementById('menu').className="show";
-		let searchRef = fire.database().ref('bussines');
+		let searchRef = fire.database().ref('list_bussines');
 		searchRef.on('value', snapshot => {
 			document.getElementById('menu').className="show";
 			var jsonTemp=[];
@@ -283,120 +286,78 @@ class Goochat extends Component{
 
 	//funcion de prueba
 
-	pruebaCode=(id)=>{
-		if(this.state.id_contact!=id){
-			var jsonTemp={};
-			let chatRef2 = fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(id).child("messages").limitToLast(1000);
-			chatRef2.orderByChild('viewed').equalTo(false).on('value', snapshot => {
-				jsonTemp=snapshot.val();
-				chatRef2.off();
-			});
-			var lon;
-			try{
-				lon=Object.keys(jsonTemp).length;
-			}catch(e){lon=0;}
-			if(this.state.id_contact==id){
-				this.updateViewed(id);
-				return 0;
-			}else{
-				return lon;
-			}
-		}
-	}
+	// pruebaCode=(id)=>{
+	// 	if(this.state.id_contact!=id){
+	// 		var jsonTemp;
+	// 		let chatRef2=fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(id).child("messages");
+	// 		chatRef2.orderByChild('viewed').equalTo(false).once('value').then(snapshot => {
+	// 			jsonTemp=snapshot.val();
+	// 			console.log("probando code for goochat => => ",Object.keys(snapshot.val()||{}).length);
+	// 			// chatRef2.off();
+	// 		});
+
+	// 		var lon;
+	// 		try{
+	// 			lon=Object.keys(jsonTemp).length;
+	// 		}catch(e){lon=0;}
+
+
+	// 		if(this.state.id_contact==id){
+	// 			this.updateViewed(id);
+	// 			return 0;
+	// 		}else{
+	// 			return lon;
+	// 		}
+	// 	}
+	// }
 
 
 	
 	loadLastChat=()=>{
 		document.getElementById('menu').className="show";
 		let chatRef = fire.database().ref('bussines').child(this.state.id_bussines).child("chat");
-		chatRef.orderByChild('info\latest_message\date').on('value', snapshot => {
-			var jsonTemp;
-			var objInfo;
-			//var lastChat=[];
-			var jsonTemp={};
-			// var idCompare='';
-			var countMessageVar=0;
-			//fin de los contadores de los contadores del menu
-			jsonTemp=snapshot.val();
+		chatRef.on('value', snapshot => {
 			var lastChat=[];
-				Object.keys(jsonTemp).map(id=>{
-					var unreadMessages=this.pruebaCode(id);
-					if(unreadMessages==null){
-						unreadMessages=0;
-					}
+			//console.log("probando codigo => ",snapshot.val());
+			var jsonTemp=snapshot.val();
+			var unreadMessages=10;
+			Object.keys(jsonTemp||{}).map(id=>{
+				var objInfo={
+		 			id:id,
+		 			latest_message:jsonTemp[id].info.latest_message||{date: 1516460733007,id_bussines: "sergio_id",img_url: "",message: "error"},
+		 			name_description:jsonTemp[id].info.name_description||{img_url:"",description:"",url_page:""},
+		 			unread_messages:unreadMessages
+			 	}
+				lastChat.push(objInfo);
+			});
 
-					if(unreadMessages!=0){
-						countMessageVar++;
-					}
-
-				 	objInfo={
-			 			id:id,
-			 			latest_message:jsonTemp[id].info.latest_message||{date: 1516460733007,id_bussines: "sergio_id",img_url: "",message: "error"},
-			 			name_description:jsonTemp[id].info.name_description||{img_url:"",description:"",url_page:""},
-			 			unread_messages:unreadMessages
-				 	}
-
-					lastChat.push(objInfo);
-
-					// if(objInfo.unread_messages>0 && objInfo.unread_messages!=null){
-					// 	this.sound.push(objInfo);
-					// }
-
-
-				 // 	if(objInfo.unread_messages!=0 && objInfo.unread_messages!=null && this.id_contactVar!=objInfo.id){
-					// 	var audioElement = document.createElement('audio');
-			  //   		audioElement.setAttribute('src', '../../assets/audio/ding.mp3');
-			  //  			audioElement.play();
-					// }else{
-					// 	this.updateViewed(this.id_contactVar);
-					// }
-				});
-
-			//console.log("entrando a las acciones => => ",this.sound);
-			//console.log("entro al recorrido dell lasstChat => => ",lastChat);
-			
-			Object.keys(lastChat).map(id=>{
-				if(this.sound!=null && this.sound.length!=0){
-					//console.log("entro al if :v");
-					Object.keys(this.sound).map(idu=>{
-							if(lastChat[id].id==this.sound[idu].id && lastChat[id].unread_messages>0 && lastChat[id].unread_messages!=this.sound[idu].unread_messages){
-								if(this.id_contactVar!=this.sound[idu].id){
-									var audioElement = document.createElement('audio');
-					  		 		audioElement.setAttribute('src', '../../assets/audio/ding.mp3');
-					  				audioElement.play();
-						  			this.sound[idu].unread_messages=lastChat[id].unread_messages;
-								}else{
-									this.updateViewed(this.id_contactVar);
-								}
-							}
-
-					});
-				}else{
-					var ba=false;
-					Object.keys(lastChat).map(id=>{
-						if(lastChat[id].unread_messages>0){
-							this.sound.push(lastChat[id]);
-							ba=true;
-						}
-					});
-					if(ba){
-						var audioElement = document.createElement('audio');
-		  		 		audioElement.setAttribute('src', '../../assets/audio/ding.mp3');
-		  				audioElement.play();
-					}
-		  			//this.sound[idu].unread_messages=lastChat[id].unread_messages;
-				
+			//metodo que ordena los mensajes por orden de llegada de los mensajes
+			lastChat.sort(function(a,b){
+				if(new Date(a['latest_message'].date)>new Date(b['latest_message'].date)){
+					return -1;
 				}
+				else if(new Date(a['latest_message'].date)<new Date(b['latest_message'].date)){
+					return 1;
+				}
+				return 0;
 			});
 
 
+			//console.log("probando .... ",lastChat);
 
 
+
+
+
+
+			//asigno los valores al contact chat
 			this.setState({contactChat:lastChat});
-			this.setState({countMessage:countMessageVar});
 			document.getElementById('menu').className="hidden";
 		});
 	}
+
+
+
 
 
 
@@ -539,10 +500,78 @@ class Goochat extends Component{
 
 
 
+
+
+	// countMessageUnreadPlus=()=>{
+	// 	console.log("sumando");
+	// 	this.setState({countMessage:(this.state.countMessage)+1});
+	// }
+
+	// countMessageUnreadMinus=()=>{
+	// 	console.log("restando");
+	// 	if(this.state.countMessage!=0 && this.state.countMessage>0){
+	// 		this.setState({countMessage:(this.state.countMessage)-1});
+	// 	}
+	// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	showInfoContact=(obj)=>{
-	
+		this.id_contactVar=obj.id;
+		this.updateViewed(obj.id);
 		if(this.sound!=null && this.sound!=[] && this.sound!=undefined){
-			//console.log("prueba desde el showInfoContact => ",this.sound);
 			Object.keys(this.sound).map(id=>{
 			if(this.sound[id].id==obj.id){
 					this.sound[id].unread_messages=0;
@@ -552,19 +581,12 @@ class Goochat extends Component{
 
 
 
-
-
-
-
-
-
+		
 		this.state.numberOfMessage=10;
 		this.setState({infoContact:obj});
 		this.setState({id_contact:obj.id});
-		this.id_contactVar=obj.id;
-		this.updateViewed(obj.id);
 		this.loadChatContact(obj.id);
-
+		
 
 		if (window.matchMedia("(min-width: 892px)").matches) {
   			document.getElementById("chatMessage").className="col-sm-12 col-md-9 col-lg-9 show";
@@ -579,20 +601,20 @@ class Goochat extends Component{
 	updateViewed=(id)=>{
 		try{
 			var jsonTemp={};
-			let chatRef1 = fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(id).child("messages").limitToLast(100);
-			chatRef1.orderByChild("viewed").equalTo(false).on('value', snapshot => {
+			let chatRef1 = fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(id).child("messages");
+			chatRef1.orderByChild("viewed").equalTo(false).once('value').then(snapshot => {
 				jsonTemp=snapshot.val();
-				chatRef1.off();
-				//console.log("ddimension exacta",Object.keys(jsonTemp).length);
+				try{
+					var updates = {};					
+					Object.keys(jsonTemp).map(idMessage=>{
+						updates['/bussines/'+this.state.id_bussines+'/chat/'+id+'/messages/'+idMessage+'/viewed']=true;
+					});	
+					fire.database().ref().update(updates);
+					console.log("datos actualizados");
+
+
+				}catch(e){}
 			});
-			try{
-				Object.keys(jsonTemp).map(idMessage=>{
-					let chatRef2 = fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(id).child("messages").child(idMessage);
-					chatRef2.update({
-						viewed:true
-					});
-				});
-			}catch(e){}
 		}catch(e){}
 	}
 
@@ -650,6 +672,7 @@ loadChatContact=(idu)=>{
 		let chatRef = fire.database().ref('bussines').child(id+'/chat/'+idu+'/messages').limitToLast(this.state.numberOfMessage);
 		chatRef.on('value', snapshot => {
 			var objTemp=[];
+
 		  	Object.keys(snapshot.val()||{}).map(ida=>{
 	  			var objTempMessage=snapshot.val()[ida];
 	  			var codeObject={
@@ -660,11 +683,13 @@ loadChatContact=(idu)=>{
 	  			var obj = Object.assign(objTempMessage,codeObject);
 	  			objTemp.push(obj);
 		    });
+
 		  	if(this.id_contactVar==idu && document.getElementById('contentViewMessage').scrollTop!=0){
 		    	this.setState({chatContact:objTemp});
 		    	var audioElement = document.createElement('audio');
 		    	audioElement.setAttribute('src', '../../assets/audio/MessageNonzerobot.mp3');
 		   		audioElement.play();
+		   		this.updateViewed(this.id_contactVar);
 			}
 			if(this.id_contactVar==idu && document.getElementById('contentViewMessage').scrollTop==0){
 				this.setState({chatContact:objTemp});
@@ -699,6 +724,34 @@ loadChatContact=(idu)=>{
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//funcion que actualiza los mensajes no vistos
 
 
 
@@ -812,17 +865,18 @@ loadChatContact=(idu)=>{
 		this.scrollHeightPrev=0;
 
 		var objJson={
-			id:"pepe_id",
-			country:"bolivia",
-			description:"pepe open Red",
+			id:"asdasddnajksnjd",
+			country:"china",
+			description:"hiroko saka moko",
 			img_url:"https://d30y9cdsu7xlg0.cloudfront.net/png/17239-200.png",
-			name_bussines:"Open Red.",
-			url_page:"Openred.com",
-			region:"sucre"
+			name_bussines:"shin fun han",
+			url_page:"kunFu.com",
+			region:"okinawa",
+			devices_online: 0
 		};
 
 		//this.saveNewUser(objJson);
-
+		this.saveNewUserList(objJson);
 		this.sound=[];
 	}
 
@@ -866,8 +920,44 @@ loadChatContact=(idu)=>{
 
 
 
+	countChatMessage=(ids)=>{
+		let chatRef = fire.database().ref('bussines/'+ids).child("chat");
+		chatRef.on('value', snapshot => {	
+			var countMessageVar=0;
+			var jsonTemp=snapshot.val();
+			Object.keys(jsonTemp||{}).map(id=>{
+					let chatRef2=fire.database().ref('bussines').child(ids).child("chat").child(id).child("messages");
+					chatRef2.orderByChild('viewed').equalTo(false).once('value').then(snapshot => {
+						//console.log("probando code for goochat => => ",Object.keys(snapshot.val()||{}).length);
+						var unreadMessages=Object.keys(snapshot.val()||{}).length;
+						if(unreadMessages==null){
+							unreadMessages=0;
+						}
+						if(unreadMessages!=0){
+							countMessageVar++;
+						}
+					});
+			});
+			setTimeout(function(){
+				this.setState({countMessage:countMessageVar});
+			}.bind(this),300);
+		});
+	}
 
 
+
+countRequest=(ids)=>{
+	let requestRef = fire.database().ref('bussines/'+ids).child('bussines_circle');
+	    requestRef.orderByChild('lagree').equalTo(false).on('value', snapshot => {
+	    if(snapshot.val()!=null){	
+	    	console.log("prueba => ",Object.keys(snapshot.val()).length);	    	
+			this.setState({countRequest:Object.keys(snapshot.val()).length});
+	    }else{
+	    	this.setState({countRequest:0});
+	    
+	    }
+	});
+}
 
 
 
@@ -908,7 +998,7 @@ loadChatContact=(idu)=>{
 			document.getElementById('loader').className="show";
 			setTimeout(function(){
 				let chatRef = fire.database().ref('bussines').child(this.state.id_bussines+'/chat/'+this.state.id_contact+'/messages').limitToLast(this.state.numberOfMessage);
-				chatRef.on('value', snapshot => {
+				chatRef.once('value').then(snapshot => {
 				var objTemp=[];
 			  	Object.keys(snapshot.val()||{}).map(ida=>{
 		  			var objTempMessage=snapshot.val()[ida];
@@ -937,7 +1027,7 @@ loadChatContact=(idu)=>{
 					this.state.numberOfMessage=10;
 				}
 				document.getElementById('loader').className="hidden";
-				chatRef.off();
+				//chatRef.off();
 			});
 			}.bind(this),200);
 
@@ -991,12 +1081,32 @@ updateCountRequest=(cant)=>{
 				description:obj.description,
 				img_url:obj.img_url,
 				name_bussines:obj.name_bussines,
-				online:true,
+				url_page:obj.url_page,
+				region:obj.region,
+				devices_online:obj.devices_online
+			}
+		});
+	}
+
+
+
+	saveNewUserList=(obj)=>{
+		let refNewUser=fire.database().ref('list_bussines').child(obj.id);
+		refNewUser.update({
+			info_bussines:{
+				country:obj.country,
+				description:obj.description,
+				img_url:obj.img_url,
+				name_bussines:obj.name_bussines,
 				url_page:obj.url_page,
 				region:obj.region
 			}
 		});
 	}
+	
+
+
+
 	
 	render(){
 		return(
@@ -1038,7 +1148,7 @@ updateCountRequest=(cant)=>{
 								<ListContact showInfoContact={this.showInfoContact} estado={ this.state.menu.listContact ? 'show':'hidden' } contactCircle={this.state.contactCircle} contactDelete={this.deleteItemCircle}/>
 
 								<div className={ this.state.menu.chatList ? 'show':'hidden' } id="goochat-chatlist" >
-									<ListChat showInfoContact={this.showInfoContact} contactChat={this.state.contactChat}/>
+									<ListChat countMessageUnreadMinus={this.countMessageUnreadMinus} countMessageUnreadPlus={this.countMessageUnreadPlus} id_bussines={this.state.id_bussines} showInfoContact={this.showInfoContact} contactChat={this.state.contactChat}/>
 								</div>
 
 								<div className={this.state.menu.search ? 'show':'hidden' } id="goochat-search" >
