@@ -23,10 +23,10 @@ class Info extends Component{
 
 	contactOnLinePrueba=(id)=>{
 		var online=false;
-		let refOnlineUser=fire.database().ref('bussines').child(id);
+		let refOnlineUser=fire.database().ref('bussines').child(id).child("info_bussines").child("online");
 		refOnlineUser.on('value',snapshot=>{
 			//console.log("id del user "+snapshot.val().info_bussines.name_bussines+" "+snapshot.val().info_bussines.online);
-			if(snapshot.val().info_bussines.online){
+			if(snapshot.val()){
 				this.setState({online:true});
 			}else{
 				this.setState({online:false});

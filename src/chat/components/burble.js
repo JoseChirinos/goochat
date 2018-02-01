@@ -6,7 +6,6 @@ import fire from './../../config-chat/firebase-config';
 class Burble extends Component{
 	render(){
 		// try{
-
 		// 	let updateViewRef= fire.database().ref('bussines').child(this.props.obj.myId).child("chat").child(this.props.obj.yourId).child("messages").child(this.props.obj.code);
 		// 	updateViewRef.update({
  	//  		"viewed": true
