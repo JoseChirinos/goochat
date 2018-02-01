@@ -27,7 +27,7 @@ class Input extends Component{
 			<div className="input-container">
 				<div className="row">
 					<div className="col-xs-11 col-sm-11 col-md-11">
-						<input id="inputSendMessage" type="textarea" placeholder="Escribe un mensaje..." onKeyUp={(e)=>{ this.prueba(e)} } onInput={ (e)=>{ this.updateMessage(e.target.value) } }/>
+						<input id="inputSendMessage" type="textarea" placeholder="Escribe un mensaje.." onKeyUp={(e)=>{ this.prueba(e)} } onInput={ (e)=>{ this.updateMessage(e.target.value) } }/>
 					</div>
 					<div className="col-sm-1 col-md-1">
 						<span className="icon-navigation input-sendMessage" onClick={()=>this.props.sendMessage(this.state.message)}/>
