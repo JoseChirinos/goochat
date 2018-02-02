@@ -2,6 +2,8 @@
 import React, { Component } from 'react';
 import CardMessage from './../../navigation/components/card-message';
 import './list-chat.css';
+import NullContact  from './../../navigation/components/nullContact';
+
 class ListMessage extends Component{
 	// onlineContact
 	state={
@@ -14,7 +16,8 @@ class ListMessage extends Component{
 	}
 	render(){
 		//console.log("mostrando los datos desde el lisMessage",this.props);
-		return(
+
+		var a=(
 			<div className="content-chat">
 				{
 					Object.keys(this.state.contactMessages||{}).map( index =>{
@@ -27,8 +30,13 @@ class ListMessage extends Component{
 					})
 					
 				}
+				<div className={this.state.contactMessages.length==0?"show":"hidden"}>
+					<NullContact v={2} eventoFromMenu={this.props.eventoFromMenu}></NullContact>
+				</div>
 			</div>
-		)
+		);
+
+		return a;
 	}
 }
 

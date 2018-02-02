@@ -102,6 +102,10 @@ class Goochat extends Component{
 		this.viewState(menu);
 	}
 
+
+
+
+
 	eventosFire = () =>{
 		var id = document.getElementById('id_user').value;
 		this.countChatMessage(id);
@@ -237,14 +241,7 @@ class Goochat extends Component{
 		    requestRef.orderByChild('lagree').equalTo(false).on('value', snapshot => {
 		    this.setState({contactRequest: snapshot.val()});
 		    document.getElementById('menu').className="hidden";
-		   // console.log("probando codigo"+cant);
-			// var cont=0;
-			// Object.keys(snapshot.val()||{}).map( id =>{
-			// 	//console.log(id);
-			// 	cont++;
-			// });
-			//console.log("Probando codigo... ",cont);
-			//this.setState({countRequest:cont});
+
 		});
 	}
 
@@ -283,33 +280,6 @@ class Goochat extends Component{
 			this.setState({contactSearch:jsonTemp});
 		});
 	}
-
-	//funcion de prueba
-
-	// pruebaCode=(id)=>{
-	// 	if(this.state.id_contact!=id){
-	// 		var jsonTemp;
-	// 		let chatRef2=fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(id).child("messages");
-	// 		chatRef2.orderByChild('viewed').equalTo(false).once('value').then(snapshot => {
-	// 			jsonTemp=snapshot.val();
-	// 			console.log("probando code for goochat => => ",Object.keys(snapshot.val()||{}).length);
-	// 			// chatRef2.off();
-	// 		});
-
-	// 		var lon;
-	// 		try{
-	// 			lon=Object.keys(jsonTemp).length;
-	// 		}catch(e){lon=0;}
-
-
-	// 		if(this.state.id_contact==id){
-	// 			this.updateViewed(id);
-	// 			return 0;
-	// 		}else{
-	// 			return lon;
-	// 		}
-	// 	}
-	// }
 
 
 
@@ -502,23 +472,6 @@ class Goochat extends Component{
 
 
 
-	// countMessageUnreadPlus=()=>{
-	// 	console.log("sumando");
-	// 	this.setState({countMessage:(this.state.countMessage)+1});
-	// }
-
-	// countMessageUnreadMinus=()=>{
-	// 	console.log("restando");
-	// 	if(this.state.countMessage!=0 && this.state.countMessage>0){
-	// 		this.setState({countMessage:(this.state.countMessage)-1});
-	// 	}
-	// }
-
-
-
-
-
-
 
 
 
@@ -571,6 +524,9 @@ class Goochat extends Component{
 	showInfoContact=(obj)=>{
 		this.id_contactVar=obj.id;
 		this.updateViewed(obj.id);
+
+		document.getElementById('contentViewMessage').style.background="";
+
 		if(this.sound!=null && this.sound!=[] && this.sound!=undefined){
 			Object.keys(this.sound).map(id=>{
 			if(this.sound[id].id==obj.id){
@@ -579,14 +535,13 @@ class Goochat extends Component{
 			});
 		}
 
-
-
-
 		this.state.numberOfMessage=10;
 		this.setState({infoContact:obj});
 		this.setState({id_contact:obj.id});
 		this.loadChatContact(obj.id);
 
+		document.getElementById("inputSendMessage").focus();
+		//document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeigth;
 
 		if (window.matchMedia("(min-width: 892px)").matches) {
   			document.getElementById("chatMessage").className="col-sm-12 col-md-9 col-lg-9 show";
@@ -666,12 +621,12 @@ class Goochat extends Component{
 loadChatContact=(idu)=>{
 	if(idu!=''){
 		document.getElementById('loader').className="show";
+		document.getElementById("inputSendMessage").focus();
 		this.state.inputSendState=true;
 		var id = document.getElementById('id_user').value;
 		let chatRef = fire.database().ref('bussines').child(id+'/chat/'+idu+'/messages').limitToLast(this.state.numberOfMessage);
 		chatRef.on('value', snapshot => {
 			var objTemp=[];
-
 		  	Object.keys(snapshot.val()||{}).map(ida=>{
 	  			var objTempMessage=snapshot.val()[ida];
 	  			var codeObject={
@@ -698,6 +653,11 @@ loadChatContact=(idu)=>{
 			}
 			document.getElementById('loader').className="hidden";
 			document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
+
+			setTimeout(function(){
+				document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
+			}.bind(this),100);
+
 		});
 	}
 }
@@ -949,7 +909,7 @@ countRequest=(ids)=>{
 	let requestRef = fire.database().ref('bussines/'+ids).child('bussines_circle');
 	    requestRef.orderByChild('lagree').equalTo(false).on('value', snapshot => {
 	    if(snapshot.val()!=null){
-	    	console.log("prueba => ",Object.keys(snapshot.val()).length);
+	    	//console.log("prueba => ",Object.keys(snapshot.val()).length);
 			this.setState({countRequest:Object.keys(snapshot.val()).length});
 	    }else{
 	    	this.setState({countRequest:0});
@@ -1110,7 +1070,7 @@ updateCountRequest=(cant)=>{
 		return(
 			<div className="container-fluid Goochat" style={{"height":"100%","margin":"0","width":"100%"}}>
 				<div className="row">
-					<div id="chatMessage" className="col-sm-12 col-md-9 col-lg-9" style={ {"overflowX":"hidden","overflowY":"hidden","height":"100vh","background":"url(./assets/images/background-inicio.png)","backgroundSize":"100% 100%","backgroundRepeat":"no-repeat"}}>
+					<div id="chatMessage" className="col-sm-12 col-md-9 col-lg-9" style={ {"overflowX":"hidden","overflowY":"hidden","height":"100vh","background":"url(./assets/images/background-inicio.png)","backgroundSize":"cover","backgroundRepeat":"no-repeat"}}>
 
 						<div style={{"zIndex": "1000","width":"100%","position":"absolute","left": "0px","top": "0px","background": "#ededed","color": "gray","textAlign":"left","paddingLeft":"3%","fontSize":"10px"}}>
 							<Info backMenu={this.backMenu} infoContact={this.state.infoContact}/>
@@ -1143,7 +1103,7 @@ updateCountRequest=(cant)=>{
 									<Loader size="1"></Loader>
 								</div>
 
-								<ListContact showInfoContact={this.showInfoContact} estado={ this.state.menu.listContact ? 'show':'hidden' } contactCircle={this.state.contactCircle} contactDelete={this.deleteItemCircle}/>
+								<ListContact eventoFromMenu={this.eventoFromMenu} showInfoContact={this.showInfoContact} estado={ this.state.menu.listContact ? 'show':'hidden' } contactCircle={this.state.contactCircle} contactDelete={this.deleteItemCircle}/>
 
 								<div className={ this.state.menu.chatList ? 'show':'hidden' } id="goochat-chatlist" >
 									<ListChat countMessageUnreadMinus={this.countMessageUnreadMinus} countMessageUnreadPlus={this.countMessageUnreadPlus} id_bussines={this.state.id_bussines} showInfoContact={this.showInfoContact} contactChat={this.state.contactChat}/>

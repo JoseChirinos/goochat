@@ -15,12 +15,20 @@ class Input extends Component{
 	prueba=(e)=>{
 		var tecla = (document.all) ? e.keyCode : e.which;
 		if(tecla==13 && document.getElementById('inputSendMessage').value!=""){
-			console.log("funciona")
+			//console.log("funciona")
 			this.props.sendMessage(this.state.message);
 			this.setState({message:''});
 			document.getElementById('inputSendMessage').value="";
 		}
 	}
+
+	// componentDidMount(){
+	// 	if(this.props!=null){
+	// 		if(this.props.focus){	
+	// 			document.getElementById("inputSendMessage").focus();
+	// 		}	
+	// 	}
+	// }
 
 	render(){
 		return(
