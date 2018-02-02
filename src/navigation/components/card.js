@@ -40,9 +40,6 @@ class Card extends Component{
 
 	questionDelete=()=>{
 		this.setState({question:true});
-		// setTimeout(function(){
-		// 	document.getElementById('questionContainer').className="row questionContainer bounceIn";	
-		// }.bind(this),100);
 	}
 
 
