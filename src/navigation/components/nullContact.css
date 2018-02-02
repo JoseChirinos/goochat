@@ -1,0 +1,16 @@
+.h3Nullcontact{
+	font-size: "15px";
+	color: "#343434";
+}
+
+.spanNullContact{
+	cursor:pointer;
+	font-size: 40px;
+	color:#ba0368;
+	transition:all 0.1s ease;
+}
+
+.spanNullContact:hover{
+	font-size:45px; 
+	transition:all 0.1s ease;
+}

@@ -38,8 +38,13 @@ class Card extends Component{
 		if(nextProps.userInfo.id){
 			this.messagesUnread(this.props.userInfo.id);	
 		}
+		if(nextProps.userInfo.id){
+			this.contactOnLinePrueba(nextProps.userInfo.id);
+		}
 
-		//console.log("props funcionando perfecto => => "); 
+
+
+
 	}
 
 

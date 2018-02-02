@@ -9,13 +9,27 @@ import './view-message.css'
 class Message extends Component{
 
 
-	componentDidMount(){
-		//document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
+	// componentDidMount(){
+	//    document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
+	// }
+
+
+	componentWillReceiveProps(nextProps){
+		if(nextProps!=null){
+			//console.log("entro al next props del view message");
+			setTimeout(function(){
+				document.getElementById("inputSendMessage").focus();
+			}.bind(this),300)
+		}
 	}
+
+
+
+
 	render(){
 		// this.props.contentViewMessage.scrollTop=this.props.contentViewMessage.scrollHeigth;
 		var f="";
-		return(
+		var a=(
 			<div className="row">
 				<br></br> <br></br>
 				<br></br> <br></br>
@@ -74,10 +88,11 @@ class Message extends Component{
 				}	
 				
 				<div className={this.props.inputSendState?"show message-input":"hidden message-input"}>
-					<Input sendMessage={this.props.sendMessage}/>
+					<Input focus="true" sendMessage={this.props.sendMessage}/>
 				</div>
 			</div>
-		)
+		);
+		return a;
 	}
 }
 

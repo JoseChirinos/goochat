@@ -1,6 +1,7 @@
 // Dependences
 import React, { Component } from 'react';
 import Card from './../../navigation/components/card';
+import NullContact  from './../../navigation/components/nullContact';
 import './list-contact.css';
 class ListMessage extends Component{
 	state = {
@@ -16,9 +17,17 @@ class ListMessage extends Component{
 		}
 	}
 
+
+
+
 	render(){
-		//console.log("listContact => ",this.props.contactDelete);
-		return(
+		//console.log("listContact => ",this.state.contactUser);
+		var b=(<div className={this.state.contactUser.length==0?"show":"hidden"}>
+					<NullContact v={1} eventoFromMenu={this.props.eventoFromMenu}></NullContact>
+				</div>);
+
+
+		var a=(
 			<div className={ this.props.estado }>
 				{
 					Object.keys(this.state.contactUser).map( id =>{
@@ -30,8 +39,10 @@ class ListMessage extends Component{
 						)
 					})
 				}
+				{b}
 			</div>
-		)
+		);
+		return a;
 	}
 }
 
