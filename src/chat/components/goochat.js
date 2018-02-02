@@ -312,14 +312,7 @@ class Goochat extends Component{
 				return 0;
 			});
 
-
 			//console.log("probando .... ",lastChat);
-
-
-
-
-
-
 			//asigno los valores al contact chat
 			this.setState({contactChat:lastChat});
 			document.getElementById('menu').className="hidden";

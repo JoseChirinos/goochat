@@ -5,7 +5,8 @@ import fire from './../../config-chat/firebase-config';
 class Card extends Component{
 	state={
 		online:false,
-		img:''
+		img:'',
+		question:false
 	}
 
 	componentWillMount(){
@@ -37,7 +38,24 @@ class Card extends Component{
 		});
 	}
 
+	questionDelete=()=>{
+		this.setState({question:true});
+		// setTimeout(function(){
+		// 	document.getElementById('questionContainer').className="row questionContainer bounceIn";	
+		// }.bind(this),100);
+	}
 
+
+
+
+	questionCancel=()=>{
+		this.setState({question:false});
+
+	}
+
+	questionAccept=()=>{
+		this.props.contactDelete(this.props.idBussines);
+	}
 
 
 
@@ -54,29 +72,11 @@ class Card extends Component{
 		}
 
 
-
-
-
-		return(
-				<div className="card-container">
+		var a=(<div className="card-container">
 					<div className="row">
 						<div className="col-xs-3 col-sm-3 col-md-3 card-containerImg">
 							<img className="card-img" src={this.state.img||''}></img>
-							
-
-
-
 							<div className={this.props.listNavigation==0 && this.state.online?"circle-active":this.props.listNavigation==0 && !this.state.online?"circle":"hidden"} style={{"position":"relative","marginTop": "-19px","marginLeft": "8px"}}></div>
-
-
-
-
-
-
-
-
-
-
 						</div>
 						<div className="col-xs-4 col-sm-4 col-md-4 card-containerName" onClick={()=>this.props.showInfoContact(obj)}>
 							<div className="row" >
@@ -86,7 +86,6 @@ class Card extends Component{
 								<div className="col-md-12">
 									<p className={ send==1?"card-p truncado-p sendRequest":"card-p truncado-p"}>
 									{ send==1?"Solicitud enviada":description}</p>
-
 								</div>
 							</div>
 						</div>
@@ -101,7 +100,7 @@ class Card extends Component{
 								  "icon-x":"icon-x"
 								} onClick={
 									listNavigation==0?
-									()=>this.props.contactDelete(this.props.idBussines):
+									()=>this.questionDelete():
 									listNavigation==1 && send==0?!this.props.stateCircle?
 									()=>this.props.sendRequest(this.props.idBussines):function(){return 0}:
 									listNavigation==1 && send==1 ?
@@ -122,8 +121,30 @@ class Card extends Component{
 							
 						</div>
 					</div>
-				</div>
-		)
+				</div>);
+
+
+		var b=(<div className="card-container bounceIn">
+					<div className="row questionContainer">
+						<div className="col-xs-12 col-sm-12 col-md-12">
+							<p>Esta seguro que quiere eliminar a <label className="questionName">{name_bussines}</label> de sus circulos?</p>
+						</div>
+						<div className="col-xs-12 col-sm-12 col-md-12">
+							<div className="row">
+								<div className="col-xs-6 col-sm-6 col-md-6">
+									<span className="icon-check questionCheck" onClick={()=>this.questionAccept()}/>
+								</div>
+								<div className="col-xs-6 col-sm-6 col-md-6">
+									<span className="icon-x questionX" onClick={()=>this.questionCancel()}/>
+								</div>
+							</div>
+						</div>
+						
+						
+					</div>
+				</div>);
+
+		return (this.state.question?b:a);
 	}
 }
 
