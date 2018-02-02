@@ -953,10 +953,6 @@ countRequest=(ids)=>{
 			this.setState({countRequest:Object.keys(snapshot.val()).length});
 	    }else{
 	    	this.setState({countRequest:0});
-<<<<<<< HEAD
-
-=======
->>>>>>> 576cfd9f94f22ee379312ff64cc5730b340725e4
 	    }
 	});
 }
