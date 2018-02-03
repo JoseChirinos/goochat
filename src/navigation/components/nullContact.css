@@ -1,13 +1,18 @@
 .h3Nullcontact{
-	font-size: "15px";
-	color: "#343434";
+	background: #ededed;
+    color: #707e8a;
+    font-size: 19px;
+    padding: 7px;
 }
 
 .spanNullContact{
-	cursor:pointer;
-	font-size: 40px;
-	color:#ba0368;
-	transition:all 0.1s ease;
+	cursor: pointer;
+    font-size: 40px;
+    color: #64b0bd;
+    background: #ededed;
+    border-radius: 50%;
+    padding: 10px;
+    transition: all 0.1s ease;
 }
 
 .spanNullContact:hover{

@@ -32,9 +32,7 @@ class Message extends Component{
 		var a=(
 			<div className="row">
 				<br></br> <br></br>
-				<br></br> <br></br>
-
-			
+				<br></br> <br></br>			
 
 				{
 					Object.keys(this.props.chatContact||{}).map(index=>{
@@ -55,9 +53,6 @@ class Message extends Component{
 						if(fecha1!=fecha){
 							f=this.props.chatContact[index].date;
 						}
-
-
-
 
 						if(this.props.chatContact[index].id_bussines!=this.props.myID){
 							return (

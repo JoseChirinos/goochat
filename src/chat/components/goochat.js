@@ -312,14 +312,7 @@ class Goochat extends Component{
 				return 0;
 			});
 
-
 			//console.log("probando .... ",lastChat);
-
-
-
-
-
-
 			//asigno los valores al contact chat
 			this.setState({contactChat:lastChat});
 			document.getElementById('menu').className="hidden";
@@ -817,9 +810,21 @@ loadChatContact=(idu)=>{
 		});
 	}
 
+
+	// backButton=()=>{
+	// 	alert("back");
+	// }
+
+
+
+	// componentWillMount(){
+	// 	window.addEventListener("onbeforeunload",this.backButton);
+	// }
 	//este did mount fue movido aki para poder trabajarlo mejor
 	componentDidMount(){
 		window.addEventListener("beforeunload", this.onUnload);
+
+
 		this.id_contactVar='';
 		this.scrollHeightPrev=0;
 
@@ -838,44 +843,6 @@ loadChatContact=(idu)=>{
 		this.saveNewUserList(objJson);
 		this.sound=[];
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1110,7 +1077,7 @@ updateCountRequest=(cant)=>{
 								</div>
 
 								<div className={this.state.menu.search ? 'show':'hidden' } id="goochat-search" >
-									<ListSearch showInfoContact={this.showInfoContact} contactSearch={this.state.contactSearch} contactSendRequest={this.sendRequest} search={this.loadSearch} contactRemoveRequest={this.removeRequest} awaitingRequests={this.state.awaitingRequests} listCircle={this.state.contactCircle}/>
+									<ListSearch idBussines={this.state.id_bussines} showInfoContact={this.showInfoContact} contactSearch={this.state.contactSearch} contactSendRequest={this.sendRequest} search={this.loadSearch} contactRemoveRequest={this.removeRequest} awaitingRequests={this.state.awaitingRequests} listCircle={this.state.contactCircle}/>
 								</div>
 								<div className={this.state.menu.request ? 'show':'hidden' } id="goochat-request" >
 									<ListRequest showInfoContact={this.showInfoContact} contactRequest={this.state.contactRequest} acceptRequest={this.acceptRequest} rejectRequest={this.rejectRequest}/>

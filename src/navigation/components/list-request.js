@@ -17,6 +17,10 @@ class ListMessage extends Component{
 				contactUser:[]
 			});		
 		}
+
+
+		//console.log("probando codigo",nextProps.contactRequest);
+
 	}
 
 
