@@ -198,7 +198,6 @@ class Goochat extends Component{
 		searchRef.on('value', snapshot => {
 			document.getElementById('menu').className="show";
 			var jsonTemp=[];
-			console.log("prueba del  search ",snapshot.val());
 		  	Object.keys(snapshot.val()).map(id=>{
 		 		var name=snapshot.val()[id].info_bussines['name_bussines'];
 		 		if(e!=""){
