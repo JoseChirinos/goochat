@@ -9,14 +9,8 @@ import './view-message.css'
 class Message extends Component{
 
 
-	// componentDidMount(){
-	//    document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
-	// }
-
-
 	componentWillReceiveProps(nextProps){
 		if(nextProps!=null){
-			//console.log("entro al next props del view message");
 			setTimeout(function(){
 				document.getElementById("inputSendMessage").focus();
 			}.bind(this),300)
@@ -27,7 +21,6 @@ class Message extends Component{
 
 
 	render(){
-		// this.props.contentViewMessage.scrollTop=this.props.contentViewMessage.scrollHeigth;
 		var f="";
 		var a=(
 			<div className="row">

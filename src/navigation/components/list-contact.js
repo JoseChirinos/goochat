@@ -8,7 +8,6 @@ class ListMessage extends Component{
 		contactUser:[]
 	}
 	componentWillReceiveProps(nextProps){		
-		//console.log(nextProps);
 
 		if(nextProps.contactCircle != null){
 		     this.setState({contactUser: nextProps.contactCircle});
@@ -21,7 +20,6 @@ class ListMessage extends Component{
 
 
 	render(){
-		//console.log("listContact => ",this.state.contactUser);
 		var b=(<div className={this.state.contactUser.length==0?"show":"hidden"}>
 					<NullContact v={1} eventoFromMenu={this.props.eventoFromMenu}></NullContact>
 				</div>);

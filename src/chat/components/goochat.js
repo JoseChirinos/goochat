@@ -7,10 +7,8 @@ import ViewMessage from './../../chat/components/view-message';
 import Loader from './loader'
 // modules navigation
 import Bussines from './../../business/components/bussines';
-import ListContact from './../../navigation/components/list-contact';
 import ListChat from './../../navigation/components/list-chat';
 import ListSearch from './../../navigation/components/list-search';
-import ListRequest from './../../navigation/components/list-request';
 import Menu from './../../navigation/components/menu';
 //style css
 
@@ -61,16 +59,9 @@ class Goochat extends Component{
 	}
 
 	eventoFromMenu = (select) =>{	
-
-		//this.scrollHeightPrev=document.getElementById('contentViewMessage').scrollHeight;
 		var menu = {};
-
-		// document.getElementById('circle').className="icon-triangle evento";
 		document.getElementById('square').className="icon-message-square evento";
 		document.getElementById('search').className="icon-search evento";
-		// document.getElementById('plus').className="icon-user-plus evento";
-		// document.getElementById('plus').style.color="#2b2b2b";
-
 		var nameKeys = Object.keys(this.state.menu);
 		nameKeys.forEach( (i,index)=>{
 			if(index == select){
@@ -247,7 +238,7 @@ class Goochat extends Component{
 		let chatRef = fire.database().ref('bussines').child(myId+"").child("chat");
 		chatRef.on('value', snapshot => {
 			var lastChat=[];
-			console.log("probando codigo => ",snapshot.val());
+			// console.log("probando codigo => ",snapshot.val());
 			var jsonTemp=snapshot.val();
 			var unreadMessages=10;
 			Object.keys(jsonTemp||{}).map(id=>{
