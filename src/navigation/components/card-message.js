@@ -22,7 +22,6 @@ class Card extends Component{
 		this.audioElement = document.createElement('audio');
 		this.audioElement.setAttribute('src', '../../assets/audio/ding.mp3');
 	
-
 		this.setState({id_bussines:this.props.id_bussines});
 		this.contactOnLinePrueba(this.props.userInfo.id);
 		this.urlImgUserItem(this.props.userInfo.id);
@@ -31,7 +30,6 @@ class Card extends Component{
 	componentWillReceiveProps(nextProps){	
 		if(nextProps != null){
 		 	this.urlImgUserItem(nextProps.userInfo.id);
-		 	this.messagesUnread(nextProps.userInfo.id);
 		}
 
 
@@ -41,11 +39,8 @@ class Card extends Component{
 		if(nextProps.userInfo.id){
 			this.contactOnLinePrueba(nextProps.userInfo.id);
 		}
-
-
-
-
 	}
+
 
 
 
@@ -85,27 +80,31 @@ class Card extends Component{
 
 
 
+
+
+
+
+
+
+
 	messagesUnread=(id)=>{
 		let refCountMessage=fire.database().ref('bussines').child(this.state.id_bussines).child('chat').child(id).child('messages');
 	    refCountMessage.orderByChild('viewed').equalTo(false).once('value').then(snapshot=>{
 			if(snapshot.val()!=null){
-				//console.log('asdasd',Object.keys(snapshot.val()).length);
 				this.setState({unreadCount:Object.keys(snapshot.val()).length});
-				if(Object.keys(snapshot.val()).length!=0){
-					// this.props.countMessageUnreadPlus();
-				}
-
-
 				if(this.unreadPrev!=Object.keys(snapshot.val()).length){
 					this.playSound();
 					this.unreadPrev=Object.keys(snapshot.val()).length;
 				}
 			}else{
 				this.setState({unreadCount:0});
-				// this.props.countMessageUnreadMinus();
 			}
 		});
 	}
+
+
+
+
 
 
 
@@ -142,19 +141,7 @@ class Card extends Component{
 						<div className="col-xs-3 col-sm-3 col-md-3 card-containerImg">
 							<img className="card-img" src={this.state.img||""}></img>
 
-
-
-
-
-
                             <div className={this.state.online?"circle-active":"circle"} style={{"position":"relative","marginTop": "-19px","marginLeft": "8px"}}></div>
-
-
-
-
-
-
-
 
 
 

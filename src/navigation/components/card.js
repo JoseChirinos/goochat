@@ -42,9 +42,6 @@ class Card extends Component{
 		this.setState({question:true});
 	}
 
-
-
-
 	questionCancel=()=>{
 		this.setState({question:false});
 
@@ -92,17 +89,10 @@ class Card extends Component{
 								 "icon-user-minus" :
 								 listNavigation==1 && send==0 ?
 							      !this.props.stateCircle && !this.props.stateRequest?
-								  "icon-user-plus":"":
+								  "":"":
 								  listNavigation==1 && send==1?
 								  "icon-x":"icon-x"
-								} onClick={
-									listNavigation==0?
-									()=>this.questionDelete():
-									listNavigation==1 && send==0?!this.props.stateCircle && !this.props.stateRequest?
-									()=>this.props.sendRequest(this.props.idBussines):function(){return 0}:
-									listNavigation==1 && send==1 ?
-									()=>this.props.removeRequest(this.props.idBussines):
-									()=>this.props.rejectRequest(this.props.idBussines)}>
+								} >
 							</span>
 						</div>
 						<div className="col-xs-2 col-sm-2 col-md-2 card-navigation">

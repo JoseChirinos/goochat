@@ -34,14 +34,14 @@ class Goochat extends Component{
 		chatContact:[],
 		onlineContact:[],
 		menu:{
-			listContact:true,
-			chatList:false,
+			listContact:false,
+			chatList:true,
 			search:false,
 			request:false
 		},
 		runFire:{
 			listContact:false,
-			chatList:false,
+			chatList:true,
 			search:false,
 			request:false
 		},
@@ -65,30 +65,22 @@ class Goochat extends Component{
 		//this.scrollHeightPrev=document.getElementById('contentViewMessage').scrollHeight;
 		var menu = {};
 
-		document.getElementById('circle').className="icon-triangle evento";
+		// document.getElementById('circle').className="icon-triangle evento";
 		document.getElementById('square').className="icon-message-square evento";
 		document.getElementById('search').className="icon-search evento";
-		document.getElementById('plus').className="icon-user-plus evento";
-		document.getElementById('plus').style.color="#2b2b2b";
+		// document.getElementById('plus').className="icon-user-plus evento";
+		// document.getElementById('plus').style.color="#2b2b2b";
 
 		var nameKeys = Object.keys(this.state.menu);
 		nameKeys.forEach( (i,index)=>{
 			if(index == select){
 				menu[i] = true;
-				if(select==0){
-					document.getElementById('circle').className="icon-triangle evento item-selected"||console.log("error");
-					document.getElementById('goochat-menu-info').innerHTML="Mis circulos empresariales.";
-
-				}else if(select==1){
+				if(select==1){
 					document.getElementById('square').className="icon-message-square evento item-selected"||console.log("error");
 					document.getElementById('goochat-menu-info').innerHTML="Lista de conversaciones.";
 				}else if(select==2){
 					document.getElementById('search').className="icon-search evento item-selected"||console.log("error");
 					document.getElementById('goochat-menu-info').innerHTML="Busqueda de empresas.";
-				}else if(select==3){
-					document.getElementById('plus').className="icon-user-plus evento item-selected"||console.log("error");
-					document.getElementById('plus').style.color="white"||console.log("error");
-					document.getElementById('goochat-menu-info').innerHTML="Solicitudes";
 				}
 			}else{
 				menu[i] = false;
@@ -96,9 +88,7 @@ class Goochat extends Component{
 		})
 		this.setState({
 			menu:menu
-		})
-		//console.log("menu ",menu);
-
+		});
 		this.viewState(menu);
 	}
 
@@ -108,67 +98,61 @@ class Goochat extends Component{
 
 	eventosFire = () =>{
 		var id = document.getElementById('id_user').value;
+		this.Myid=id;
+
 		this.countChatMessage(id);
-		this.countRequest(id);
+
 	    let nameBussines = fire.database().ref('bussines/'+id).child('info_bussines');
 	    nameBussines.on('value', snapshot => {
 	    let obj = { myInfo: snapshot.val(), id: id };
 	    	this.setState({ name_bussines:obj.myInfo.name_bussines,id_bussines:obj.id,img_url:obj.myInfo.img_url,online:obj.myInfo.online,description:obj.myInfo.description,url_page:obj.myInfo.url_page});
+	    	this.viewState("men");
 	    });
-	    this.viewState();
-
-	    //codigo en linea
 
 	    let devicesOnLine = fire.database().ref('bussines/'+id).child('info_bussines').child("devices_online");
-
 	    devicesOnLine.once("value").then(snapshot=>{
 			var devices=snapshot.val();
-	    	// devicesOnLine.off();
-
-	    	//console.log(snapshot.val());
 		    let onlineOnBussines = fire.database().ref('bussines/'+id).child('info_bussines');
 				onlineOnBussines.update({
 			    online:true,
 			    devices_online:devices+1
 			});
 	    });
-
-	 //    setTimeout(function(){
-	 //    	let onlineOnBussines = fire.database().ref('bussines/'+id).child('info_bussines');
-		// 	onlineOnBussines.update({
-		//     online:true,
-		//     devices_online:devices+1
-		// });
-	 //    }.bind(),200);
-
+	
 	}
+
+
+
+
+
+
+
+
+
 
 	viewState=(men)=>{
-		var runFire=this.state.runFire;
-		var menu=men||this.state.menu;
-		if(menu.listContact && !this.state.runFire.listContact){
-			this.loadCircle();
-			runFire['listContact']=true;
-		}
-		if(menu.chatList && !this.state.runFire.chatList){
-			//this.contactOnLine();
-			this.loadLastChat();
-			runFire['chatList']=true;
-		}
-		if(menu.search && !this.state.runFire.search){
-	    	this.loadSearch("");
-	    	this.loadAwaitingRequests();
-	    	runFire['search']=true;
-		}
-		if(menu.request && !this.state.runFire.request){
-			this.loadRequest();
-			runFire['request']=true;
-		}
-		this.setState({
-			runFire:runFire
-		});
+		if(men!="men"){
+			var runFire=this.state.runFire;
+			var menu=men||this.state.menu;
 
+			if(menu.chatList && !this.state.runFire.chatList){
+				this.loadLastChat();
+				runFire['chatList']=true;
+			}
+			if(menu.search && !this.state.runFire.search){
+		    	this.loadSearch("");
+		    	runFire['search']=true;
+			}
+			
+			this.setState({
+				runFire:runFire
+			});
+		}else{
+				this.loadLastChat();
+		}
+			
 	}
+
 
 
 
@@ -179,7 +163,7 @@ class Goochat extends Component{
 	    var devices=0;
 	    devicesOnLine.once("value").then(snapshot=>{
 	    	devices=snapshot.val();
-			// devicesOnLine.off();
+			 devicesOnLine.off();
 	    });
 	    if(devices<=1){
 	    	let onlineOfBussines = fire.database().ref('bussines').child(this.state.id_bussines).child('info_bussines');
@@ -208,51 +192,22 @@ class Goochat extends Component{
    		});
   		return serverTime;
 	}
-//covierto la fecha y hora del servidor de firebase de ms a fecha y hora formato Date
-	decryptDate=(ms)=>{
-		var a =new Date(ms);
-		return a;
-	}
 
-	//consultas firebase
-	loadAwaitingRequests=()=>{
-		var id = document.getElementById('id_user').value;
-		let awaitingRequestsRef = fire.database().ref('bussines/'+id).child('awaitingRequests');
-		awaitingRequestsRef.on('value', snapshot => {
-		    this.setState({awaitingRequests: snapshot.val() });
-		    //console.log(this.state.awaitingRequests);
-		});
-	}
-
-	loadCircle=()=>{
-		var id = document.getElementById('id_user').value;
-		document.getElementById('menu').className="show";
-		let circleRef = fire.database().ref('bussines/'+id).child('bussines_circle');
-		circleRef.orderByChild('lagree').equalTo(true).on('value', snapshot => {
-		    this.setState({contactCircle:snapshot.val()});
-			document.getElementById('menu').className="hidden";
-		});
-	}
-
-	loadRequest=()=>{
-		document.getElementById('menu').className="show";
-		var id = document.getElementById('id_user').value;
-		let requestRef = fire.database().ref('bussines/'+id).child('bussines_circle');
-		    requestRef.orderByChild('lagree').equalTo(false).on('value', snapshot => {
-		    this.setState({contactRequest: snapshot.val()});
-		    document.getElementById('menu').className="hidden";
 	
-		});
-	}
+	
 
 	loadSearch=(e)=>{
-		// var idu = document.getElementById('id_user').value;
+		//var idu = document.getElementById('id_user').value;
+
+		var idu =this.state.id_bussines;
+
+
 		document.getElementById('menu').className="show";
 		let searchRef = fire.database().ref('list_bussines');
 		searchRef.on('value', snapshot => {
 			document.getElementById('menu').className="show";
 			var jsonTemp=[];
-			//console.log("prueba del  search ",snapshot.val());
+			console.log("prueba del  search ",snapshot.val());
 		  	Object.keys(snapshot.val()).map(id=>{
 		 		var name=snapshot.val()[id].info_bussines['name_bussines'];
 		 		if(e!=""){
@@ -285,10 +240,14 @@ class Goochat extends Component{
 	
 	loadLastChat=()=>{
 		document.getElementById('menu').className="show";
-		let chatRef = fire.database().ref('bussines').child(this.state.id_bussines).child("chat");
+	
+		var myId=this.Myid;
+				
+
+		let chatRef = fire.database().ref('bussines').child(myId+"").child("chat");
 		chatRef.on('value', snapshot => {
 			var lastChat=[];
-			//console.log("probando codigo => ",snapshot.val());
+			console.log("probando codigo => ",snapshot.val());
 			var jsonTemp=snapshot.val();
 			var unreadMessages=10;
 			Object.keys(jsonTemp||{}).map(id=>{
@@ -312,7 +271,6 @@ class Goochat extends Component{
 				return 0;
 			});
 
-			//console.log("probando .... ",lastChat);
 			//asigno los valores al contact chat
 			this.setState({contactChat:lastChat});
 			document.getElementById('menu').className="hidden";
@@ -321,86 +279,11 @@ class Goochat extends Component{
 
 
 
-
-
-
 	backMenu=()=>{
 		document.getElementById("chatMessage").className="col-sm-12 col-md-9 col-lg-9 hide";
 		document.getElementById("goochat-menu").className="col-sm-12 col-md-3 col-lg-3 goochat-content-list show";
 	}
 
-
-	//card actions
-	deleteItemCircle=(id)=>{
-		var idu = document.getElementById('id_user').value;
-		let deleteCircleRef= fire.database().ref('bussines').child(idu).child("bussines_circle").child(id);
-		deleteCircleRef.remove();
-
-		let deleteCircleUsuRef= fire.database().ref('bussines').child(id).child("bussines_circle").child(idu);
-		deleteCircleUsuRef.remove();
-	}
-
-
-	sendRequest=(id)=>{
-		var idu = document.getElementById('id_user').value;
-		let sendRequestRef= fire.database().ref('bussines').child(id).child("bussines_circle").child(idu);
-		sendRequestRef.update({
- 		"date": this.dateFire(),
- 		"description":this.state.description,
- 		"img_url":this.state.img_url,
- 		"url_page":this.state.url_page,
- 		"lagree":false,
- 		"name_bussines":this.state.name_bussines
-		});
-
-		let awaitingRequestsRef= fire.database().ref('bussines').child(idu).child("awaitingRequests").child(id);
-		awaitingRequestsRef.update({
- 		  "state": true
-		});
-
-	}
-	removeRequest=(id)=>{
-		var idu = document.getElementById('id_user').value;
-		let removeRequestRef= fire.database().ref('bussines').child(""+id).child("bussines_circle").child(idu);
-		removeRequestRef.remove();
-		let awaitingRequestsRef= fire.database().ref('bussines').child(""+idu).child("awaitingRequests").child(id);
-		awaitingRequestsRef.remove();
-	}
-
-
-	acceptRequest=(id)=>{
-		var idu = document.getElementById('id_user').value;
-
-		let acceptRef= fire.database().ref('bussines').child(idu).child("bussines_circle").child(id);
-
-		acceptRef.update({
- 		  lagree:true
-		});
-
-
-		//guardo mis datos en los circulos del usuario
-		let saveMyDateRef= fire.database().ref('bussines').child(id).child("bussines_circle").child(idu);
-		saveMyDateRef.update({
- 		 	date:this.dateFire(),
- 		 	description:this.state.description,
- 		 	img_url:this.state.img_url,
- 		 	lagree:true,
- 		 	url_page:this.state.url_page,
- 		 	name_bussines:this.state.name_bussines
-		});
-
-		let updateRef= fire.database().ref('bussines').child(id).child("awaitingRequests").child(idu);
-		updateRef.remove();
-
-	}
-	rejectRequest=(id)=>{
-		var idu = document.getElementById('id_user').value;
-		let rejectRef= fire.database().ref('bussines').child(idu).child("bussines_circle").child(id);
-		rejectRef.remove();
-		let updateAwaitingRequestsRef= fire.database().ref('bussines').child(id).child("awaitingRequests").child(idu);
-		updateAwaitingRequestsRef.remove();
-
-	}
 
 
 
@@ -534,7 +417,6 @@ class Goochat extends Component{
 		this.loadChatContact(obj.id);
 	
 		document.getElementById("inputSendMessage").focus();
-		//document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeigth;
 
 		if (window.matchMedia("(min-width: 892px)").matches) {
   			document.getElementById("chatMessage").className="col-sm-12 col-md-9 col-lg-9 show";
@@ -545,6 +427,12 @@ class Goochat extends Component{
 		}
 
 	}
+
+
+
+
+
+
 
 	updateViewed=(id)=>{
 		try{
@@ -558,9 +446,6 @@ class Goochat extends Component{
 						updates['/bussines/'+this.state.id_bussines+'/chat/'+id+'/messages/'+idMessage+'/viewed']=true;
 					});	
 					fire.database().ref().update(updates);
-					console.log("datos actualizados");
-
-
 				}catch(e){}
 			});
 		}catch(e){}
@@ -617,7 +502,12 @@ loadChatContact=(idu)=>{
 		document.getElementById('loader').className="show";
 		document.getElementById("inputSendMessage").focus();
 		this.state.inputSendState=true;
-		var id = document.getElementById('id_user').value;
+		//var id = document.getElementById('id_user').value;
+
+		var id = this.Myid;
+		
+
+
 		let chatRef = fire.database().ref('bussines').child(id+'/chat/'+idu+'/messages').limitToLast(this.state.numberOfMessage);
 		chatRef.on('value', snapshot => {
 			var objTemp=[];
@@ -654,6 +544,7 @@ loadChatContact=(idu)=>{
 
 		});
 	}
+
 }
 
 
@@ -704,12 +595,6 @@ loadChatContact=(idu)=>{
 
 
 
-//funcion que actualiza los mensajes no vistos
-
-
-
-
-
 
 
 
@@ -743,7 +628,7 @@ loadChatContact=(idu)=>{
 
 	sendMessage=(message)=>{
 
-		if(document.getElementById('inputSendMessage').value!=""){
+		if(this.Myid!=""){
 			let infoRef=fire.database().ref('bussines').child(this.state.id_contact).child("chat").child(this.state.id_bussines).child('info/name_description');
 				infoRef.update({
 			 		name_bussines:this.state.name_bussines||"",
@@ -799,28 +684,6 @@ loadChatContact=(idu)=>{
 		}
 	}
 
-
-
-	actualizarDatos = (d) => {
-		let infoRef=fire.database().ref('bussines').child(this.state.id_contact).child("chat").child(this.state.id_bussines).child('info/name_description');
-			infoRef.update({
- 			name_bussines:this.state.name_bussines||"",
- 	 		img_url:this.state.img_url||"",
- 	 		description:this.state.description||"",
- 	 		url_page:this.state.url_page
-		});
-	}
-
-
-	// backButton=()=>{
-	// 	alert("back");
-	// }
-
-
-
-	// componentWillMount(){
-	// 	window.addEventListener("onbeforeunload",this.backButton);
-	// }
 	//este did mount fue movido aki para poder trabajarlo mejor
 	componentDidMount(){
 		window.addEventListener("beforeunload", this.onUnload);
@@ -828,7 +691,7 @@ loadChatContact=(idu)=>{
 
 		this.id_contactVar='';
 		this.scrollHeightPrev=0;
-
+		this.Myid="";
 		var objJson={
 			id:"asdasddnajksnjd",
 			country:"china",
@@ -840,8 +703,24 @@ loadChatContact=(idu)=>{
 			devices_online: 0
 		};
 
+		
+
+		//esta funcion me recibira el id del usuario
+		//eventosFire()
+
+
+		//esta funcion guarda e nuevo usuario
 		//this.saveNewUser(objJson);
-		this.saveNewUserList(objJson);
+
+
+		//esta funcion es la que muestra el chat directamente con el ke se kiera hablar 
+		//se le envia el id
+		//this.loadChatContact(id);
+
+
+
+
+
 		this.sound=[];
 	}
 
@@ -870,25 +749,6 @@ loadChatContact=(idu)=>{
 			}.bind(this),300);
 		});
 	}
-
-
-
-countRequest=(ids)=>{
-	let requestRef = fire.database().ref('bussines/'+ids).child('bussines_circle');
-	    requestRef.orderByChild('lagree').equalTo(false).on('value', snapshot => {
-	    if(snapshot.val()!=null){	
-	    	//console.log("prueba => ",Object.keys(snapshot.val()).length);	    	
-			this.setState({countRequest:Object.keys(snapshot.val()).length});
-	    }else{
-	    	this.setState({countRequest:0});
-	    }
-	});
-}
-
-
-
-
-
 
 
 
@@ -983,21 +843,6 @@ countRequest=(ids)=>{
 
 
 
-updateCountRequest=(cant)=>{
-	
-}
-
-
-
-
-
-
-
-
-
-
-
-
 	//sta es la funcion que guardara y actualizara los datos del usuario
 	saveNewUser=(obj)=>{
 		let refNewUser=fire.database().ref('bussines').child(obj.id+"");
@@ -1012,6 +857,7 @@ updateCountRequest=(cant)=>{
 				devices_online:obj.devices_online
 			}
 		});
+		this.saveNewUserList(obj);
 	}
 
 
@@ -1063,7 +909,7 @@ updateCountRequest=(cant)=>{
 								<Bussines {...this.state}/>
 						 	</div>
 						 	<div className="col-md-12 Info-menu">
-								<h3 id="goochat-menu-info">Mis circulos empresariales.</h3>
+								<h3 id="goochat-menu-info">Chat empresarial.</h3>
 						 	</div>
 						 	<div className="col-md-12" id="goochat-contact" style={{"width":"100%"}}>
 
@@ -1071,8 +917,7 @@ updateCountRequest=(cant)=>{
 									<Loader size="1"></Loader>
 								</div>
 
-								<ListContact eventoFromMenu={this.eventoFromMenu} showInfoContact={this.showInfoContact} estado={ this.state.menu.listContact ? 'show':'hidden' } contactCircle={this.state.contactCircle} contactDelete={this.deleteItemCircle}/>
-
+								
 								<div className={ this.state.menu.chatList ? 'show':'hidden' } id="goochat-chatlist" >
 									<ListChat countMessageUnreadMinus={this.countMessageUnreadMinus} countMessageUnreadPlus={this.countMessageUnreadPlus} id_bussines={this.state.id_bussines} showInfoContact={this.showInfoContact} contactChat={this.state.contactChat}/>
 								</div>
@@ -1080,9 +925,7 @@ updateCountRequest=(cant)=>{
 								<div className={this.state.menu.search ? 'show':'hidden' } id="goochat-search" >
 									<ListSearch idBussines={this.state.id_bussines} showInfoContact={this.showInfoContact} contactSearch={this.state.contactSearch} contactSendRequest={this.sendRequest} search={this.loadSearch} contactRemoveRequest={this.removeRequest} awaitingRequests={this.state.awaitingRequests} listCircle={this.state.contactCircle}/>
 								</div>
-								<div className={this.state.menu.request ? 'show':'hidden' } id="goochat-request" >
-									<ListRequest showInfoContact={this.showInfoContact} contactRequest={this.state.contactRequest} acceptRequest={this.acceptRequest} rejectRequest={this.rejectRequest}/>
-								</div>
+								
 
 						 	</div>
 						 	<div className="col-md-12" style={{"position":"absolute","bottom":"0px","width":"100%","paddingRight":"0px","paddingLeft": "0px"}}>
