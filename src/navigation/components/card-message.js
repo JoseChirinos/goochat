@@ -56,10 +56,9 @@ class Card extends Component{
 
 	contactOnLinePrueba=(id)=>{
 		var online=false;
-		let refOnlineUser=fire.database().ref('bussines').child(id);
+		let refOnlineUser=fire.database().ref('bussines').child(id).child('info_bussines').child('online');
 		refOnlineUser.on('value',snapshot=>{
-			//console.log("id del user "+snapshot.val().info_bussines.name_bussines+" "+snapshot.val().info_bussines.online);
-			if(snapshot.val().info_bussines.online){
+			if(snapshot.val()){
 				this.setState({online:true});
 			}else{
 				this.setState({online:false});
@@ -124,7 +123,7 @@ class Card extends Component{
 			name_bussines:userInfo.name_description.name_bussines,
 			url_page:userInfo.name_description.url_page
 			}
-			
+
 		}else{
 			var fecha="aqui el error";
 			var obj={

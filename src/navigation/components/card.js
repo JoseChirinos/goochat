@@ -10,9 +10,9 @@ class Card extends Component{
 	}
 
 	componentWillMount(){
-		if(this.props.listNavigation==0){
-			this.contactOnLinePrueba(this.props.idBussines);
-		}
+		// if(this.props.listNavigation==0){
+		// 	this.contactOnLinePrueba(this.props.idBussines);
+		// }
 		this.urlImgUserItem(this.props.idBussines);
 	}
 
@@ -25,18 +25,18 @@ class Card extends Component{
 		});
 	}
 
-	contactOnLinePrueba=(id)=>{
-		var online=false;
-		let refOnlineUser=fire.database().ref('bussines').child(id);
-		refOnlineUser.on('value',snapshot=>{
-			//console.log("id del user "+snapshot.val().info_bussines.name_bussines+" "+snapshot.val().info_bussines.online);
-			if(snapshot.val().info_bussines.online){
-				this.setState({online:true});
-			}else{
-				this.setState({online:false});
-			}
-		});
-	}
+	// contactOnLinePrueba=(id)=>{
+	// 	var online=false;
+	// 	let refOnlineUser=fire.database().ref('bussines').child(id);
+	// 	refOnlineUser.on('value',snapshot=>{
+	// 		//console.log("id del user "+snapshot.val().info_bussines.name_bussines+" "+snapshot.val().info_bussines.online);
+	// 		if(snapshot.val().info_bussines.online){
+	// 			this.setState({online:true});
+	// 		}else{
+	// 			this.setState({online:false});
+	// 		}
+	// 	});
+	// }
 
 	questionDelete=()=>{
 		this.setState({question:true});

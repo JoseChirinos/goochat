@@ -317,32 +317,32 @@ loadChatContact=(idu)=>{
 		chatRef.on('value', snapshot => {
 			if(this.id_contactVar!=idu){
 				chatRef.off();
-			}
-			var objTemp=[];
-		  	Object.keys(snapshot.val()||{}).map(ida=>{
-	  			var objTempMessage=snapshot.val()[ida];
-	  			var codeObject={
-	  				code:ida,
-	  				myId:this.state.id_bussines,
-	  				yourId:idu
-	  			};
-	  			var obj = Object.assign(objTempMessage,codeObject);
-	  			objTemp.push(obj);
-		    });
+			}else{	
+				var objTemp=[];
+			  	Object.keys(snapshot.val()||{}).map(ida=>{
+		  			var objTempMessage=snapshot.val()[ida];
+		  			var codeObject={
+		  				code:ida,
+		  				myId:this.state.id_bussines,
+		  				yourId:idu
+		  			};
+		  			var obj = Object.assign(objTempMessage,codeObject);
+		  			objTemp.push(obj);
+			    });
 
-			if(this.id_contactVar==idu && document.getElementById('contentViewMessage').scrollTop==0){
-				this.setState({chatContact:objTemp});
-			}
-			document.getElementById('loader').className="hidden";
-			document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
-			
-		 	if(this.id_contactVar==idu && document.getElementById('contentViewMessage').scrollTop!=0){
-		    	this.setState({chatContact:objTemp});
-			}
-			setTimeout(function(){
+				if(this.id_contactVar==idu && document.getElementById('contentViewMessage').scrollTop==0){
+					this.setState({chatContact:objTemp});
+				}
+				document.getElementById('loader').className="hidden";
 				document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
-			}.bind(this),100);
-
+				
+			 	if(this.id_contactVar==idu && document.getElementById('contentViewMessage').scrollTop!=0){
+			    	this.setState({chatContact:objTemp});
+				}
+				setTimeout(function(){
+					document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
+				}.bind(this),100);
+			}
 		});
 	}
 
@@ -357,12 +357,13 @@ lookOutChat=(idu)=>{
 		  	if(this.id_contactVar!=idu){
 				chatRef.off();
 				this.state.numberOfMessage=10;
-			}
-		  	if(this.id_contactVar==idu && document.getElementById('contentViewMessage').scrollTop!=0){
-		    	var audioElement = document.createElement('audio');
-		    	audioElement.setAttribute('src', '../../assets/audio/MessageNonzerobot.mp3');
-		   		audioElement.play();
-		   		this.updateViewed(this.id_contactVar);
+			}else{
+			  	if(this.id_contactVar==idu && document.getElementById('contentViewMessage').scrollTop!=0){
+			    	var audioElement = document.createElement('audio');
+			    	audioElement.setAttribute('src', '../../assets/audio/MessageNonzerobot.mp3');
+			   		audioElement.play();
+			   		this.updateViewed(this.id_contactVar);
+				}
 			}
 		});
 	}
