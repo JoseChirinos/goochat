@@ -368,20 +368,6 @@ lookOutChat=(idu)=>{
 		});
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 sendMessage=(message)=>{
 		var updates = {};					
 		var inserts={}
@@ -401,6 +387,9 @@ sendMessage=(message)=>{
 			updates['/bussines/'+this.state.id_bussines+'/chat/'+this.state.id_contact+'/info/name_description']=d;	
 			updates['/bussines/'+this.state.id_contact+'/chat/'+this.state.id_bussines+'/messages/'+saveMyDateRef]=b;
 			updates['/bussines/'+this.state.id_bussines+'/chat/'+this.state.id_contact+'/messages/'+saveYourDateRef]=a;
+		
+
+
 			fire.database().ref().update(updates);
 			document.getElementById('inputSendMessage').value="";
 		}

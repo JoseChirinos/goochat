@@ -28,11 +28,13 @@ class Menu extends Component{
 					
 
 					<div className="col-xs-6 col-sm-6 col-md-6 menu-containerSquare">
-						<label className={state1 && this.props.countMessage!=0?"show countMenu":"hidden countMenu"}>
-							{
-								this.props.countMessage!=0?this.props.countMessage:""
-							}
-						</label>
+						<div style={{"width": "100%","position": "absolute","textAlign": "center"}}>
+							<div className={state1 && this.props.countMessage!=0?"show countMenu":"hidden countMenu"}>
+								{
+									this.props.countMessage!=0?this.props.countMessage:""
+								}
+							</div>
+						</div>
 						<span id="square" className="icon-message-square item-selected evento" onClick={ () => this.props.eventoPrueba(1) } />
 					</div>
 
