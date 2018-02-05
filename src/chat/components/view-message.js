@@ -74,7 +74,8 @@ class Message extends Component{
 						}
 					})
 				}	
-				
+				<br></br> <br></br>
+				<br></br> <br></br>	
 				<div className={this.props.inputSendState?"show message-input":"hidden message-input"}>
 					<Input focus="true" sendMessage={this.props.sendMessage}/>
 				</div>

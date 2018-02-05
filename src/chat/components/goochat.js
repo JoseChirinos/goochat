@@ -265,7 +265,6 @@ class Goochat extends Component{
 
 
 	showInfoContact=(obj)=>{
-		console.log(obj);
 		this.id_contactVar=obj.id;
 		this.updateViewed(obj.id);
 		document.getElementById('contentViewMessage').style.background="";		
@@ -428,7 +427,7 @@ sendMessage=(message)=>{
 		//this.saveNewUser(objJson);
 
 
-		
+
 		var objContact={
 			id:"jose_id",
 			img_url:"https://d30y9cdsu7xlg0.cloudfront.net/png/17241-200.png",
