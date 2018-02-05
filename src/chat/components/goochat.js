@@ -261,7 +261,11 @@ class Goochat extends Component{
 		document.getElementById("chatMessage").className="col-sm-12 col-md-9 col-lg-9 hide";
 		document.getElementById("goochat-menu").className="col-sm-12 col-md-3 col-lg-3 goochat-content-list show";
 	}
+
+
+
 	showInfoContact=(obj)=>{
+		console.log(obj);
 		this.id_contactVar=obj.id;
 		this.updateViewed(obj.id);
 		document.getElementById('contentViewMessage').style.background="";		
@@ -402,6 +406,13 @@ sendMessage=(message)=>{
 		this.id_contactVar='';
 		this.scrollHeightPrev=0;
 		this.Myid="";
+		
+
+
+		//para abrir el chat es necesario mandar el id del usuario a esta funcion
+		//this.eventosFire(id);
+
+
 		var objJson={
 			id:"asdasddnajksnjd",
 			country:"china",
@@ -412,6 +423,20 @@ sendMessage=(message)=>{
 			region:"okinawa",
 			devices_online: 0
 		};
+
+		//funcion para guardar un usuario nuevo
+		//this.saveNewUser(objJson);
+
+
+		
+		var objContact={
+			id:"jose_id",
+			img_url:"https://d30y9cdsu7xlg0.cloudfront.net/png/17241-200.png",
+			name_bussines:"Jose Inc",
+			url_page:"jose.com"
+		}
+		//funcion para abrir directamente el chat del otro usuario
+		//this.showInfoContact(objContact);
 
 		this.sound=[];
 	}
