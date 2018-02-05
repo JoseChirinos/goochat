@@ -24,20 +24,6 @@ class Card extends Component{
 			this.setState({img:urlImg});
 		});
 	}
-
-	// contactOnLinePrueba=(id)=>{
-	// 	var online=false;
-	// 	let refOnlineUser=fire.database().ref('bussines').child(id);
-	// 	refOnlineUser.on('value',snapshot=>{
-	// 		//console.log("id del user "+snapshot.val().info_bussines.name_bussines+" "+snapshot.val().info_bussines.online);
-	// 		if(snapshot.val().info_bussines.online){
-	// 			this.setState({online:true});
-	// 		}else{
-	// 			this.setState({online:false});
-	// 		}
-	// 	});
-	// }
-
 	questionDelete=()=>{
 		this.setState({question:true});
 	}
