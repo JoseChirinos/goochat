@@ -124,6 +124,7 @@ class Card extends Component{
 			name_bussines:userInfo.name_description.name_bussines,
 			url_page:userInfo.name_description.url_page
 			}
+			
 		}else{
 			var fecha="aqui el error";
 			var obj={
