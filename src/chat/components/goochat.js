@@ -275,6 +275,8 @@ class Goochat extends Component{
 		this.state.numberOfMessage=10;
 		this.setState({infoContact:obj,id_contact:obj.id});
 		this.loadChatContact(obj.id);
+		//probando codigoo
+		this.lookOutChat(obj.id);
 	
 		document.getElementById("inputSendMessage").focus();
 
@@ -289,10 +291,9 @@ class Goochat extends Component{
 	}
 	updateViewed=(id)=>{
 		try{
-			var jsonTemp={};
 			let chatRef1 = fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(id).child("messages");
 			chatRef1.orderByChild("viewed").equalTo(false).once('value').then(snapshot => {
-				jsonTemp=snapshot.val();
+				var jsonTemp=snapshot.val();
 				try{
 					var updates = {};					
 					Object.keys(jsonTemp).map(idMessage=>{
@@ -314,6 +315,9 @@ loadChatContact=(idu)=>{
 		var id = this.Myid;
 		let chatRef = fire.database().ref('bussines').child(id+'/chat/'+idu+'/messages').limitToLast(this.state.numberOfMessage);
 		chatRef.on('value', snapshot => {
+			if(this.id_contactVar!=idu){
+				chatRef.off();
+			}
 			var objTemp=[];
 		  	Object.keys(snapshot.val()||{}).map(ida=>{
 	  			var objTempMessage=snapshot.val()[ida];
@@ -326,22 +330,15 @@ loadChatContact=(idu)=>{
 	  			objTemp.push(obj);
 		    });
 
-		  	if(this.id_contactVar==idu && document.getElementById('contentViewMessage').scrollTop!=0){
-		    	this.setState({chatContact:objTemp});
-		    	var audioElement = document.createElement('audio');
-		    	audioElement.setAttribute('src', '../../assets/audio/MessageNonzerobot.mp3');
-		   		audioElement.play();
-		   		this.updateViewed(this.id_contactVar);
-			}
 			if(this.id_contactVar==idu && document.getElementById('contentViewMessage').scrollTop==0){
 				this.setState({chatContact:objTemp});
-			}
-			if(this.id_contactVar!=idu){
-				this.state.numberOfMessage=10;
 			}
 			document.getElementById('loader').className="hidden";
 			document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
 			
+		 	if(this.id_contactVar==idu && document.getElementById('contentViewMessage').scrollTop!=0){
+		    	this.setState({chatContact:objTemp});
+			}
 			setTimeout(function(){
 				document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
 			}.bind(this),100);
@@ -350,6 +347,31 @@ loadChatContact=(idu)=>{
 	}
 
 }
+
+
+lookOutChat=(idu)=>{
+	if(idu!=''){
+		var id = this.Myid;
+		let chatRef = fire.database().ref('bussines').child(id+'/chat/'+idu+'/messages').limitToLast(this.state.numberOfMessage);
+		chatRef.on('child_added', snapshot => {
+		  	if(this.id_contactVar!=idu){
+				chatRef.off();
+				this.state.numberOfMessage=10;
+			}
+		  	if(this.id_contactVar==idu && document.getElementById('contentViewMessage').scrollTop!=0){
+		    	var audioElement = document.createElement('audio');
+		    	audioElement.setAttribute('src', '../../assets/audio/MessageNonzerobot.mp3');
+		   		audioElement.play();
+		   		this.updateViewed(this.id_contactVar);
+			}
+		});
+	}
+}
+
+
+
+
+
 
 
 
