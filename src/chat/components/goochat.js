@@ -191,8 +191,6 @@ class Goochat extends Component{
 		//var idu = document.getElementById('id_user').value;
 
 		var idu =this.state.id_bussines;
-
-
 		document.getElementById('menu').className="show";
 		let searchRef = fire.database().ref('list_bussines');
 		searchRef.on('value', snapshot => {
@@ -230,10 +228,7 @@ class Goochat extends Component{
 	
 	loadLastChat=()=>{
 		document.getElementById('menu').className="show";
-	
 		var myId=this.Myid;
-				
-
 		let chatRef = fire.database().ref('bussines').child(myId+"").child("chat");
 		chatRef.on('value', snapshot => {
 			var lastChat=[];
@@ -266,8 +261,6 @@ class Goochat extends Component{
 			document.getElementById('menu').className="hidden";
 		});
 	}
-
-
 
 	backMenu=()=>{
 		document.getElementById("chatMessage").className="col-sm-12 col-md-9 col-lg-9 hide";
@@ -491,13 +484,10 @@ loadChatContact=(idu)=>{
 	if(idu!=''){
 		document.getElementById('loader').className="show";
 		document.getElementById("inputSendMessage").focus();
+
 		this.state.inputSendState=true;
-		//var id = document.getElementById('id_user').value;
 
 		var id = this.Myid;
-		
-
-
 		let chatRef = fire.database().ref('bussines').child(id+'/chat/'+idu+'/messages').limitToLast(this.state.numberOfMessage);
 		chatRef.on('value', snapshot => {
 			var objTemp=[];
@@ -545,94 +535,11 @@ loadChatContact=(idu)=>{
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	sendMessage=(message)=>{
+sendMessage=(message)=>{
+		var updates = {};					
+		var inserts={}
 
 		if(this.Myid!=""){
-			let infoRef=fire.database().ref('bussines').child(this.state.id_contact).child("chat").child(this.state.id_bussines).child('info/name_description');
-				infoRef.update({
-			 		name_bussines:this.state.name_bussines||"",
-			 	 	img_url:this.state.img_url||"",
-			 	 	description:this.state.description||"",
-			 	 	url_page:this.state.url_page
-			});
-			let infoYourRef= fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(this.state.id_contact).child('info/name_description');
-				infoYourRef.update({
-		 		 	name_bussines:this.state.infoContact.name_bussines||"error",
-		 		 	img_url:this.state.infoContact.img_url||"",
-		 		 	description:this.state.infoContact.description||"error",
-		 		 	url_page:this.state.infoContact.url_page||"error.com"
-			});
 			let saveMyDateRef= fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(this.state.id_contact).child('messages');
 			saveMyDateRef.push({
 		 		 	date:this.dateFire(),
@@ -652,24 +559,32 @@ loadChatContact=(idu)=>{
 			 	 	message:message,
 			 	 	viewed:false
 			});
+				
+			updates['/bussines/'+this.state.id_contact+'/chat/'+this.state.id_bussines+'/info/name_description/name_bussines']=this.state.name_bussines||"";	
+			updates['/bussines/'+this.state.id_contact+'/chat/'+this.state.id_bussines+'/info/name_description/img_url']=this.state.img_url||"";	
+			updates['/bussines/'+this.state.id_contact+'/chat/'+this.state.id_bussines+'/info/name_description/description']=this.state.description||"";	
+			updates['/bussines/'+this.state.id_contact+'/chat/'+this.state.id_bussines+'/info/name_description/url_page']=this.state.url_page||"";	
 
-			let saveYourLatestMessageRef= fire.database().ref('bussines').child(this.state.id_contact).child("chat").child(this.state.id_bussines).child('info').child('latest_message');
-			saveYourLatestMessageRef.update({
-	 		 	date:this.dateFire(),
-	 		 	id_bussines:this.state.id_bussines,
-	 		 	message:message,
-	 		 	url_page:this.state.url_page,
-	 		 	img_url:this.state.img_url
-			});
+			updates['/bussines/'+this.state.id_bussines+'/chat/'+this.state.id_contact+'/info/name_description/name_bussines']=this.state.infoContact.name_bussines||"";	
+			updates['/bussines/'+this.state.id_bussines+'/chat/'+this.state.id_contact+'/info/name_description/img_url']=this.state.infoContact.img_url||"";	
+			updates['/bussines/'+this.state.id_bussines+'/chat/'+this.state.id_contact+'/info/name_description/description']=this.state.infoContact.description||"";	
+			updates['/bussines/'+this.state.id_bussines+'/chat/'+this.state.id_contact+'/info/name_description/url_page']=this.state.infoContact.url_page||"";	
+			
+			
+			updates['/bussines/'+this.state.id_contact+'/chat/'+this.state.id_bussines+'/info/latest_message/date']=this.dateFire();	
+			updates['/bussines/'+this.state.id_contact+'/chat/'+this.state.id_bussines+'/info/latest_message/id_bussines']=this.state.id_bussines||"";	
+			updates['/bussines/'+this.state.id_contact+'/chat/'+this.state.id_bussines+'/info/latest_message/message']=message;	
+			updates['/bussines/'+this.state.id_contact+'/chat/'+this.state.id_bussines+'/info/latest_message/url_page']=this.state.url_page||"";	
+			updates['/bussines/'+this.state.id_contact+'/chat/'+this.state.id_bussines+'/info/latest_message/img_url']=this.state.img_url||"";	
 
-			let saveMyLatestMessageRef= fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(this.state.id_contact).child('info').child('latest_message');
-			saveMyLatestMessageRef.update({
-	 		 	date:this.dateFire(),
-	 		 	id_bussines:this.state.id_bussines,
-	 		 	message:message,
-	 		 	url_page:this.state.url_page,
-	 		 	img_url:this.state.img_url
-			});
+
+			updates['/bussines/'+this.state.id_bussines+'/chat/'+this.state.id_contact+'/info/latest_message/date']=this.dateFire();	
+			updates['/bussines/'+this.state.id_bussines+'/chat/'+this.state.id_contact+'/info/latest_message/id_bussines']=this.state.id_bussines||"";	
+			updates['/bussines/'+this.state.id_bussines+'/chat/'+this.state.id_contact+'/info/latest_message/message']=message;	
+			updates['/bussines/'+this.state.id_bussines+'/chat/'+this.state.id_contact+'/info/latest_message/url_page']=this.state.url_page||"";	
+			updates['/bussines/'+this.state.id_bussines+'/chat/'+this.state.id_contact+'/info/latest_message/img_url']=this.state.img_url||"";	
+
+			fire.database().ref().update(updates);
 			document.getElementById('inputSendMessage').value="";
 		}
 	}
