@@ -351,16 +351,11 @@ lookOutChat=(idu)=>{
 				this.state.numberOfMessage=10;
 			}else{
 			  	if(this.id_contactVar==idu && document.getElementById('contentViewMessage').scrollTop!=0){
-			   	
 			   		//var audioElement = document.createElement('audio');
-					
-
 					if(!this.audioElement.play()){
 						this.audioElement.play();
 					}
-			   	
 			   		this.updateViewed(this.id_contactVar);
-				
 				}
 			}
 		});
