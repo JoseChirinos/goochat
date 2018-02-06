@@ -52,25 +52,39 @@
 
 
 .countMenu{
-	position: absolute;
+	position: relative;
     z-index: 0;
     font-size: 9px;
     margin-top: -12px;
-    margin-left: -10px;
+    margin: -20px auto;
     background: #bd1887;
     border: 1.7px solid #ededed;
     border-radius: 50% 50%;
     padding: 4px 3px 4px 3px;
     color: #ffffff;
-
-
-	height:100%;
-    width:100%;
-	
-	min-width: 20px;
-	min-height: 20px;
-
-	max-width: 25px;
-	max-height:25px;
-
+    height: 100%;
+    width: 100%;
+    min-width: 20px;
+    min-height: 20px;
+    max-width: 25px;
+    max-height: 25px;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

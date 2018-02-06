@@ -10,28 +10,11 @@ class ListMessage extends Component{
 		contactRequest:{}
 	}
 	componentWillReceiveProps(nextProps){	
-		//console.log("desde el listSearch : ",nextProps.contactSearch);
 		 if(nextProps.contactSearch != null){
 		    this.setState({contactUser: nextProps.contactSearch});
-		} 
-		if(nextProps.idBussines!=null && nextProps.idBussines!=""){
-			this.loadRequest(nextProps.idBussines);
-		}
+		} 	
 	}
-
-	loadRequest=(id)=>{
-		if(id!=null && id!=""){
-		// document.getElementById('menu').className="show";
-			//var id = document.getElementById('id_user').value;
-			let requestRef = fire.database().ref('bussines/'+id).child('bussines_circle');
-			    requestRef.orderByChild('lagree').equalTo(false).on('value', snapshot => {
-			    this.setState({contactRequest: snapshot.val()});	
-			});
-		}
-	}
-
 	render(){
-		//console.log("lista de contactos",this.props.listCircle);
 
 		var c=(<div className="imput-search">
 					<span className="icon-search"></span>
@@ -46,30 +29,8 @@ class ListMessage extends Component{
 				{
 				Object.keys(this.state.contactUser).map( id =>{
 					var stateCardSearch=false;
-					//console.log(this.props.awaitingRequests);
-					Object.keys(this.props.awaitingRequests||{}).map(idu=>{
-						//console.log("este id =>: "+idu);
-						if(this.state.contactUser[id].id == idu){
-							stateCardSearch=true;
-						}
-					});
 					var stateCircle=false;
-					Object.keys(this.props.listCircle||{}).map(idUs=>{
-						if(idUs==this.state.contactUser[id].id){
-							stateCircle=true;
-						}
-					});
-
 					var stateRequest=false;
-					//console.log("prbando codigo 2 => ",this.props.contactRequest);
-					Object.keys(this.state.contactRequest||{}).map(idUsc=>{
-						if(idUsc==this.state.contactUser[id].id){
-							stateRequest=true;
-						}
-					});
-
-
-
 					return (
 						<div key={this.state.contactUser[id].id}>	
 								{

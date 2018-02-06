@@ -12,7 +12,6 @@ class Info extends Component{
 
 	componentWillReceiveProps(nextProps){		
 		if(nextProps.infoContact.id != null){
-		    // this.setState({contactMessages: nextProps.contactChat});
 			this.contactOnLinePrueba(nextProps.infoContact.id);
 		} 
 	}
@@ -25,7 +24,6 @@ class Info extends Component{
 		var online=false;
 		let refOnlineUser=fire.database().ref('bussines').child(id).child("info_bussines").child("online");
 		refOnlineUser.on('value',snapshot=>{
-			//console.log("id del user "+snapshot.val().info_bussines.name_bussines+" "+snapshot.val().info_bussines.online);
 			if(snapshot.val()){
 				this.setState({online:true});
 			}else{
@@ -35,7 +33,6 @@ class Info extends Component{
 	}
 
 	render(){
-		//console.log("desde el info :",this.props.infoContact);
 		return(
 			<div className="row">
 				<div className={window.matchMedia("(min-width: 892px)").matches?"hidden col-xs-1 col-sm-1 col-md-1":"show col-xs-1 col-sm-1 col-md-1"}>	

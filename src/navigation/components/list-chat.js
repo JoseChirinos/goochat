@@ -15,7 +15,6 @@ class ListMessage extends Component{
 		} 
 	}
 	render(){
-		//console.log("mostrando los datos desde el lisMessage",this.props);
 
 		var a=(
 			<div className="content-chat">

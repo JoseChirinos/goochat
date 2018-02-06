@@ -25,28 +25,23 @@ class Menu extends Component{
 		return(
 			<div className="menu-container">
 				<div className="row">
-					<div className="col-xs-3 col-sm-3 col-md-3 menu-containerTriangle">
-						<span id="circle" className="icon-triangle item-selected evento" onClick={ () => this.props.eventoPrueba(0) } />
+					
+
+					<div className="col-xs-6 col-sm-6 col-md-6 menu-containerSquare">
+						<div style={{"width": "100%","position": "absolute","textAlign": "center"}}>
+							<div className={state1 && this.props.countMessage!=0?"show countMenu":"hidden countMenu"}>
+								{
+									this.props.countMessage!=0?this.props.countMessage:""
+								}
+							</div>
+						</div>
+						<span id="square" className="icon-message-square item-selected evento" onClick={ () => this.props.eventoPrueba(1) } />
 					</div>
-					<div className="col-xs-3 col-sm-3 col-md-3 menu-containerSquare">
-						<label className={state1 && this.props.countMessage!=0?"show countMenu":"hidden countMenu"}>
-							{
-								this.props.countMessage!=0?this.props.countMessage:""
-							}
-						</label>
-						<span id="square" className="icon-message-square evento" onClick={ () => this.props.eventoPrueba(1) } />
-					</div>
-					<div className="col-xs-3 col-sm-3 col-md-3 menu-containerSearch">
+
+					<div className="col-xs-6 col-sm-6 col-md-6 menu-containerSearch">
 						<span id="search" className="icon-search evento" onClick={ () => this.props.eventoPrueba(2) } />
 					</div>
-					<div className="col-xs-3 col-sm-3 col-md-3 menu-containerPlus">
-						<label className={state2 && this.state.countRequest!=0?"show countMenu":"hidden countMenu"}>
-							{
-								this.state.countRequest!=0?this.state.countRequest:""
-							}
-						</label>
-						<span id="plus" className="icon-user-plus evento" onClick={ () => this.props.eventoPrueba(3) } />
-					</div>
+
 				</div>
 			</div>
 		)

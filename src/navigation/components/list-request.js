@@ -8,7 +8,6 @@ class ListMessage extends Component{
 		contactUser:[]
 	}
 	componentWillReceiveProps(nextProps){		
-		//console.log(nextProps);
 
 		if(nextProps.contactRequest != null){
 		     this.setState({contactUser: nextProps.contactRequest});
@@ -19,7 +18,6 @@ class ListMessage extends Component{
 		}
 
 
-		//console.log("probando codigo",nextProps.contactRequest);
 
 	}
 
