@@ -2,6 +2,14 @@ import React, { Component } from 'react';
 import './bussines.css';
 
 class Bussines extends Component{
+
+	componentWillReceiveProps(nextProps){	
+		if(nextProps.name_bussines!=""){
+			this.props.infoLoad();
+		}
+	}
+
+
 	render(){
 		const {name_bussines,id_bussines,img_url,online}=this.props;
 		return(

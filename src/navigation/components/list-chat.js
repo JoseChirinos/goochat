@@ -11,11 +11,12 @@ class ListMessage extends Component{
 	}
 	componentWillReceiveProps(nextProps){		
 		if(nextProps.contactChat != null){
-		     this.setState({contactMessages: nextProps.contactChat});
+		    this.setState({contactMessages: nextProps.contactChat});
+			this.props.loadStart();
 		} 
 	}
-	render(){
 
+	render(){
 		var a=(
 			<div className="content-chat">
 				{

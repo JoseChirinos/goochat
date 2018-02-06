@@ -12,6 +12,8 @@ import ListSearch from './../../navigation/components/list-search';
 import Menu from './../../navigation/components/menu';
 //style css
 
+import ViewLoad from './../../chat/components/viewLoad';
+
 import './goochat.css'
 
 class Goochat extends Component{
@@ -48,7 +50,10 @@ class Goochat extends Component{
 		inputSendState:false,
 		viewMessageSwitch:true,
 		countRequest:0,
-		countMessage:0
+		countMessage:0,
+		loadMessageState:false,
+		loadSoundState:false,
+		loadInfoState:false
 	}
 
 	loadListChat=(e)=>{
@@ -340,7 +345,6 @@ loadChatContact=(idu)=>{
 
 }
 
-
 lookOutChat=(idu)=>{
 	if(idu!=''){
 		var id = this.Myid;
@@ -351,10 +355,9 @@ lookOutChat=(idu)=>{
 				this.state.numberOfMessage=10;
 			}else{
 			  	if(this.id_contactVar==idu && document.getElementById('contentViewMessage').scrollTop!=0){
-			   		//var audioElement = document.createElement('audio');
-					if(!this.audioElement.play()){
-						this.audioElement.play();
-					}
+			  
+					track.playS();
+
 			   		this.updateViewed(this.id_contactVar);
 				}
 			}
@@ -421,8 +424,6 @@ sendMessage=(message)=>{
 		//funcion para guardar un usuario nuevo
 		//this.saveNewUser(objJson);
 
-
-
 		var objContact={
 			id:"jose_id",
 			img_url:"https://d30y9cdsu7xlg0.cloudfront.net/png/17241-200.png",
@@ -431,7 +432,6 @@ sendMessage=(message)=>{
 		}
 		//funcion para abrir directamente el chat del otro usuario
 		//this.showInfoContact(objContact);
-
 	}
 
 
@@ -482,9 +482,9 @@ sendMessage=(message)=>{
 			  	if(this.id_contactVar==this.state.id_contact && document.getElementById('contentViewMessage').scrollTop!=0){
 			    	this.setState({chatContact:objTemp});
 			    	document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
-			    	var audioElement = document.createElement('audio');
-			    	audioElement.setAttribute('src', '../../assets/audio/MessageNonzerobot.mp3');
-			   		audioElement.play();
+			    	
+			    	track.playS();
+
 					document.getElementById('loader').className="hidden";
 				}
 				if(this.id_contactVar==this.state.id_contact && document.getElementById('contentViewMessage').scrollTop==0){
@@ -539,12 +539,41 @@ sendMessage=(message)=>{
 
 
 
+//stados de la carga
+
+	loadStart=()=>{
+		if(!this.state.loadMessageState){
+			this.setState({loadMessageState:true});
+			// console.log("1");
+		}
+	}
+	loadSound=()=>{
+		this.setState({loadSoundState:true});
+	}
+	infoLoad=()=>{
+		if(!this.state.loadInfoState){
+			this.setState({loadInfoState:true});
+			// console.log("2");
+		}
+	}
+
 
 
 	render(){
 		return(
 			<div className="container-fluid Goochat" style={{"height":"100%","margin":"0","width":"100%"}}>
-				<div className="row">
+				
+
+				<div className={!this.state.loadMessageState || !this.state.loadInfoState?"show":"hidden"} style={{"position":"fixed","left":"0px","right":"0px","top":"0px","bottom":"0px","background":"url(./assets/images/background-inicio.png) 0% 0% / cover no-repeat"}}>
+					<ViewLoad/>
+					<div style={{"position":"fixed","bottom":"100px","zIndex":"1000"}}>
+						<input type="text" id="id_user" ></input>
+						<button onClick={this.eventosFire}>entrar</button>
+					</div>
+				</div>
+
+
+				<div className={this.state.loadMessageState && this.state.loadInfoState?"row show":"row hidden"}>
 					<div id="chatMessage" className="col-sm-12 col-md-9 col-lg-9" style={ {"overflowX":"hidden","overflowY":"hidden","height":"100vh","background":"url(./assets/images/background-inicio.png)","backgroundSize":"cover","backgroundRepeat":"no-repeat"}}>
 
 						<div style={{"zIndex": "1000","width":"100%","position":"absolute","left": "0px","top": "0px","background": "#ededed","color": "gray","textAlign":"left","paddingLeft":"3%","fontSize":"10px"}}>
@@ -558,16 +587,10 @@ sendMessage=(message)=>{
 						</div>
 
 					</div>
-
-					<div style={{"position":"fixed","bottom":"100px","zIndex":"1000"}}>
-						<input type="text" id="id_user" ></input>
-						<button onClick={this.eventosFire}>entrar</button>
-					</div>
-
 					 <div id="goochat-menu" className="col-sm-12 col-md-3 col-lg-3 goochat-content-list">
 					 	<div className="row">
 						 	<div className="col-md-12" style={{"paddingRight":"0px","paddingLeft": "0px"}}>
-								<Bussines {...this.state}/>
+								<Bussines infoLoad={this.infoLoad} {...this.state}/>
 						 	</div>
 						 	<div className="col-md-12 Info-menu">
 								<h3 id="goochat-menu-info">Chat empresarial.</h3>
@@ -580,7 +603,7 @@ sendMessage=(message)=>{
 
 
 								<div className={ this.state.menu.chatList ? 'show':'hidden' } id="goochat-chatlist" >
-									<ListChat countMessageUnreadMinus={this.countMessageUnreadMinus} countMessageUnreadPlus={this.countMessageUnreadPlus} id_bussines={this.state.id_bussines} showInfoContact={this.showInfoContact} contactChat={this.state.contactChat}/>
+									<ListChat loadStart={this.loadStart} countMessageUnreadMinus={this.countMessageUnreadMinus} countMessageUnreadPlus={this.countMessageUnreadPlus} id_bussines={this.state.id_bussines} showInfoContact={this.showInfoContact} contactChat={this.state.contactChat}/>
 								</div>
 
 								<div className={this.state.menu.search ? 'show':'hidden' } id="goochat-search" >

@@ -48,6 +48,7 @@ var track = {
     },
     handleOverallProgress: function(event) {
         console.log('progreso: '+( event.progress * 100) + "%");
+        
     },
     handleFileError: function(event) {
         console.error('hubo un error');
@@ -62,11 +63,16 @@ var track = {
       this.playSound(sound);
     },
     playSound:function(el){
-      if(el !== null){
-        el.pause();
-        el.currentTime = 0;
-        el.play();
-      }
+      var playPremise=el.play();
+
+            if (playPremise !== undefined) {
+                playPremise.then(_ => {
+                     playPremise;
+                })
+                .catch(error => {
+                    playPremise=el.play();
+                });
+            }
     }
 }
 track.init();
