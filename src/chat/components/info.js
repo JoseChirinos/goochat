@@ -35,7 +35,7 @@ class Info extends Component{
 	render(){
 		return(
 			<div className="row">
-				<div className={window.matchMedia("(min-width: 892px)").matches?"hidden col-xs-1 col-sm-1 col-md-1":"show col-xs-1 col-sm-1 col-md-1"}>	
+				<div className={window.matchMedia("(min-width: 993px)").matches?"hidden col-xs-1 col-sm-1 col-md-1":"show col-xs-1 col-sm-1 col-md-1"}>	
     				<span onClick={()=>{this.props.backMenu()}} className="icon-chevron-left" style={{"cursor":"pointer","fontSize":"50px","marginLeft":"-15px","color":"#aeaeae"}}>
    				 	</span>
    				 </div>

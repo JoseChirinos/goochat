@@ -90,7 +90,6 @@ class Goochat extends Component{
 	eventosFire = () =>{
 		var id = document.getElementById('id_user').value;
 		this.Myid=id;
-
 		this.countChatMessage(id);
 
 	    let nameBussines = fire.database().ref('bussines/'+id).child('info_bussines');
@@ -126,10 +125,6 @@ class Goochat extends Component{
 			var runFire=this.state.runFire;
 			var menu=men||this.state.menu;
 
-			if(menu.chatList && !this.state.runFire.chatList){
-				this.loadLastChat();
-				runFire['chatList']=true;
-			}
 			if(menu.search && !this.state.runFire.search){
 		    	this.loadSearch("");
 		    	runFire['search']=true;
@@ -188,6 +183,13 @@ class Goochat extends Component{
 
 
 	loadSearch=(e)=>{
+
+		// if(document.getElementById('inputSendMessage')!=null){
+		// 	document.getElementById('search-input').focus();
+		// 	console.log("se le quito el focus()")
+		// }
+
+
 		var idu =this.state.id_bussines;
 		document.getElementById('menu').className="show";
 		let searchRef = fire.database().ref('list_bussines');
@@ -268,28 +270,29 @@ class Goochat extends Component{
 		this.id_contactVar=obj.id;
 		this.updateViewed(obj.id);
 		document.getElementById('contentViewMessage').style.background="";
-		if(this.sound!=null && this.sound!=[] && this.sound!=undefined){
-			Object.keys(this.sound).map(id=>{
-			if(this.sound[id].id==obj.id){
-					this.sound[id].unread_messages=0;
-				}
-			});
-		}
 		this.state.numberOfMessage=10;
 		this.setState({infoContact:obj,id_contact:obj.id});
 		this.loadChatContact(obj.id);
-		//probando codigoo
 		this.lookOutChat(obj.id);
 
 		document.getElementById("inputSendMessage").focus();
-
-		if (window.matchMedia("(min-width: 892px)").matches) {
+		if (window.matchMedia("(min-width:892px)").matches) {
   			document.getElementById("chatMessage").className="col-sm-12 col-md-9 col-lg-9 show";
 			document.getElementById("goochat-menu").className="col-sm-12 col-md-3 col-lg-3 goochat-content-list show";
 		} else {
 			document.getElementById("chatMessage").className="col-sm-12 col-md-9 col-lg-9 show";
 			document.getElementById("goochat-menu").className="col-sm-12 col-md-3 col-lg-3 goochat-content-list hide";
 		}
+
+
+		// if (window.matchMedia("(width:992px)").matches) {
+		// 	document.getElementById("chatMessage").className="col-sm-12 col-md-9 col-lg-9 show";
+		// 	document.getElementById("goochat-menu").className="col-sm-12 col-md-3 col-lg-3 goochat-content-list hide";
+		// }
+
+
+
+
 
 	}
 	updateViewed=(id)=>{
@@ -323,28 +326,14 @@ loadChatContact=(idu)=>{
 			}else{
 				var objTemp=[];
 			  	Object.keys(snapshot.val()||{}).map(ida=>{
-		  			var objTempMessage=snapshot.val()[ida];
-		  			var codeObject={
-		  				code:ida,
-		  				myId:this.state.id_bussines,
-		  				yourId:idu
-		  			};
-		  			var obj = Object.assign(objTempMessage,codeObject);
-		  			objTemp.push(obj);
+		  			objTemp.push(Object.assign(snapshot.val()[ida],{code:ida,myId:this.state.id_bussines,yourId:idu}));
 			    });
 
-				if(this.id_contactVar==idu && document.getElementById('contentViewMessage').scrollTop==0){
-					this.setState({chatContact:objTemp});
-				}
-				document.getElementById('loader').className="hidden";
-				document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
-
-			 	if(this.id_contactVar==idu && document.getElementById('contentViewMessage').scrollTop!=0){
-			    	this.setState({chatContact:objTemp});
-				}
+				this.setState({chatContact:objTemp});
 				setTimeout(function(){
 					document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
 				}.bind(this),100);
+				document.getElementById('loader').className="hidden";
 			}
 		});
 	}
@@ -373,8 +362,6 @@ lookOutChat=(idu)=>{
 }
 sendMessage=(message)=>{
 		var updates = {};
-		var inserts={}
-
 		if(this.Myid!=""){
 			let saveMyDateRef= fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(this.state.id_contact).child('messages').push().getKey();
 			let saveYourDateRef= fire.database().ref('bussines').child(this.state.id_contact).child("chat").child(this.state.id_bussines).child('messages').push().getKey();
@@ -395,13 +382,19 @@ sendMessage=(message)=>{
 
 			fire.database().ref().update(updates);
 			document.getElementById('inputSendMessage').value="";
+
+
 		}
 	}
 
+
+
+
+
+
+
 	componentDidMount(){
 		window.addEventListener("beforeunload", this.onUnload);
-
-
 		this.id_contactVar='';
 		this.scrollHeightPrev=0;
 		this.Myid="";
@@ -437,7 +430,6 @@ sendMessage=(message)=>{
 		//funcion para abrir directamente el chat del otro usuario
 		//this.showInfoContact(objContact);
 
-		this.sound=[];
 	}
 
 
@@ -556,7 +548,7 @@ sendMessage=(message)=>{
 						<div style={{"zIndex": "1000","width":"100%","position":"absolute","left": "0px","top": "0px","background": "#ededed","color": "gray","textAlign":"left","paddingLeft":"3%","fontSize":"10px"}}>
 							<Info backMenu={this.backMenu} infoContact={this.state.infoContact}/>
 						</div>
-						<div onScroll={this.scrollLoadMessage} id="contentViewMessage" style={{"paddingRight":"20px","paddingLeft": "20px","paddingBottom":"100px","overflowY":"auto","width": "100%", "height": "100vh" ,"background":"url(./assets/images/goo-logo.svg)","backgroundSize": "250px","backgroundRepeat": "no-repeat","backgroundPosition": "center"}}>
+						<div onScroll={this.scrollLoadMessage} id="contentViewMessage" style={{"paddingRight":"20px","paddingLeft": "20px","overflowY":"auto","width": "100%", "height": "100vh" ,"background":"url(./assets/images/goo-logo.svg)","backgroundSize": "250px","backgroundRepeat": "no-repeat","backgroundPosition": "center"}}>
 							<div id="loader" className="hidden"  style={{"position":"absolute","zIndex":"10","width":"100%","left":"0px","background":"linear-gradient(#00000057,rgba(255, 255, 255, 0))"}}>
 								<Loader size="0"></Loader>
 							</div>
