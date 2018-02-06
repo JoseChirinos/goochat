@@ -192,7 +192,7 @@ class Goochat extends Component{
 
 		var idu =this.state.id_bussines;
 		document.getElementById('menu').className="show";
-		let searchRef = fire.database().ref('list_bussines');
+		let searchRef = fire.database().ref('list_bussines').limitToLast(100);
 		searchRef.on('value', snapshot => {
 			document.getElementById('menu').className="show";
 			var jsonTemp=[];
@@ -351,10 +351,16 @@ lookOutChat=(idu)=>{
 				this.state.numberOfMessage=10;
 			}else{
 			  	if(this.id_contactVar==idu && document.getElementById('contentViewMessage').scrollTop!=0){
-			    	var audioElement = document.createElement('audio');
-			    	audioElement.setAttribute('src', '../../assets/audio/MessageNonzerobot.mp3');
-			   		audioElement.play();
+			   	
+			   		//var audioElement = document.createElement('audio');
+					
+
+					if(!this.audioElement.play()){
+						this.audioElement.play();
+					}
+			   	
 			   		this.updateViewed(this.id_contactVar);
+				
 				}
 			}
 		});
@@ -398,8 +404,9 @@ sendMessage=(message)=>{
 		this.id_contactVar='';
 		this.scrollHeightPrev=0;
 		this.Myid="";
-
-
+		this.audioElement = document.createElement('audio');
+		this.audioElement.setAttribute('src', '../../assets/audio/MessageNonzerobot.mp3');
+					
 
 		//para abrir el chat es necesario mandar el id del usuario a esta funcion
 		//this.eventosFire(id);
