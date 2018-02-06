@@ -192,7 +192,7 @@ class Goochat extends Component{
 
 		var idu =this.state.id_bussines;
 		document.getElementById('menu').className="show";
-		let searchRef = fire.database().ref('list_bussines');
+		let searchRef = fire.database().ref('list_bussines').limitToLast(100);
 		searchRef.on('value', snapshot => {
 			document.getElementById('menu').className="show";
 			var jsonTemp=[];
