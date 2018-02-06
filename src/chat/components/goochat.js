@@ -58,7 +58,7 @@ class Goochat extends Component{
 		});
 	}
 
-	eventoFromMenu = (select) =>{	
+	eventoFromMenu = (select) =>{
 		var menu = {};
 		document.getElementById('square').className="icon-message-square evento";
 		document.getElementById('search').className="icon-search evento";
@@ -108,7 +108,7 @@ class Goochat extends Component{
 			    devices_online:devices+1
 			});
 	    });
-	
+
 	}
 
 
@@ -129,14 +129,14 @@ class Goochat extends Component{
 		    	this.loadSearch("");
 		    	runFire['search']=true;
 			}
-			
+
 			this.setState({
 				runFire:runFire
 			});
 		}else{
 			this.loadLastChat();
 		}
-			
+
 	}
 
 
@@ -157,7 +157,7 @@ class Goochat extends Component{
 		    	online:false,
 		    	devices_online:0
 		    });
-		}else{	
+		}else{
 			var de=devices-1;
 			let onlineOfBussines = fire.database().ref('bussines').child(this.state.id_bussines).child('info_bussines');
 		    onlineOfBussines.update({
@@ -179,8 +179,8 @@ class Goochat extends Component{
   		return serverTime;
 	}
 
-	
-	
+
+
 
 	loadSearch=(e)=>{
 
@@ -224,8 +224,8 @@ class Goochat extends Component{
 		});
 	}
 
-	
-	
+
+
 	loadLastChat=()=>{
 		document.getElementById('menu').className="show";
 		var myId=this.Myid;
@@ -269,12 +269,12 @@ class Goochat extends Component{
 	showInfoContact=(obj)=>{
 		this.id_contactVar=obj.id;
 		this.updateViewed(obj.id);
-		document.getElementById('contentViewMessage').style.background="";		
+		document.getElementById('contentViewMessage').style.background="";
 		this.state.numberOfMessage=10;
 		this.setState({infoContact:obj,id_contact:obj.id});
 		this.loadChatContact(obj.id);
 		this.lookOutChat(obj.id);
-	
+
 		document.getElementById("inputSendMessage").focus();
 		if (window.matchMedia("(min-width:892px)").matches) {
   			document.getElementById("chatMessage").className="col-sm-12 col-md-9 col-lg-9 show";
@@ -288,7 +288,7 @@ class Goochat extends Component{
 		// if (window.matchMedia("(width:992px)").matches) {
 		// 	document.getElementById("chatMessage").className="col-sm-12 col-md-9 col-lg-9 show";
 		// 	document.getElementById("goochat-menu").className="col-sm-12 col-md-3 col-lg-3 goochat-content-list hide";
-		// }	
+		// }
 
 
 
@@ -301,10 +301,10 @@ class Goochat extends Component{
 			chatRef1.orderByChild("viewed").equalTo(false).once('value').then(snapshot => {
 				var jsonTemp=snapshot.val();
 				try{
-					var updates = {};					
+					var updates = {};
 					Object.keys(jsonTemp).map(idMessage=>{
 						updates['/bussines/'+this.state.id_bussines+'/chat/'+id+'/messages/'+idMessage+'/viewed']=true;
-					});	
+					});
 					fire.database().ref().update(updates);
 				}catch(e){}
 			});
@@ -323,7 +323,7 @@ loadChatContact=(idu)=>{
 		chatRef.on('value', snapshot => {
 			if(this.id_contactVar!=idu){
 				chatRef.off();
-			}else{	
+			}else{
 				var objTemp=[];
 			  	Object.keys(snapshot.val()||{}).map(ida=>{
 		  			objTemp.push(Object.assign(snapshot.val()[ida],{code:ida,myId:this.state.id_bussines,yourId:idu}));
@@ -333,7 +333,7 @@ loadChatContact=(idu)=>{
 				setTimeout(function(){
 					document.getElementById('contentViewMessage').scrollTop=document.getElementById('contentViewMessage').scrollHeight;
 				}.bind(this),100);
-				document.getElementById('loader').className="hidden";				
+				document.getElementById('loader').className="hidden";
 			}
 		});
 	}
@@ -362,8 +362,8 @@ lookOutChat=(idu)=>{
 	}
 }
 sendMessage=(message)=>{
-		var updates = {};	
-		if(this.Myid!=""){				
+		var updates = {};
+		if(this.Myid!=""){
 			let saveMyDateRef= fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(this.state.id_contact).child('messages').push().getKey();
 			let saveYourDateRef= fire.database().ref('bussines').child(this.state.id_contact).child("chat").child(this.state.id_bussines).child('messages').push().getKey();
 			var a={date:this.dateFire(),name_bussines:this.state.name_bussines,id_bussines:this.state.id_bussines,img_url:this.state.img_url,message:message,viewed:true};
@@ -372,14 +372,14 @@ sendMessage=(message)=>{
 			var d={name_bussines:this.state.infoContact.name_bussines||"error",img_url:this.state.infoContact.img_url||"",description:this.state.infoContact.description||"error",url_page:this.state.infoContact.url_page||"error.com"};
 			var e={date:this.dateFire(),id_bussines:this.state.id_bussines,message:message,url_page:this.state.url_page,img_url:this.state.img_url};
 			var f={date:this.dateFire(),id_bussines:this.state.id_bussines,message:message,url_page:this.state.url_page,img_url:this.state.img_url};
-			updates['/bussines/'+this.state.id_contact+'/chat/'+this.state.id_bussines+'/info/latest_message']=e;	
-			updates['/bussines/'+this.state.id_bussines+'/chat/'+this.state.id_contact+'/info/latest_message']=f;	
-			updates['/bussines/'+this.state.id_contact+'/chat/'+this.state.id_bussines+'/info/name_description']=c;	
-			updates['/bussines/'+this.state.id_bussines+'/chat/'+this.state.id_contact+'/info/name_description']=d;	
+			updates['/bussines/'+this.state.id_contact+'/chat/'+this.state.id_bussines+'/info/latest_message']=e;
+			updates['/bussines/'+this.state.id_bussines+'/chat/'+this.state.id_contact+'/info/latest_message']=f;
+			updates['/bussines/'+this.state.id_contact+'/chat/'+this.state.id_bussines+'/info/name_description']=c;
+			updates['/bussines/'+this.state.id_bussines+'/chat/'+this.state.id_contact+'/info/name_description']=d;
 			updates['/bussines/'+this.state.id_contact+'/chat/'+this.state.id_bussines+'/messages/'+saveMyDateRef]=b;
 			updates['/bussines/'+this.state.id_bussines+'/chat/'+this.state.id_contact+'/messages/'+saveYourDateRef]=a;
-		
-		
+
+
 
 			fire.database().ref().update(updates);
 			document.getElementById('inputSendMessage').value="";
@@ -438,7 +438,7 @@ sendMessage=(message)=>{
 
 	countChatMessage=(ids)=>{
 		let chatRef = fire.database().ref('bussines/'+ids).child("chat");
-		chatRef.on('value', snapshot => {	
+		chatRef.on('value', snapshot => {
 			var countMessageVar=0;
 			var jsonTemp=snapshot.val();
 			Object.keys(jsonTemp||{}).map(id=>{
@@ -536,11 +536,11 @@ sendMessage=(message)=>{
 			}
 		});
 	}
-	
 
 
 
-	
+
+
 	render(){
 		return(
 			<div className="container-fluid Goochat" style={{"height":"100%","margin":"0","width":"100%"}}>
@@ -578,7 +578,7 @@ sendMessage=(message)=>{
 									<Loader size="1"></Loader>
 								</div>
 
-								
+
 								<div className={ this.state.menu.chatList ? 'show':'hidden' } id="goochat-chatlist" >
 									<ListChat countMessageUnreadMinus={this.countMessageUnreadMinus} countMessageUnreadPlus={this.countMessageUnreadPlus} id_bussines={this.state.id_bussines} showInfoContact={this.showInfoContact} contactChat={this.state.contactChat}/>
 								</div>
@@ -586,7 +586,7 @@ sendMessage=(message)=>{
 								<div className={this.state.menu.search ? 'show':'hidden' } id="goochat-search" >
 									<ListSearch idBussines={this.state.id_bussines} showInfoContact={this.showInfoContact} contactSearch={this.state.contactSearch} contactSendRequest={this.sendRequest} search={this.loadSearch} contactRemoveRequest={this.removeRequest} awaitingRequests={this.state.awaitingRequests} listCircle={this.state.contactCircle}/>
 								</div>
-								
+
 
 						 	</div>
 						 	<div className="col-md-12" style={{"position":"absolute","bottom":"0px","width":"100%","paddingRight":"0px","paddingLeft": "0px"}}>
