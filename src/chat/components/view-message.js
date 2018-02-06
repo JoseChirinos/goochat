@@ -12,8 +12,11 @@ class Message extends Component{
 	componentWillReceiveProps(nextProps){
 		if(nextProps!=null){
 			setTimeout(function(){
-				document.getElementById("inputSendMessage").focus();
-			}.bind(this),300)
+				if(document.getElementById("search-input").value==""){
+					document.getElementById("inputSendMessage").focus();
+				}
+			
+			}.bind(this),300);
 		}
 	}
 
@@ -23,7 +26,7 @@ class Message extends Component{
 	render(){
 		var f="";
 		var a=(
-			<div className="row">
+			<div className="row" style={{"marginBottom":"100px"}}>
 				<br></br> <br></br>
 				<br></br> <br></br>			
 
@@ -51,7 +54,7 @@ class Message extends Component{
 							return (
 								<div key={index}>
 									{fecha!=fecha1?(
-										<div className="col-xs-12 col-sm-12 col-md-12" style={{"textAlign": "center","width": "100%","padding": "20px 10px 30px 10px"}}>
+										<div className="col-xs-12 col-sm-12 col-md-12 date" style={{"textAlign": "center","width": "100%","padding": "20px 10px 30px 10px"}}>
 											<h3 style={{"boxShadow":"0px 2px 10px rgba(0,0,0,0.5)","background":"#d9e1e4","width":"150px","margin":"0 auto"}}>{fecha}</h3>
 										</div>
 										):""
@@ -63,7 +66,7 @@ class Message extends Component{
 							return(
 								<div key={index}>
 									{fecha!=fecha1?(
-										<div className="col-xs-12 col-sm-12 col-md-12" style={{"textAlign": "center","width": "100%","padding": "20px 10px 30px 10px"}}>
+										<div className="col-xs-12 col-sm-12 col-md-12 date" style={{"textAlign": "center","width": "100%","padding": "20px 10px 30px 10px"}}>
 											<h3 style={{"boxShadow":"0px 2px 10px rgba(0,0,0,0.5)","background":"#d9e1e4","width":"150px","borderRadius":"10px 10px","margin":"0 auto"}}>{fecha}</h3>
 										</div>
 										):""
@@ -74,8 +77,7 @@ class Message extends Component{
 						}
 					})
 				}	
-				<br></br> <br></br>
-				<br></br> <br></br>	
+				
 				<div className={this.props.inputSendState?"show message-input":"hidden message-input"}>
 					<Input focus="true" sendMessage={this.props.sendMessage}/>
 				</div>

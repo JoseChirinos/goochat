@@ -43,3 +43,17 @@
 		width: 100%;
 	}
 }
+
+
+
+
+@media (width: 992px ){
+	#goochat-menu{
+    	width: 100% !important;
+	}
+	#chatMessage{
+		width: 100% !important;	
+	}
+
+
+}

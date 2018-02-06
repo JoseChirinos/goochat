@@ -18,7 +18,7 @@ class ListMessage extends Component{
 
 		var c=(<div className="imput-search">
 					<span className="icon-search"></span>
-					<input className="search-input" placeholder="Buscar" type="text" onInput={ (e)=>{ this.props.search(e.target.value) } }/>
+					<input id="search-input" className="search-input" placeholder="Buscar" type="text" onInput={ (e)=>{ this.props.search(e.target.value) } }/>
 				</div>);
 
 
