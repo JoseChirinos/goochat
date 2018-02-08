@@ -49,3 +49,14 @@
 	margin-top: 2px;
 	font-size: 10px;
 }
+
+
+
+.config{
+	position: fixed;
+    top: 9px;
+    right: 12px;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}

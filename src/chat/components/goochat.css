@@ -43,6 +43,9 @@
 	.imput-search{
 		width: 100%;
 	}
+	#infoItem{
+		position: fixed !important;
+	}
 }
 
 
@@ -55,6 +58,9 @@
 	#chatMessage{
 		width: 100% !important;	
 	}
-
+	
+	#infoItem{
+		position: fixed !important;
+	}
 
 }

@@ -15,7 +15,8 @@ class Card extends Component{
 	componentDidMount(){
 		this.messagesUnread(this.props.userInfo.id);	
 		this.play=true;
-		this.unreadPrev=0
+		this.unreadPrev=0;
+		this.number=0;
 	}
 
 	componentWillMount(){
@@ -25,14 +26,13 @@ class Card extends Component{
 		this.setState({id_bussines:this.props.id_bussines});
 		this.contactOnLinePrueba(this.props.userInfo.id);
 		this.urlImgUserItem(this.props.userInfo.id);
+
 	}
 
 	componentWillReceiveProps(nextProps){	
 		if(nextProps != null){
 		 	this.urlImgUserItem(nextProps.userInfo.id);
 		}
-
-
 		if(nextProps.userInfo.id){
 			this.messagesUnread(this.props.userInfo.id);	
 		}
@@ -96,15 +96,84 @@ class Card extends Component{
 					track.playN();
 					this.unreadPrev=Object.keys(snapshot.val()).length;
 				}
+
+			if(this.number!=Object.keys(snapshot.val()).length){
+				if(this.props.notificationInfo){
+					this.notificationShow();
+				}
+				
+				this.number=Object.keys(snapshot.val()).length;
+			}
+
 			}else{
 				this.setState({unreadCount:0});
 			}
+
+
+
+
 		});
 	}
 
 
 
 
+	focusPage=()=>{
+		const {userInfo}=this.props;
+		if(userInfo.latest_message.date!=null){
+			var date=new Date(userInfo.latest_message.date);
+			var mes=(date.getMonth()+1)<10?"0"+(date.getMonth()+1):(date.getMonth()+1);
+			var dia=date.getDate()<10?"0"+date.getDate():date.getDate();
+			var fecha=moment().format(mes+' Do '+date.getFullYear()+' - '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds());
+			var obj={
+			id:userInfo.id,
+			img_url:this.state.img||'',
+			name_bussines:userInfo.name_description.name_bussines,
+			url_page:userInfo.name_description.url_page
+			}
+
+		}else{
+			var fecha="aqui el error";
+			var obj={
+				id:"",
+				img_url:""||'',
+				name_bussines:"",
+				url_page:"no tiene.com"
+			}
+		}
+		this.props.showInfoContact(obj);
+		window.focus();
+	}
+
+
+
+
+
+
+
+
+
+	notificationShow=()=>{
+		
+		setTimeout(function(){
+			if(this.state.unreadCount!=0){
+				if (Notification.permission !== "granted") {
+					Notification.requestPermission();
+				}
+				else{
+
+					const title = this.props.userInfo.name_description.name_bussines||"";
+				    const options = {
+				      body: this.props.userInfo.latest_message.message||"",
+					  icon: this.state.img||"",
+				      vibrate: [500,110,500,110,450,110,200,110,170,40,450,110,200,110,170,40,500]
+				    };
+					var notification = new Notification(title,options);
+					notification.onclick=()=>this.focusPage();
+				}
+			}
+		}.bind(this),200);
+	}
 
 
 
@@ -136,16 +205,13 @@ class Card extends Component{
 		}
 
 
+		
 		return(
 				<div className="card-container">
 					<div className="row">
 						<div className="col-xs-3 col-sm-3 col-md-3 card-containerImg">
 							<img className="card-img" src={this.state.img||""}></img>
-
                             <div className={this.state.online?"circle-active":"circle"} style={{"position":"relative","marginTop": "-19px","marginLeft": "8px"}}></div>
-
-
-
 						</div>
 						<div className="col-xs-7 col-sm-7 col-md-7" onClick={()=>this.props.showInfoContact(obj)} style={{"height": "100px","cursor":"pointer","paddingRight": "30px"}}>
 							<div className="row">

@@ -23,7 +23,7 @@ class ListMessage extends Component{
 					Object.keys(this.state.contactMessages||{}).map( index =>{
 						return (
 								<div key={index}>
-									<CardMessage id_bussines={this.props.id_bussines} showInfoContact={this.props.showInfoContact} userInfo={this.state.contactMessages[index]}/>
+									<CardMessage notificationInfo={this.props.notificationInfo} id_bussines={this.props.id_bussines} showInfoContact={this.props.showInfoContact} userInfo={this.state.contactMessages[index]}/>
 								<br/>
 							</div>
 						)

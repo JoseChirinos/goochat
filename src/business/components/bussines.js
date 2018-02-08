@@ -31,11 +31,7 @@ class Bussines extends Component{
 						</div>
 					</div>
 				</div>
-				
-
-
-
-				
+				<span onClick={()=>this.props.showConfig()} className="config icon-settings"></span>
 		    </div>
 		)	
 	}

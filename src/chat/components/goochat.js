@@ -13,6 +13,8 @@ import Menu from './../../navigation/components/menu';
 //style css
 
 import ViewLoad from './../../chat/components/viewLoad';
+import Config from './../../chat/components/config';
+
 
 import './goochat.css'
 
@@ -53,7 +55,12 @@ class Goochat extends Component{
 		countMessage:0,
 		loadMessageState:false,
 		loadSoundState:false,
-		loadInfoState:false
+		loadInfoState:false,
+
+
+
+		notificationInfo:false
+
 	}
 
 	loadListChat=(e)=>{
@@ -114,15 +121,13 @@ class Goochat extends Component{
 			});
 	    });
 
+	    let bussinesNotification=fire.database().ref('bussines/'+id).child('info_bussines').child("notification");
+	    bussinesNotification.on('value',snapshot=>{
+	    	if(snapshot.val()!=null)
+	    	this.setState({notificationInfo:snapshot.val()});
+	    });
+
 	}
-
-
-
-
-
-
-
-
 
 
 	viewState=(men)=>{
@@ -383,7 +388,6 @@ sendMessage=(message)=>{
 			updates['/bussines/'+this.state.id_bussines+'/chat/'+this.state.id_contact+'/messages/'+saveYourDateRef]=a;
 
 
-
 			fire.database().ref().update(updates);
 			document.getElementById('inputSendMessage').value="";
 
@@ -455,7 +459,7 @@ sendMessage=(message)=>{
 			});
 			setTimeout(function(){
 				this.setState({countMessage:countMessageVar});
-			}.bind(this),300);
+			}.bind(this),200);
 		});
 	}
 
@@ -544,7 +548,6 @@ sendMessage=(message)=>{
 	loadStart=()=>{
 		if(!this.state.loadMessageState){
 			this.setState({loadMessageState:true});
-			// console.log("1");
 		}
 	}
 	loadSound=()=>{
@@ -553,10 +556,29 @@ sendMessage=(message)=>{
 	infoLoad=()=>{
 		if(!this.state.loadInfoState){
 			this.setState({loadInfoState:true});
-			// console.log("2");
 		}
 	}
 
+
+
+
+	showConfig=()=>{
+		document.getElementById('config').className="show";
+	}
+
+	hideConfig=()=>{
+		document.getElementById('config').className="hidden";
+	}
+
+
+	optionConfig=(option)=>{
+		let bussinesNotification=fire.database().ref('bussines/'+this.Myid).child('info_bussines');
+		if(option==1){
+			bussinesNotification.update({notification:true});
+		}else if(option==2){
+			bussinesNotification.update({notification:false});
+		}
+	}
 
 
 	render(){
@@ -573,10 +595,27 @@ sendMessage=(message)=>{
 				</div>
 
 
+
+
+
+				<div id="config" className="hidden" style={{"zIndex":"2000","position":"fixed","left":"0px","right":"0px","top":"0px","bottom":"0px","background":"rgba(0,0,0,0.3)"}}>
+					<Config notificationInfo={this.state.notificationInfo} hideConfig={this.hideConfig} optionConfig={this.optionConfig}/>
+				</div>
+
+
+
+
+
+
+
+
+
+
+
 				<div className={this.state.loadMessageState && this.state.loadInfoState?"row show":"row hidden"}>
 					<div id="chatMessage" className="col-sm-12 col-md-9 col-lg-9" style={ {"overflowX":"hidden","overflowY":"hidden","height":"100vh","background":"url(./assets/images/background-inicio.png)","backgroundSize":"cover","backgroundRepeat":"no-repeat"}}>
 
-						<div style={{"zIndex": "1000","width":"100%","position":"absolute","left": "0px","top": "0px","background": "#ededed","color": "gray","textAlign":"left","paddingLeft":"3%","fontSize":"10px"}}>
+						<div id="infoItem" style={{"zIndex": "1000","width":"100%","position":"absolute","left": "0px","top": "0px","background": "#ededed","color": "gray","textAlign":"left","paddingLeft":"3%","fontSize":"10px"}}>
 							<Info backMenu={this.backMenu} infoContact={this.state.infoContact}/>
 						</div>
 						<div onScroll={this.scrollLoadMessage} id="contentViewMessage" style={{"paddingRight":"20px","paddingLeft": "20px","overflowY":"auto","width": "100%", "height": "100vh" ,"background":"url(./assets/images/goo-logo.svg)","backgroundSize": "250px","backgroundRepeat": "no-repeat","backgroundPosition": "center"}}>
@@ -590,7 +629,7 @@ sendMessage=(message)=>{
 					 <div id="goochat-menu" className="col-sm-12 col-md-3 col-lg-3 goochat-content-list">
 					 	<div className="row">
 						 	<div className="col-md-12" style={{"paddingRight":"0px","paddingLeft": "0px"}}>
-								<Bussines infoLoad={this.infoLoad} {...this.state}/>
+								<Bussines showConfig={this.showConfig} infoLoad={this.infoLoad} {...this.state}/>
 						 	</div>
 						 	<div className="col-md-12 Info-menu">
 								<h3 id="goochat-menu-info">Chat empresarial.</h3>
@@ -603,7 +642,7 @@ sendMessage=(message)=>{
 
 
 								<div className={ this.state.menu.chatList ? 'show':'hidden' } id="goochat-chatlist" >
-									<ListChat loadStart={this.loadStart} countMessageUnreadMinus={this.countMessageUnreadMinus} countMessageUnreadPlus={this.countMessageUnreadPlus} id_bussines={this.state.id_bussines} showInfoContact={this.showInfoContact} contactChat={this.state.contactChat}/>
+									<ListChat notificationInfo={this.state.notificationInfo} loadStart={this.loadStart} countMessageUnreadMinus={this.countMessageUnreadMinus} countMessageUnreadPlus={this.countMessageUnreadPlus} id_bussines={this.state.id_bussines} showInfoContact={this.showInfoContact} contactChat={this.state.contactChat}/>
 								</div>
 
 								<div className={this.state.menu.search ? 'show':'hidden' } id="goochat-search" >
