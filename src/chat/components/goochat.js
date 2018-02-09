@@ -193,13 +193,6 @@ class Goochat extends Component{
 
 
 	loadSearch=(e)=>{
-
-		// if(document.getElementById('inputSendMessage')!=null){
-		// 	document.getElementById('search-input').focus();
-		// 	console.log("se le quito el focus()")
-		// }
-
-
 		var idu =this.state.id_bussines;
 		document.getElementById('menu').className="show";
 		let searchRef = fire.database().ref('list_bussines').limitToLast(100);
@@ -293,17 +286,6 @@ class Goochat extends Component{
 			document.getElementById("chatMessage").className="col-sm-12 col-md-9 col-lg-9 show";
 			document.getElementById("goochat-menu").className="col-sm-12 col-md-3 col-lg-3 goochat-content-list hide";
 		}
-
-
-		// if (window.matchMedia("(width:992px)").matches) {
-		// 	document.getElementById("chatMessage").className="col-sm-12 col-md-9 col-lg-9 show";
-		// 	document.getElementById("goochat-menu").className="col-sm-12 col-md-3 col-lg-3 goochat-content-list hide";
-		// }
-
-
-
-
-
 	}
 	updateViewed=(id)=>{
 		try{
@@ -507,7 +489,6 @@ sendMessage=(message)=>{
 		}
 	}
 
-
 	//sta es la funcion que guardara y actualizara los datos del usuario
 	saveNewUser=(obj)=>{
 		let refNewUser=fire.database().ref('bussines').child(obj.id+"");
@@ -519,7 +500,8 @@ sendMessage=(message)=>{
 				name_bussines:obj.name_bussines,
 				url_page:obj.url_page,
 				region:obj.region,
-				devices_online:obj.devices_online
+				devices_online:obj.devices_online,
+				notification:false
 			}
 		});
 		this.saveNewUserList(obj);
@@ -559,18 +541,12 @@ sendMessage=(message)=>{
 		}
 	}
 
-
-
-
 	showConfig=()=>{
 		document.getElementById('config').className="show";
 	}
-
 	hideConfig=()=>{
 		document.getElementById('config').className="hidden";
 	}
-
-
 	optionConfig=(option)=>{
 		let bussinesNotification=fire.database().ref('bussines/'+this.Myid).child('info_bussines');
 		if(option==1){
@@ -601,16 +577,6 @@ sendMessage=(message)=>{
 				<div id="config" className="hidden" style={{"zIndex":"2000","position":"fixed","left":"0px","right":"0px","top":"0px","bottom":"0px","background":"rgba(0,0,0,0.3)"}}>
 					<Config notificationInfo={this.state.notificationInfo} hideConfig={this.hideConfig} optionConfig={this.optionConfig}/>
 				</div>
-
-
-
-
-
-
-
-
-
-
 
 				<div className={this.state.loadMessageState && this.state.loadInfoState?"row show":"row hidden"}>
 					<div id="chatMessage" className="col-sm-12 col-md-9 col-lg-9" style={ {"overflowX":"hidden","overflowY":"hidden","height":"100vh","background":"url(./assets/images/background-inicio.png)","backgroundSize":"cover","backgroundRepeat":"no-repeat"}}>
@@ -648,7 +614,6 @@ sendMessage=(message)=>{
 								<div className={this.state.menu.search ? 'show':'hidden' } id="goochat-search" >
 									<ListSearch idBussines={this.state.id_bussines} showInfoContact={this.showInfoContact} contactSearch={this.state.contactSearch} contactSendRequest={this.sendRequest} search={this.loadSearch} contactRemoveRequest={this.removeRequest} awaitingRequests={this.state.awaitingRequests} listCircle={this.state.contactCircle}/>
 								</div>
-
 
 						 	</div>
 						 	<div className="col-md-12" style={{"position":"absolute","bottom":"0px","width":"100%","paddingRight":"0px","paddingLeft": "0px"}}>

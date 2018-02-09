@@ -67,25 +67,6 @@ class Card extends Component{
 	}
 
 
-	// playSound=()=>{
-	// 	if(this.play){
-	// 		this.play=false;
-	// 		this.audioElement.play();
-	// 	}
-	// 	setTimeout(function(){
-	// 		this.play=true;
-	// 	}.bind(this),1200);	
-	// }
-
-
-
-
-
-
-
-
-
-
 	messagesUnread=(id)=>{
 		let refCountMessage=fire.database().ref('bussines').child(this.state.id_bussines).child('chat').child(id).child('messages');
 	    refCountMessage.orderByChild('viewed').equalTo(false).once('value').then(snapshot=>{
@@ -98,7 +79,7 @@ class Card extends Component{
 				}
 
 			if(this.number!=Object.keys(snapshot.val()).length){
-				if(this.props.notificationInfo){
+				if(this.props.notificationInfo && Object.keys(snapshot.val()).length!=0){
 					this.notificationShow();
 				}
 				
@@ -156,21 +137,19 @@ class Card extends Component{
 	notificationShow=()=>{
 		
 		setTimeout(function(){
-			if(this.state.unreadCount!=0){
-				if (Notification.permission !== "granted") {
-					Notification.requestPermission();
-				}
-				else{
+			if (Notification.permission !== "granted") {
+				Notification.requestPermission();
+			}
+			else{
 
-					const title = this.props.userInfo.name_description.name_bussines||"";
-				    const options = {
-				      body: this.props.userInfo.latest_message.message||"",
-					  icon: this.state.img||"",
-				      vibrate: [500,110,500,110,450,110,200,110,170,40,450,110,200,110,170,40,500]
-				    };
-					var notification = new Notification(title,options);
-					notification.onclick=()=>this.focusPage();
-				}
+				const title = this.props.userInfo.name_description.name_bussines||"";
+			    const options = {
+			      body: this.props.userInfo.latest_message.message||"",
+				  icon: this.state.img||"",
+			      vibrate: [500,110,500,110,450,110,200,110,170,40,450,110,200,110,170,40,500]
+			    };
+				var notification = new Notification(title,options);
+				notification.onclick=()=>this.focusPage();
 			}
 		}.bind(this),200);
 	}
