@@ -17,6 +17,9 @@ class Config extends Component{
 					<div className="col-xs-3 col-md-3 col-sm-3 col-lg-3 config-options">
 						<span className={this.props.notificationInfo?"icon-check-circle config-pointer":"icon-circle config-pointer"} onClick={this.props.notificationInfo?()=>this.props.optionConfig(2):()=>this.props.optionConfig(1)}></span>
 					</div>
+					<div className="col-xs-12 col-md-12 col-sm-12 col-lg-12 config-options">
+						<button onClick={()=>this.props.closeSession()} className="session">Cerrar session</button>
+					</div>
 				</div>
 			</div>
 		)

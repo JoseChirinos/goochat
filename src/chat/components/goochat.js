@@ -150,35 +150,6 @@ class Goochat extends Component{
 	}
 
 
-
-
-
-	onUnload=()=>{
-
-		let devicesOnLine = fire.database().ref('bussines').child(this.state.id_bussines).child('info_bussines').child("devices_online");
-	    var devices=0;
-	    devicesOnLine.once("value").then(snapshot=>{
-	    	devices=snapshot.val();
-			 devicesOnLine.off();
-	    });
-	    if(devices<=1){
-	    	let onlineOfBussines = fire.database().ref('bussines').child(this.state.id_bussines).child('info_bussines');
-		    onlineOfBussines.update({
-		    	online:false,
-		    	devices_online:0
-		    });
-		}else{
-			var de=devices-1;
-			let onlineOfBussines = fire.database().ref('bussines').child(this.state.id_bussines).child('info_bussines');
-		    onlineOfBussines.update({
-		    	devices_online:de
-		    });
-		}
-	}
-
-
-
-
 	dateFire=()=>{
 		let dateRef = fire.database().ref("/.info/serverTimeOffset");
 	 	var serverTime;
@@ -384,7 +355,7 @@ sendMessage=(message)=>{
 
 
 	componentDidMount(){
-		window.addEventListener("beforeunload", this.onUnload);
+		//window.addEventListener("beforeunload", this.onUnload);
 		this.id_contactVar='';
 		this.scrollHeightPrev=0;
 		this.Myid="";
@@ -523,10 +494,6 @@ sendMessage=(message)=>{
 		});
 	}
 
-
-
-//stados de la carga
-
 	loadStart=()=>{
 		if(!this.state.loadMessageState){
 			this.setState({loadMessageState:true});
@@ -557,6 +524,15 @@ sendMessage=(message)=>{
 	}
 
 
+	closeSession=()=>{
+		let onlineOfBussines = fire.database().ref('bussines').child(this.Myid).child('info_bussines');
+	    onlineOfBussines.update({
+	    	online:false
+	    });
+	 	history.back(1);
+	}
+
+
 	render(){
 		return(
 			<div className="container-fluid Goochat" style={{"height":"100%","margin":"0","width":"100%"}}>
@@ -575,7 +551,7 @@ sendMessage=(message)=>{
 
 
 				<div id="config" className="hidden" style={{"zIndex":"2000","position":"fixed","left":"0px","right":"0px","top":"0px","bottom":"0px","background":"rgba(0,0,0,0.3)"}}>
-					<Config notificationInfo={this.state.notificationInfo} hideConfig={this.hideConfig} optionConfig={this.optionConfig}/>
+					<Config closeSession={this.closeSession} notificationInfo={this.state.notificationInfo} hideConfig={this.hideConfig} optionConfig={this.optionConfig}/>
 				</div>
 
 				<div className={this.state.loadMessageState && this.state.loadInfoState?"row show":"row hidden"}>
