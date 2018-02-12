@@ -73,7 +73,6 @@ class Card extends Component{
 			if(snapshot.val()!=null){
 				this.setState({unreadCount:Object.keys(snapshot.val()).length});
 				if(this.unreadPrev!=Object.keys(snapshot.val()).length){
-					// this.playSound();
 					track.playN();
 					this.unreadPrev=Object.keys(snapshot.val()).length;
 				}

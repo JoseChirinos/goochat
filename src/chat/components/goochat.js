@@ -316,7 +316,10 @@ lookOutChat=(idu)=>{
 			  
 					track.playS();
 
-			   		this.updateViewed(this.id_contactVar);
+			   		// this.updateViewed(this.id_contactVar);
+				}
+				if(this.id_contactVar==idu){
+					this.updateViewed(this.id_contactVar);	
 				}
 			}
 		});
