@@ -15,26 +15,26 @@ class Burble extends Component{
 		}
 		return(
 			this.props.iz==0?(
-				<div className="col-xs-12 col-sm-12 col-md-12" style={{"width":"100%"}}>
+				<div className="col-xs-12 col-sm-12 col-md-12 burbleContainer">
 					<div className="msj macro">
 						<div className="avatar">
 							<img className="img-circle" src={this.props.url_img}/>
 						</div>
 						<div className="text text-l">
-							<p style={{"color":"#475566","fontSize":"16px","fontFamily": "Roboto"}}>{this.props.obj.message}</p>
-							<p><small style={{"fontSize":"13px"}}>{hora}</small></p>
+							<p className="burbleP">{this.props.obj.message}</p>
+							<p><small className="burbleSmall">{hora}</small></p>
 						</div>
 					</div>
 				</div>
 				):
 			(
-				<div className="col-xs-12 col-sm-12 col-md-12" style={{"width":"100%"}}>
+				<div className="col-xs-12 col-sm-12 col-md-12 burbleContainer" >
 					<div className="msj-rta macro">
 						<div className="text text-r">
-							<p style={{"color":"#000","fontSize":"16px","fontFamily": "Roboto"}}>{this.props.obj.message}</p>
-							<p><small style={{"fontSize":"13px"}}>{hora}</small></p>
+							<p className="burbleP">{this.props.obj.message}</p>
+							<p><small className="burbleSmall">{hora}</small></p>
 						</div>
-						<div className="avatar" style={{"padding":"0px 0px 0px 10px !important"}}>
+						<div className="avatar avatar2">
 							<img className="img-circle" src={this.props.myUrl_img}/>
 						</div>
 					</div>

@@ -28,7 +28,7 @@ class Menu extends Component{
 					
 
 					<div className="col-xs-6 col-sm-6 col-md-6 menu-containerSquare">
-						<div style={{"width": "100%","position": "absolute","textAlign": "center"}}>
+						<div className="menuDiv">
 							<div className={state1 && this.props.countMessage!=0?"show countMenu":"hidden countMenu"}>
 								{
 									this.props.countMessage!=0?this.props.countMessage:""

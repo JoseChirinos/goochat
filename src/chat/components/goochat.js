@@ -243,7 +243,13 @@ class Goochat extends Component{
 	showInfoContact=(obj)=>{
 		this.id_contactVar=obj.id;
 		this.updateViewed(obj.id);
-		document.getElementById('contentViewMessage').style.background="";
+		
+
+		document.getElementById('chatMessage').style.background="url(./../../../assets/images/background-inicio.png) 0% 0% / cover no-repeat";
+		document.getElementById('contentViewMessage').style.background="url('')";
+
+
+
 		this.state.numberOfMessage=10;
 		this.setState({infoContact:obj,id_contact:obj.id});
 		this.loadChatContact(obj.id);
@@ -538,12 +544,12 @@ sendMessage=(message)=>{
 
 	render(){
 		return(
-			<div className="container-fluid Goochat" style={{"height":"100%","margin":"0","width":"100%"}}>
+			<div className="container-fluid Goochat" >
 				
 
-				<div className={!this.state.loadMessageState || !this.state.loadInfoState?"show":"hidden"} style={{"position":"fixed","left":"0px","right":"0px","top":"0px","bottom":"0px","background":"url(./assets/images/background-inicio.png) 0% 0% / cover no-repeat"}}>
+				<div className={!this.state.loadMessageState || !this.state.loadInfoState?"show goochatDiv":"hidden goochatDiv"}>
 					<ViewLoad/>
-					<div style={{"position":"fixed","bottom":"100px","zIndex":"1000"}}>
+					<div className="goochatSubDiv">
 						<input type="text" id="id_user" ></input>
 						<button onClick={this.eventosFire}>entrar</button>
 					</div>
@@ -553,18 +559,18 @@ sendMessage=(message)=>{
 
 
 
-				<div id="config" className="hidden" style={{"zIndex":"2000","position":"fixed","left":"0px","right":"0px","top":"0px","bottom":"0px","background":"rgba(0,0,0,0.3)"}}>
+				<div id="config" className="hidden goochatConfig">
 					<Config closeSession={this.closeSession} notificationInfo={this.state.notificationInfo} hideConfig={this.hideConfig} optionConfig={this.optionConfig}/>
 				</div>
 
 				<div className={this.state.loadMessageState && this.state.loadInfoState?"row show":"row hidden"}>
-					<div id="chatMessage" className="col-sm-12 col-md-9 col-lg-9" style={ {"overflowX":"hidden","overflowY":"hidden","height":"100vh","background":"url(./assets/images/background-inicio.png)","backgroundSize":"cover","backgroundRepeat":"no-repeat"}}>
+					<div id="chatMessage" className="col-sm-12 col-md-9 col-lg-9 goochatMessage">
 
-						<div id="infoItem" style={{"zIndex": "1000","width":"100%","position":"absolute","left": "0px","top": "0px","background": "#ededed","color": "gray","textAlign":"left","paddingLeft":"3%","fontSize":"10px"}}>
+						<div id="infoItem">
 							<Info backMenu={this.backMenu} infoContact={this.state.infoContact}/>
 						</div>
-						<div onScroll={this.scrollLoadMessage} id="contentViewMessage" style={{"paddingRight":"20px","paddingLeft": "20px","overflowY":"auto","width": "100%", "height": "100vh" ,"background":"url(./assets/images/goo-logo.svg)","backgroundSize": "250px","backgroundRepeat": "no-repeat","backgroundPosition": "center"}}>
-							<div id="loader" className="hidden"  style={{"position":"absolute","zIndex":"10","width":"100%","left":"0px","background":"linear-gradient(#00000057,rgba(255, 255, 255, 0))"}}>
+						<div onScroll={this.scrollLoadMessage} id="contentViewMessage">
+							<div id="loader" className="hidden" >
 								<Loader size="0"></Loader>
 							</div>
 							<ViewMessage myUrl_img={this.state.img_url} url_img={this.state.infoContact.img_url} inputSendState={this.state.inputSendState} sendMessage={this.sendMessage} chatContact={this.state.chatContact} myID={this.state.id_bussines}/>
@@ -573,7 +579,7 @@ sendMessage=(message)=>{
 					</div>
 					 <div id="goochat-menu" className="col-sm-12 col-md-3 col-lg-3 goochat-content-list">
 					 	<div className="row">
-						 	<div className="col-md-12" style={{"paddingRight":"0px","paddingLeft": "0px"}}>
+						 	<div className="col-md-12 goochatMenudiv">
 								<Bussines showConfig={this.showConfig} infoLoad={this.infoLoad} {...this.state}/>
 						 	</div>
 						 	<div className="col-md-12 Info-menu">
@@ -581,7 +587,7 @@ sendMessage=(message)=>{
 						 	</div>
 						 	<div className="col-md-12" id="goochat-contact" style={{"width":"100%"}}>
 
-						 		<div id="menu" className="hidden"  style={{"position":"absolute","zIndex":"10","width":"100%","left":"0px"}}>
+						 		<div id="menu" className="hidden">
 									<Loader size="1"></Loader>
 								</div>
 
@@ -595,7 +601,7 @@ sendMessage=(message)=>{
 								</div>
 
 						 	</div>
-						 	<div className="col-md-12" style={{"position":"absolute","bottom":"0px","width":"100%","paddingRight":"0px","paddingLeft": "0px"}}>
+						 	<div className="col-md-12 goochatdivfinish">
 								<Menu countMessage={this.state.countMessage} countRequest={this.state.countRequest} eventoPrueba={ this.eventoFromMenu }/>
 							</div>
 						</div>

@@ -7,6 +7,13 @@
    margin-right: calc(100%*0.25); 
    z-index: 10;
 }
+.date{
+   text-align: center;width: 100%;padding: 20px 10px 30px 10px;
+}
+
+.viewMessageH3{
+   box-shadow:0px 2px 10px rgba(0,0,0,0.5);background:#d9e1e4;width:150px;margin:0 auto;
+}
 
 
 @media (max-width: 991px) {

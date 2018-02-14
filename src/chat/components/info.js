@@ -36,17 +36,17 @@ class Info extends Component{
 		return(
 			<div className="row">
 				<div className={window.matchMedia("(min-width: 993px)").matches?"hidden col-xs-1 col-sm-1 col-md-1":"show col-xs-1 col-sm-1 col-md-1"}>	
-    				<span onClick={()=>{this.props.backMenu()}} className="icon-chevron-left" style={{"cursor":"pointer","fontSize":"50px","marginLeft":"-15px","color":"#aeaeae"}}>
+    				<span onClick={()=>{this.props.backMenu()}} className="icon-chevron-left infospan">
    				 	</span>
    				 </div>
-				<div className="col-xs-2 col-sm-2 col-md-2" style={{"paddingTop": "5px"}}>
+				<div className="col-xs-2 col-sm-2 col-md-2 infocontainerdiv">
 					<img src={this.props.infoContact.img_url==null?"./assets/images/goo-logo.svg":this.props.infoContact.img_url} className="info-img"></img>
 				</div>
 				<div className="col-xs-9 col-sm-9 col-md-9">
 					<h1 className="name">
 						{this.props.infoContact.name_bussines==null?"Bienvenido.":this.props.infoContact.name_bussines}
 
-					<label className={this.props.infoContact.name_bussines==null?'hidden':'show'} style={{"fontSize": "12px","float": "right","color": "#959694","marginTop": "5px"}}>
+					<label className={this.props.infoContact.name_bussines==null?'hidden infoLabel':'show infoLabel'}>
 						<span className={this.state.online?"online icon-disc":"onlineOf icon-circle"} >
 						</span>
 						{

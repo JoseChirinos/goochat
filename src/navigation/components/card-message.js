@@ -189,9 +189,9 @@ class Card extends Component{
 					<div className="row">
 						<div className="col-xs-3 col-sm-3 col-md-3 card-containerImg">
 							<img className="card-img" src={this.state.img||""}></img>
-                            <div className={this.state.online?"circle-active":"circle"} style={{"position":"relative","marginTop": "-19px","marginLeft": "8px"}}></div>
+                            <div className={this.state.online?"circle-active cardContainerdiv":"circle cardContainerdiv"}></div>
 						</div>
-						<div className="col-xs-7 col-sm-7 col-md-7" onClick={()=>this.props.showInfoContact(obj)} style={{"height": "100px","cursor":"pointer","paddingRight": "30px"}}>
+						<div className="col-xs-7 col-sm-7 col-md-7 cardContainerdiv2" onClick={()=>this.props.showInfoContact(obj)}>
 							<div className="row">
 								<div className="col-md-12">
 									<h3 className="truncado">{userInfo.name_description.name_bussines||""}</h3>

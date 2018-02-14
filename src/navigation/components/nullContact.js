@@ -5,15 +5,15 @@ import './nullContact.css'
 class nullContact extends Component{	
 
 	render(){
-		var a=(<div style={{"background":"#d9e1e4"}} className="menu-container">
+		var a=(<div className="menu-container nullcontactBackground">
 					<h3 className="h3Nullcontact">Quieres agregar alguna empresa a tus circulo empresarial?</h3>
 				<span onClick={()=>this.props.eventoFromMenu(2)} className="icon-check spanNullContact"/>
 			</div>);
-		var b=(<div style={{"background":"#d9e1e4"}} className="menu-container">
+		var b=(<div className="menu-container nullcontactBackground">
 					<h3 className="h3Nullcontact">No tienes ningun mensaje.</h3>
 				</div>);
 
-		var c=(<div style={{"background":"#d9e1e4"}} className="menu-container">
+		var c=(<div className="menu-container nullcontactBackground">
 					<h3 className="h3Nullcontact">No tienes niguna solicitud.</h3>
 				</div>);
 

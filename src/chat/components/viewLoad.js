@@ -11,8 +11,8 @@ class ViewLoad extends Component{
 	}
 	render(){
 		var a=(
-			<div style={{"background":"url()"}}>
-				<div style={{"position":"fixed","left":"0px","right":"0px","top":"30%","textAlign":"center"}}>
+			<div >
+				<div className="viewloaddiv">
 					<Loader size="3"/> 
 				</div>
 			</div>

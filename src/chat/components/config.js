@@ -9,7 +9,7 @@ class Config extends Component{
 			<div className="config-content">
 				<div className="row">
 					<div className="col-xs-12 col-md-12 col-sm-12 col-lg-12 config-header" >
-						<span className="icon-settings"></span> Configuracion <span onClick={()=>this.props.hideConfig()} className="icon-x config-pointer" style={{"float":"right","fontSize": "25px"}}></span>
+						<span className="icon-settings"></span> Configuracion <span onClick={()=>this.props.hideConfig()} className="icon-x config-pointer configSpan"></span>
 					</div>
 					<div className="col-xs-9 col-md-9 col-sm-9 col-lg-9 config-options">
 						Activar notificaciones:

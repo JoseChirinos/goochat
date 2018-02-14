@@ -56,7 +56,7 @@ class Card extends Component{
 					<div className="row">
 						<div className="col-xs-3 col-sm-3 col-md-3 card-containerImg">
 							<img className="card-img" src={this.state.img||''}></img>
-							<div className={this.props.listNavigation==0 && this.state.online?"circle-active":this.props.listNavigation==0 && !this.state.online?"circle":"hidden"} style={{"position":"relative","marginTop": "-19px","marginLeft": "8px"}}></div>
+							<div className={this.props.listNavigation==0 && this.state.online?"circle-active cardDivOnline":this.props.listNavigation==0 && !this.state.online?"circle cardDivOnline":"hidden cardDivOnline"}></div>
 						</div>
 						<div className="col-xs-4 col-sm-4 col-md-4 card-containerName" onClick={()=>this.props.showInfoContact(obj)}>
 							<div className="row" >

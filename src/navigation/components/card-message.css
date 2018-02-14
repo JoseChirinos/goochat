@@ -81,3 +81,15 @@
 	color: gray;
 	font-size: 10px;
 }
+
+
+
+.cardContainerdiv{
+	position:relative;margin-top: -19px;margin-left: 8px;
+}
+
+
+
+.cardContainerdiv2{
+	height: 100px;cursor:pointer;padding-right: 30px;
+}
