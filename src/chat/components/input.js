@@ -10,8 +10,6 @@ class Input extends Component{
 		this.setState({message:m});
 	}
 
-
-
 	prueba=(e)=>{
 		var tecla = (document.all) ? e.keyCode : e.which;
 		if(tecla==13 && document.getElementById('inputSendMessage').value!=""){
@@ -20,7 +18,6 @@ class Input extends Component{
 			document.getElementById('inputSendMessage').value="";
 		}
 	}
-
 
 	render(){
 		return(

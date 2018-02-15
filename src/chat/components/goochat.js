@@ -545,7 +545,6 @@ sendMessage=(message)=>{
 	render(){
 		return(
 			<div className="container-fluid Goochat" >
-				
 
 				<div className={!this.state.loadMessageState || !this.state.loadInfoState?"show goochatDiv":"hidden goochatDiv"}>
 					<ViewLoad/>
@@ -554,10 +553,6 @@ sendMessage=(message)=>{
 						<button onClick={this.eventosFire}>entrar</button>
 					</div>
 				</div>
-
-
-
-
 
 				<div id="config" className="hidden goochatConfig">
 					<Config closeSession={this.closeSession} notificationInfo={this.state.notificationInfo} hideConfig={this.hideConfig} optionConfig={this.optionConfig}/>
