@@ -23,15 +23,24 @@ class Input extends Component{
 
 	prueba=(e)=>{
 		var tecla = (document.all) ? e.keyCode : e.which;
-		console.log(tecla);
-		if(tecla==13){
+		// console.log(tecla);
+		if(!e.shiftKey && tecla==13){
 			var cad = document.getElementsByClassName('emoji-wysiwyg-editor')[0].innerHTML;
-			cad = cad.replace(/<[^>]*>/g, '');
+			cad = cad.replace(/<div[^>]*>[^>]*>/g,'');
 			if(cad==""){
 				setTimeout(function(){
 					document.getElementById('inputSendMessage').value="";	
 					document.getElementsByClassName("emoji-wysiwyg-editor")[0].innerHTML="";
 				}.bind(this),100);
+			}else{
+				var a=document.getElementsByClassName("emoji-wysiwyg-editor")[0].innerHTML;
+				this.props.sendMessage(this.state.message);
+				this.setState({message:''});
+				setTimeout(function(){
+				 document.getElementById('inputSendMessage').value="";
+				 document.getElementsByClassName("emoji-wysiwyg-editor")[0].innerHTML="";
+				}.bind(this),100);
+				this.props.sendMessage(a);
 			}
 		}
 
