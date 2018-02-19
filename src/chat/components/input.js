@@ -11,19 +11,45 @@ class Input extends Component{
 		//console.log(a);
 		this.setState({message:a});
 	}
+	componentDidMount(){
+		// if(document.getElementsByClassName("emoji-wysiwyg-editor")[0]!=null)
+		setTimeout(function(){
+			document.getElementsByClassName("emoji-wysiwyg-editor")[0].addEventListener("keypress",this.prueba,false);
+		}.bind(this),200);
+	}
 
 
-	// prueba=(e)=>{
-	// 	var tecla = (document.all) ? e.keyCode : e.which;
-	// 	if(tecla==13 && document.getElementsByClassName('emoji-wysiwyg-editor')[0].innerHTML!=null){
-	// 		var a=document.getElementsByClassName("emoji-wysiwyg-editor")[0].innerHTML;
-	// 		this.props.sendMessage(this.state.message);
-	// 		this.setState({message:''});
-	// 		document.getElementById('inputSendMessage').value="";
-	// 		document.getElementsByClassName("emoji-wysiwyg-editor")[0].innerHTML="";
-	// 		this.props.sendMessage(a);
-	// 	}
-	// }
+
+
+	prueba=(e)=>{
+		var tecla = (document.all) ? e.keyCode : e.which;
+		console.log(tecla);
+		if(tecla==13){
+			var cad = document.getElementsByClassName('emoji-wysiwyg-editor')[0].innerHTML;
+			cad = cad.replace(/<[^>]*>/g, '');
+			if(cad==""){
+				setTimeout(function(){
+					document.getElementById('inputSendMessage').value="";	
+					document.getElementsByClassName("emoji-wysiwyg-editor")[0].innerHTML="";
+				}.bind(this),200);
+			}
+		}
+
+
+		if(!e.shiftKey && tecla==13 && document.getElementsByClassName('emoji-wysiwyg-editor')[0].innerHTML!=""){
+			var cad = document.getElementsByClassName('emoji-wysiwyg-editor')[0].innerHTML;
+			cad = cad.replace(/<[^>]*>/g, '');
+			if(cad!=""){ 
+				var a=document.getElementsByClassName("emoji-wysiwyg-editor")[0].innerHTML;
+				this.props.sendMessage(this.state.message);
+				this.setState({message:''});
+				document.getElementById('inputSendMessage').value="";
+				document.getElementsByClassName("emoji-wysiwyg-editor")[0].innerHTML="";
+				this.props.sendMessage(a);
+			}
+		}
+
+	}
 
 	render(){
 		return(
