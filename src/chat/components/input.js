@@ -34,13 +34,13 @@ class Input extends Component{
 				}.bind(this),100);
 			}else{
 				var a=document.getElementsByClassName("emoji-wysiwyg-editor")[0].innerHTML;
-				this.props.sendMessage(this.state.message);
+				this.props.sendMessage(a);
 				this.setState({message:''});
 				setTimeout(function(){
 				 document.getElementById('inputSendMessage').value="";
 				 document.getElementsByClassName("emoji-wysiwyg-editor")[0].innerHTML="";
 				}.bind(this),100);
-				this.props.sendMessage(a);
+				//this.props.sendMessage(a);
 			}
 		}
 
@@ -50,13 +50,14 @@ class Input extends Component{
 			cad = cad.replace(/<[^>]*>/g, '');
 			if(cad!=""){ 
 				var a=document.getElementsByClassName("emoji-wysiwyg-editor")[0].innerHTML;
-				this.props.sendMessage(this.state.message);
+				// this.props.sendMessage(this.state.message);
+				this.props.sendMessage(a);
 				this.setState({message:''});
 				setTimeout(function(){
 				 document.getElementById('inputSendMessage').value="";
 				 document.getElementsByClassName("emoji-wysiwyg-editor")[0].innerHTML="";
 				}.bind(this),100);
-				this.props.sendMessage(a);
+				
 			}
 		}
 
