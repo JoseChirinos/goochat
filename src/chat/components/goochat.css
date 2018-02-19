@@ -167,3 +167,9 @@
 	padding-right:0px;
 	padding-left: 0px;
 }
+
+
+
+.emoji-menu .emoji-items-wrap{
+	overflow:auto !important;
+}

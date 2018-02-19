@@ -333,7 +333,7 @@ lookOutChat=(idu)=>{
 }
 sendMessage=(message)=>{
 		var updates = {};
-		if(this.Myid!=""){
+		if(this.Myid!="" && message!=""){
 			let saveMyDateRef= fire.database().ref('bussines').child(this.state.id_bussines).child("chat").child(this.state.id_contact).child('messages').push().getKey();
 			let saveYourDateRef= fire.database().ref('bussines').child(this.state.id_contact).child("chat").child(this.state.id_bussines).child('messages').push().getKey();
 			var a={date:this.dateFire(),name_bussines:this.state.name_bussines,id_bussines:this.state.id_bussines,img_url:this.state.img_url,message:message,viewed:true};
@@ -349,10 +349,9 @@ sendMessage=(message)=>{
 			updates['/bussines/'+this.state.id_contact+'/chat/'+this.state.id_bussines+'/messages/'+saveMyDateRef]=b;
 			updates['/bussines/'+this.state.id_bussines+'/chat/'+this.state.id_contact+'/messages/'+saveYourDateRef]=a;
 
-
 			fire.database().ref().update(updates);
 			document.getElementById('inputSendMessage').value="";
-
+			document.getElementsByClassName("emoji-wysiwyg-editor form-control")[0].innerHTML="";
 
 		}
 	}
@@ -518,10 +517,10 @@ sendMessage=(message)=>{
 	}
 
 	showConfig=()=>{
-		document.getElementById('config').className="show";
+		document.getElementById('config').className="show goochatConfig";
 	}
 	hideConfig=()=>{
-		document.getElementById('config').className="hidden";
+		document.getElementById('config').className="hidden goochatConfig";
 	}
 	optionConfig=(option)=>{
 		let bussinesNotification=fire.database().ref('bussines/'+this.Myid).child('info_bussines');
@@ -545,6 +544,7 @@ sendMessage=(message)=>{
 	render(){
 		return(
 			<div className="container-fluid Goochat" >
+				
 
 				<div className={!this.state.loadMessageState || !this.state.loadInfoState?"show goochatDiv":"hidden goochatDiv"}>
 					<ViewLoad/>
@@ -553,6 +553,10 @@ sendMessage=(message)=>{
 						<button onClick={this.eventosFire}>entrar</button>
 					</div>
 				</div>
+
+
+
+
 
 				<div id="config" className="hidden goochatConfig">
 					<Config closeSession={this.closeSession} notificationInfo={this.state.notificationInfo} hideConfig={this.hideConfig} optionConfig={this.optionConfig}/>

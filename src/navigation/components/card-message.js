@@ -197,7 +197,7 @@ class Card extends Component{
 									<h3 className="truncado">{userInfo.name_description.name_bussines||""}</h3>
 								</div>
 								<div className="col-md-12">
-									<p className="card-p truncado-p">{userInfo.latest_message.message||""}</p>
+									<p className="card-p truncado-p" dangerouslySetInnerHTML={{__html:userInfo.latest_message.message||""}}></p>
 								</div>
 								<div className="col-md-12">
 								<p className="card-fecha">{fecha}</p>
