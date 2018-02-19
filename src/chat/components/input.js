@@ -31,7 +31,7 @@ class Input extends Component{
 				setTimeout(function(){
 					document.getElementById('inputSendMessage').value="";	
 					document.getElementsByClassName("emoji-wysiwyg-editor")[0].innerHTML="";
-				}.bind(this),200);
+				}.bind(this),100);
 			}
 		}
 
@@ -43,8 +43,10 @@ class Input extends Component{
 				var a=document.getElementsByClassName("emoji-wysiwyg-editor")[0].innerHTML;
 				this.props.sendMessage(this.state.message);
 				this.setState({message:''});
-				document.getElementById('inputSendMessage').value="";
-				document.getElementsByClassName("emoji-wysiwyg-editor")[0].innerHTML="";
+				setTimeout(function(){
+				 document.getElementById('inputSendMessage').value="";
+				 document.getElementsByClassName("emoji-wysiwyg-editor")[0].innerHTML="";
+				}.bind(this),100);
 				this.props.sendMessage(a);
 			}
 		}
