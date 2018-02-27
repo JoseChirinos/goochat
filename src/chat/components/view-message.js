@@ -15,7 +15,6 @@ class Message extends Component{
 				if(document.getElementById("search-input").value==""){
 					document.getElementById("inputSendMessage").focus();
 				}
-			
 			}.bind(this),300);
 		}
 	}

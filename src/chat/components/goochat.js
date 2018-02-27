@@ -14,10 +14,9 @@ import Menu from './../../navigation/components/menu';
 
 import ViewLoad from './../../chat/components/viewLoad';
 import Config from './../../chat/components/config';
-
+// import Scrollbars from 'react-custom-scrollbars';
 
 import './goochat.css'
-
 class Goochat extends Component{
 	state = {
 		description:'',
@@ -99,8 +98,12 @@ class Goochat extends Component{
 
 
 
-	eventosFire = () =>{
-		var id = document.getElementById('id_user').value;
+	eventosFire = (idi) =>{
+		if(idi==0){
+			var id = document.getElementById('id_user').value;
+		}else{
+			var id = idi;
+		}
 		this.Myid=id;
 		this.countChatMessage(id);
 
@@ -359,7 +362,12 @@ sendMessage=(message)=>{
 
 
 
-
+	getParameterByName=(name)=>{
+	    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+	    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+	    results = regex.exec(location.search);
+	    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+	}
 
 
 	componentDidMount(){
@@ -369,10 +377,12 @@ sendMessage=(message)=>{
 		this.Myid="";
 		this.audioElement = document.createElement('audio');
 		this.audioElement.setAttribute('src', '../../assets/audio/MessageNonzerobot.mp3');
-					
-
 		//para abrir el chat es necesario mandar el id del usuario a esta funcion
-		//this.eventosFire(id);
+
+		if(this.getParameterByName('id')!=""&&this.getParameterByName('id')!=null){
+			this.eventosFire(this.getParameterByName('id'));
+			console.log(this.getParameterByName('id'));
+		}
 
 
 		var objJson={
@@ -390,13 +400,14 @@ sendMessage=(message)=>{
 		//this.saveNewUser(objJson);
 
 		var objContact={
-			id:"jose_id",
-			img_url:"https://d30y9cdsu7xlg0.cloudfront.net/png/17241-200.png",
-			name_bussines:"Jose Inc",
-			url_page:"jose.com"
+			id:this.getParameterByName('idContact')||"error",
+			img_url:this.getParameterByName('img_url')||"error",
+			name_bussines:this.getParameterByName('name_bussines')||"error",
+			url_page:this.getParameterByName('url_page')
 		}
+		console.log(objContact);
 		//funcion para abrir directamente el chat del otro usuario
-		//this.showInfoContact(objContact);
+		this.showInfoContact(objContact);
 	}
 
 
@@ -550,7 +561,7 @@ sendMessage=(message)=>{
 					<ViewLoad/>
 					<div className="goochatSubDiv">
 						<input type="text" id="id_user" ></input>
-						<button onClick={this.eventosFire}>entrar</button>
+						<button onClick={()=>this.eventosFire(0)}>entrar</button>
 					</div>
 				</div>
 
@@ -568,6 +579,7 @@ sendMessage=(message)=>{
 						<div id="infoItem">
 							<Info backMenu={this.backMenu} infoContact={this.state.infoContact}/>
 						</div>
+
 						<div onScroll={this.scrollLoadMessage} id="contentViewMessage">
 							<div id="loader" className="hidden" >
 								<Loader size="0"></Loader>

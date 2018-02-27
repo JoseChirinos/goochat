@@ -131,11 +131,13 @@
 	height: 100vh ;
 	/*background:url(./assets/images/goo-logo.svg);*/
 	background:url(./../../../assets/images/goo-logo.svg);
-
 	background-size: 250px;
 	background-repeat: no-repeat;
 	background-position: center;
+
 }
+
+
 
 #loader{
 	position:absolute;

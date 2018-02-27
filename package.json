@@ -35,7 +35,7 @@
     "moment": "^2.20.1",
     "prop-types": "15.6.0",
     "react": "16.2.0",
-    "react-custom-scrollbars": "4.2.1",
+    "react-custom-scrollbars": "^4.2.1",
     "react-dom": "16.2.0",
     "react-router-dom": "^4.2.2"
   }
