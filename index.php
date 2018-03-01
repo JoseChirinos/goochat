@@ -39,31 +39,33 @@
 	<!-- Sounds -->
 	<div id="e"></div>
 
-
 	<!--
 	<script type="text/javascript" src="./dist/js/goochat.c6edbf540fef7a481817.js"></script>
 -->
 	<?php
 		session_start();
-		if(isset($_SESSION['id_bussines'])){
-			if(isset($_SESSION['id_client'])){
-				
-				$id=$_SESSION['id_bussines'];
-				$idContact=$_GET['id_client'];
-				$datos = array(
-					'id'=>$id,
-					'idContact'=>$idContact
-				);
+		if(isset($_SESSION['id']) && isset($_GET['idContact'])){
+			//estos son los datos que tienes  que recuperar
+			$img_url="https://d30y9cdsu7xlg0.cloudfront.net/png/17241-200.png";
+			$name_bussines="Jose Inc";
+			$url_page="jose.com";
 
-				echo "<script>recibir(".json_encode($datos).")</script>";
+			$dato=array(
+				"id"=>$_SESSION['id'],
+				"idContact"=>array(
+					"id"=>$_GET['idContact'],
+					"img_url"=>$img_url,
+					"name_bussines"=>$name_bussines,
+					"url_page"=>$url_page)
+			);
 
-			}else{
-				header("location:www.google.com");	
-			}
+			echo "<script type='text/javascript'>recibir(".json_encode($dato).")</script>";
 		}else{
-			header("location:www.google.com");
+			header("location:http://www.google.com");
 		}
 	?>
+
+
 	<script src="./assets/js/preloadjs.min.js"></script>
 	<script src="./assets/js/load.js"></script>
 	<!-- <script src="./assets/js/emojionearea.min.js"></script> -->
@@ -82,10 +84,6 @@
 	<script src="./assets/js/jquery.scrollbar.js"></script>
 
     <!-- End emoji-picker JavaScript -->
-	
-
-
-
     <script>
       $(function() {
         window.emojiPicker = new EmojiPicker({

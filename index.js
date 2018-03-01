@@ -8,4 +8,8 @@ const app = document.getElementById('app');
 //const holaMundo = <h1>Hola Mundo!</h1>;
 // ReactDOM.render(holaMundo,app);
 //console.log('hola mundo!');
-render(<Goochat />,app);
+window.recibir = function(data){
+	console.log(data);
+	render(<Goochat datos={ data }/>,app);
+};
+

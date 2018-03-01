@@ -248,7 +248,7 @@ class Goochat extends Component{
 		this.updateViewed(obj.id);
 		
 
-		document.getElementById('chatMessage').style.background="url(./../../../assets/images/background-inicio.png) 0% 0% / cover no-repeat";
+		document.getElementById('chatMessage').style.background="url(././assets/images/background-inicio.png) 0% 0% / cover no-repeat";
 		document.getElementById('contentViewMessage').style.background="url('')";
 
 
@@ -379,36 +379,59 @@ sendMessage=(message)=>{
 		this.audioElement.setAttribute('src', '../../assets/audio/MessageNonzerobot.mp3');
 		//para abrir el chat es necesario mandar el id del usuario a esta funcion
 
-		if(this.getParameterByName('id')!=""&&this.getParameterByName('id')!=null){
-			this.eventosFire(this.getParameterByName('id'));
-			console.log(this.getParameterByName('id'));
-		}
+		// if(this.getParameterByName('id')!=""&&this.getParameterByName('id')!=null){
+		// 	this.eventosFire(this.getParameterByName('id'));
+		// 	console.log(this.getParameterByName('id'));
+		// }
 
 
-		var objJson={
-			id:"asdasddnajksnjd",
-			country:"china",
-			description:"hiroko saka moko",
-			img_url:"https://d30y9cdsu7xlg0.cloudfront.net/png/17239-200.png",
-			name_bussines:"shin fun han",
-			url_page:"kunFu.com",
-			region:"okinawa",
-			devices_online: 0
-		};
+		// var objJson={
+		// 	id:"asdasddnajksnjd",
+		// 	country:"china",
+		// 	description:"hiroko saka moko",
+		// 	img_url:"https://d30y9cdsu7xlg0.cloudfront.net/png/17239-200.png",
+		// 	name_bussines:"shin fun han",
+		// 	url_page:"kunFu.com",
+		// 	region:"okinawa",
+		// 	devices_online: 0
+		// };
 
 		//funcion para guardar un usuario nuevo
 		//this.saveNewUser(objJson);
 
-		var objContact={
-			id:this.getParameterByName('idContact')||"error",
-			img_url:this.getParameterByName('img_url')||"error",
-			name_bussines:this.getParameterByName('name_bussines')||"error",
-			url_page:this.getParameterByName('url_page')
-		}
-		console.log(objContact);
+			//id del usuario
+		 	this.eventosFire(this.props.datos.id);
+			// var objContact={
+			// 	id:this.getParameterByName('idContact')||"error",
+			// 	img_url:this.getParameterByName('img_url')||"error",
+			// 	name_bussines:this.getParameterByName('name_bussines')||"error",
+			// 	url_page:this.getParameterByName('url_page')
+			// }
+			//json de datos del userContact
+			console.log("prueba desde el componente ",this.props.datos);
+			this.showInfoContact(this.props.datos.idContact);
+
+		//console.log(objContact);
 		//funcion para abrir directamente el chat del otro usuario
-		this.showInfoContact(objContact);
+	 	
+	 	
 	}
+
+	// componentWillReceiveProps(nextProps){	
+	// 	if(nextProps.datos!=null){
+	// 		//id del usuario
+	// 	 	this.eventosFire(nextProps.datos.id);
+	// 		// var objContact={
+	// 		// 	id:this.getParameterByName('idContact')||"error",
+	// 		// 	img_url:this.getParameterByName('img_url')||"error",
+	// 		// 	name_bussines:this.getParameterByName('name_bussines')||"error",
+	// 		// 	url_page:this.getParameterByName('url_page')
+	// 		// }
+	// 		//json de datos del userContact
+	// 		console.log("prueba desde el componente ",nextProps.datos);
+	// 		this.showInfoContact(nextProps.datos.idContact);
+	// 	}
+	// }
 
 
 

@@ -8,14 +8,12 @@ class Input extends Component{
 
 	updateMessage=(m)=>{
 		var a=document.getElementsByClassName("emoji-wysiwyg-editor form-control")[0].innerHTML;
-		//console.log(a);
 		this.setState({message:a});
 	}
 	componentDidMount(){
-		// if(document.getElementsByClassName("emoji-wysiwyg-editor")[0]!=null)
 		setTimeout(function(){
 			document.getElementsByClassName("emoji-wysiwyg-editor")[0].addEventListener("keypress",this.prueba,false);
-		}.bind(this),200);
+		}.bind(this),300);
 	}
 
 
@@ -23,7 +21,6 @@ class Input extends Component{
 
 	prueba=(e)=>{
 		var tecla = (document.all) ? e.keyCode : e.which;
-		// console.log(tecla);
 		if(!e.shiftKey && tecla==13){
 			var cad = document.getElementsByClassName('emoji-wysiwyg-editor')[0].innerHTML;
 			cad = cad.replace(/<div[^>]*>[^>]*>/g,'');
@@ -50,7 +47,6 @@ class Input extends Component{
 			cad = cad.replace(/<[^>]*>/g, '');
 			if(cad!=""){ 
 				var a=document.getElementsByClassName("emoji-wysiwyg-editor")[0].innerHTML;
-				// this.props.sendMessage(this.state.message);
 				this.props.sendMessage(a);
 				this.setState({message:''});
 				setTimeout(function(){
